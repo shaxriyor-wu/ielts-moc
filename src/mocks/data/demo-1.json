@@ -1,0 +1,280 @@
+{
+  "id": "demo-1",
+  "title": "Full IELTS Mock Test (Demo)",
+  "description": "Complete IELTS Computer-Delivered Mock Test covering all four sections: Listening, Reading, Writing, and Speaking",
+  "duration": 120,
+  "sections": {
+    "listening": [
+      {
+        "section": 1,
+        "audio": "/assets/audio/demo-part1.mp3",
+        "questions": [
+          {
+            "id": "L1Q1",
+            "type": "short_answer",
+            "text": "What is the speaker's name?"
+          },
+          {
+            "id": "L1Q2",
+            "type": "short_answer",
+            "text": "Where is the speaker from?"
+          },
+          {
+            "id": "L1Q3",
+            "type": "multiple_choice",
+            "text": "What is the main topic of the conversation?",
+            "choices": [
+              "A. Travel arrangements",
+              "B. Accommodation booking",
+              "C. Restaurant reservation",
+              "D. Event planning"
+            ]
+          },
+          {
+            "id": "L1Q4",
+            "type": "short_answer",
+            "text": "What date is mentioned?"
+          },
+          {
+            "id": "L1Q5",
+            "type": "multiple_choice",
+            "text": "How many people are expected?",
+            "choices": [
+              "A. Two",
+              "B. Three",
+              "C. Four",
+              "D. Five"
+            ]
+          },
+          {
+            "id": "L1Q6",
+            "type": "short_answer",
+            "text": "What is the contact phone number?"
+          },
+          {
+            "id": "L1Q7",
+            "type": "multiple_choice",
+            "text": "What special request is made?",
+            "choices": [
+              "A. Vegetarian options",
+              "B. Wheelchair access",
+              "C. Late check-in",
+              "D. Extra parking"
+            ]
+          },
+          {
+            "id": "L1Q8",
+            "type": "short_answer",
+            "text": "What is the total cost?"
+          }
+        ]
+      },
+      {
+        "section": 2,
+        "audio": "/assets/audio/demo-part2.mp3",
+        "questions": [
+          {
+            "id": "L2Q1",
+            "type": "multiple_choice",
+            "text": "What is the main purpose of the talk?",
+            "choices": [
+              "A. To explain a new policy",
+              "B. To introduce new staff",
+              "C. To announce changes",
+              "D. To provide training"
+            ]
+          },
+          {
+            "id": "L2Q2",
+            "type": "short_answer",
+            "text": "When will the changes take effect?"
+          },
+          {
+            "id": "L2Q3",
+            "type": "multiple_choice",
+            "text": "Who should contact the office?",
+            "choices": [
+              "A. All students",
+              "B. International students only",
+              "C. New students only",
+              "D. Students with questions"
+            ]
+          },
+          {
+            "id": "L2Q4",
+            "type": "short_answer",
+            "text": "What is the office extension number?"
+          },
+          {
+            "id": "L2Q5",
+            "type": "multiple_choice",
+            "text": "What documents are required?",
+            "choices": [
+              "A. Passport and visa",
+              "B. ID and proof of address",
+              "C. Certificate and transcript",
+              "D. Application form only"
+            ]
+          },
+          {
+            "id": "L2Q6",
+            "type": "short_answer",
+            "text": "What is the deadline for submission?"
+          },
+          {
+            "id": "L2Q7",
+            "type": "multiple_choice",
+            "text": "Where can students get more information?",
+            "choices": [
+              "A. Library",
+              "B. Student services",
+              "C. Online portal",
+              "D. Notice board"
+            ]
+          },
+          {
+            "id": "L2Q8",
+            "type": "short_answer",
+            "text": "What time does the office close?"
+          }
+        ]
+      }
+    ],
+    "reading": [
+      {
+        "id": "R1",
+        "title": "Passage 1: The History of Coffee",
+        "text": "Coffee is one of the most popular beverages in the world, with millions of people starting their day with a cup of this aromatic drink. The history of coffee dates back to the 15th century, when it was first discovered in Ethiopia. According to legend, a goat herder named Kaldi noticed that his goats became more energetic after eating berries from a certain tree. He tried the berries himself and experienced the same effect.\n\nFrom Ethiopia, coffee spread to the Arabian Peninsula, where it became an important part of the culture. By the 16th century, coffee had reached Persia, Egypt, and Turkey. Coffee houses began to appear in major cities, becoming centers of social activity and intellectual discussion.\n\nThe first coffee house in Europe opened in Venice in 1645. From there, coffee quickly spread throughout the continent. In the 17th century, coffee reached the Americas, where it became a major agricultural product. Today, Brazil is the world's largest coffee producer, followed by Vietnam and Colombia.\n\nModern coffee production involves complex processes including cultivation, harvesting, processing, and roasting. The quality of coffee depends on many factors, including the type of bean, the climate where it's grown, and the roasting process. Specialty coffee has become increasingly popular, with consumers seeking out unique flavors and sustainable production methods.",
+        "questions": [
+          {
+            "id": "R1Q1",
+            "type": "true_false_not_given",
+            "text": "Coffee was first discovered in the 15th century."
+          },
+          {
+            "id": "R1Q2",
+            "type": "true_false_not_given",
+            "text": "Kaldi was a farmer who discovered coffee."
+          },
+          {
+            "id": "R1Q3",
+            "type": "short_answer",
+            "text": "Where did the first European coffee house open?"
+          },
+          {
+            "id": "R1Q4",
+            "type": "multiple_choice",
+            "text": "What is the main topic of the third paragraph?",
+            "choices": [
+              "A. Coffee production methods",
+              "B. The spread of coffee to Europe and America",
+              "C. Modern coffee culture",
+              "D. Coffee house culture"
+            ]
+          },
+          {
+            "id": "R1Q5",
+            "type": "true_false_not_given",
+            "text": "Brazil produces more coffee than any other country."
+          },
+          {
+            "id": "R1Q6",
+            "type": "short_answer",
+            "text": "What factors affect coffee quality?"
+          }
+        ]
+      },
+      {
+        "id": "R2",
+        "title": "Passage 2: Climate Change and Agriculture",
+        "text": "Climate change poses significant challenges to global agriculture. Rising temperatures, changing precipitation patterns, and increased frequency of extreme weather events are affecting crop yields and food security worldwide.\n\nFarmers are adapting to these changes through various strategies. Some are switching to drought-resistant crop varieties, while others are implementing new irrigation techniques. In many regions, farmers are adjusting planting schedules to align with changing weather patterns.\n\nTechnology is playing an increasingly important role in helping agriculture adapt to climate change. Precision agriculture uses sensors and data analytics to optimize water and fertilizer use. Drones are being used to monitor crop health and identify problem areas early.\n\nHowever, adaptation alone may not be sufficient. Many experts argue that reducing greenhouse gas emissions is essential to limit the severity of climate change impacts. Agriculture itself is a significant source of emissions, particularly from livestock and rice cultivation.\n\nSustainable farming practices, such as organic farming and agroforestry, can help reduce agriculture's environmental impact while maintaining productivity. These practices often require more labor and knowledge but can provide long-term benefits for both farmers and the environment.",
+        "questions": [
+          {
+            "id": "R2Q1",
+            "type": "matching_headings",
+            "text": "What is the main idea of paragraph 2?",
+            "headings": [
+              "Adaptation strategies",
+              "Technology solutions",
+              "Environmental challenges",
+              "Sustainable practices"
+            ]
+          },
+          {
+            "id": "R2Q2",
+            "type": "true_false_not_given",
+            "text": "All farmers are switching to drought-resistant crops."
+          },
+          {
+            "id": "R2Q3",
+            "type": "multiple_choice",
+            "text": "According to the passage, what is a limitation of adaptation strategies?",
+            "choices": [
+              "A. They are too expensive",
+              "B. They may not be sufficient alone",
+              "C. They require too much technology",
+              "D. They don't work in all regions"
+            ]
+          },
+          {
+            "id": "R2Q4",
+            "type": "short_answer",
+            "text": "What are two sources of agricultural emissions mentioned?"
+          },
+          {
+            "id": "R2Q5",
+            "type": "true_false_not_given",
+            "text": "Sustainable farming always requires less labor than conventional farming."
+          }
+        ]
+      },
+      {
+        "id": "R3",
+        "title": "Passage 3: The Science of Sleep",
+        "text": "Sleep is essential for human health and well-being, yet many people do not get enough quality sleep. Research has shown that sleep plays a crucial role in memory consolidation, immune function, and cognitive performance.\n\nDuring sleep, the brain goes through several stages, including light sleep, deep sleep, and REM (Rapid Eye Movement) sleep. Each stage serves different functions. Deep sleep is particularly important for physical restoration, while REM sleep is associated with memory processing and dreaming.\n\nSleep deprivation can have serious consequences. Studies have linked insufficient sleep to increased risk of obesity, diabetes, cardiovascular disease, and mental health issues. Even short-term sleep deprivation can impair cognitive function, reaction time, and decision-making abilities.\n\nMany factors can affect sleep quality, including stress, caffeine consumption, screen time before bed, and sleep environment. Creating a consistent sleep schedule and a comfortable sleep environment can help improve sleep quality.\n\nFor those with chronic sleep problems, medical intervention may be necessary. Sleep disorders such as insomnia, sleep apnea, and restless leg syndrome require professional diagnosis and treatment. However, many sleep issues can be improved through lifestyle changes and better sleep hygiene.",
+        "questions": [
+          {
+            "id": "R3Q1",
+            "type": "multiple_choice",
+            "text": "What is the main purpose of REM sleep?",
+            "choices": [
+              "A. Physical restoration",
+              "B. Memory processing",
+              "C. Immune function",
+              "D. Stress reduction"
+            ]
+          },
+          {
+            "id": "R3Q2",
+            "type": "true_false_not_given",
+            "text": "All sleep disorders require medical treatment."
+          },
+          {
+            "id": "R3Q3",
+            "type": "short_answer",
+            "text": "What are three health risks associated with sleep deprivation?"
+          },
+          {
+            "id": "R3Q4",
+            "type": "multiple_choice",
+            "text": "According to the passage, what can help improve sleep quality?",
+            "choices": [
+              "A. Taking sleeping pills",
+              "B. Creating a consistent sleep schedule",
+              "C. Exercising before bed",
+              "D. Drinking alcohol"
+            ]
+          }
+        ]
+      }
+    ],
+    "writing": {
+      "task1": "The chart below shows the percentage of households in owned and rented accommodation in England and Wales between 1918 and 2011.\n\nSummarize the information by selecting and reporting the main features, and make comparisons where relevant.\n\nWrite at least 150 words.",
+      "task2": "Some people believe that university education should be free for all students, regardless of their financial situation. Others argue that students should pay for their own education.\n\nDiscuss both views and give your own opinion.\n\nWrite at least 250 words."
+    },
+    "speaking": {
+      "description": "You will have 2 minutes to prepare and then speak for 2 minutes on the following topic:\n\nDescribe a memorable journey you have taken. You should say:\n- Where you went\n- When you went there\n- Who you went with\n- What you did during the journey\n- And explain why it was memorable"
+    }
+  }
+}
+
