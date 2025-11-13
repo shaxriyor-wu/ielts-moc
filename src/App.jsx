@@ -11,6 +11,14 @@ import Results from './pages/Results'
 import Admin from './pages/Admin'
 import CreateTest from './pages/CreateTest'
 import JoinTest from './pages/JoinTest'
+import AdminUsers from './pages/AdminUsers'
+import AdminUserManagement from './pages/AdminUserManagement'
+import AdminTestManagement from './pages/AdminTestManagement'
+import AdminGrading from './pages/AdminGrading'
+import AdminAnalytics from './pages/AdminAnalytics'
+import AdminMessages from './pages/AdminMessages'
+import AdminSettings from './pages/AdminSettings'
+import Profile from './pages/Profile'
 
 function App() {
   const { user } = useAuth()
@@ -27,6 +35,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
               </ProtectedRoute>
             }
           />
@@ -59,6 +75,54 @@ function App() {
             element={
               <ProtectedRoute requiredRole="admin">
                 <CreateTest />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminUsers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/tests"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminTestManagement />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/grading"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminGrading />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/analytics"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminAnalytics />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/messages"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminMessages />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute requiredRole="admin">
+                <AdminSettings />
               </ProtectedRoute>
             }
           />

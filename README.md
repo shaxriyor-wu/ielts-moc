@@ -1,21 +1,39 @@
-# IELTS Computer-Delivered Mock Test Platform
+# IELTS Computer-Delivered Mock Test Platform with DeepSeek AI
 
-A production-ready frontend application for IELTS Computer-Delivered (CD) mock tests. Built with React, Vite, Tailwind CSS, and modern web technologies.
+A full-stack production-ready platform for IELTS Computer-Delivered (CD) mock tests with **DeepSeek AI integration** for Writing evaluation. Built with React (Vite) frontend and Flask (Python) backend.
 
 ## 🚀 Features
 
-- **Complete Test Interface**: Full IELTS test experience with Listening, Reading, Writing, and Speaking sections
-- **Real-time Timer**: Countdown timer with auto-submit functionality
-- **Auto-save**: Automatic saving of progress every 30 seconds
-- **Auto-grading**: Automatic scoring for Listening and Reading sections
-- **Manual Grading UI**: Admin interface for grading Writing and Speaking
-- **Responsive Design**: Mobile-first, fully responsive interface
-- **Accessibility**: WCAG AA compliant with keyboard navigation and screen reader support
-- **Mock API**: Works offline with Mock Service Worker (MSW)
-- **Production Ready**: Includes tests, CI/CD, and deployment configurations
+### User Panel
+- ✅ **Complete Test Interface**: Full IELTS test experience with Listening, Reading, Writing, and Speaking sections
+- ✅ **Real-time Timer**: Countdown timer with auto-submit functionality
+- ✅ **Auto-save**: Automatic saving of progress every 30 seconds
+- ✅ **Auto-grading**: Automatic scoring for Listening and Reading sections
+- ✅ **🤖 DeepSeek AI Writing Evaluation**: Real-time AI-powered writing assessment with detailed feedback
+- ✅ **Speaking Recording**: Browser-based audio recording for Speaking section
+- ✅ **Results Dashboard**: Detailed breakdown with charts and statistics
+- ✅ **Profile Management**: Edit personal information
+
+### Admin Panel
+- ✅ **Dashboard**: Statistics, charts, and analytics (Recharts)
+- ✅ **User Management**: Search, filter, edit, block, delete users
+- ✅ **Test Management**: Create, edit, activate/deactivate, duplicate, export tests
+- ✅ **Results & Analytics**: View all test results with detailed statistics
+- ✅ **AI Evaluation Monitor**: Track all DeepSeek AI evaluations
+- ✅ **Speaking Review**: Review and grade speaking submissions
+- ✅ **CSV Export**: Export results and user data
+
+### Technical
+- ✅ **Full-Stack**: React frontend + Flask backend
+- ✅ **JWT Authentication**: Secure token-based auth
+- ✅ **Responsive Design**: Mobile-first, fully responsive interface
+- ✅ **Accessibility**: WCAG AA compliant
+- ✅ **Mock API**: Works offline with Mock Service Worker (MSW)
+- ✅ **Production Ready**: Includes tests, CI/CD, and deployment configs
 
 ## 📋 Tech Stack
 
+### Frontend
 - **React 18** - UI library
 - **Vite** - Build tool and dev server
 - **Tailwind CSS** - Utility-first CSS framework
@@ -23,32 +41,44 @@ A production-ready frontend application for IELTS Computer-Delivered (CD) mock t
 - **React Router** - Client-side routing
 - **Axios** - HTTP client
 - **React Quill** - Rich text editor
+- **Recharts** - Charts and graphs
 - **MSW** - Mock Service Worker for API mocking
 - **Jest + React Testing Library** - Unit testing
 - **Playwright** - E2E testing
 
-## 🛠️ Installation
+### Backend
+- **Flask** - Python web framework
+- **Flask-JWT-Extended** - JWT authentication
+- **Flask-CORS** - Cross-origin resource sharing
+- **Python Requests** - HTTP client for DeepSeek API
+- **JSON File Storage** - Simple database (upgradeable to SQLite/PostgreSQL)
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd IELTS
-   ```
+## 🛠️ Quick Setup
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+### Backend (Flask)
+```bash
+cd server
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env and add DEEPSEEK_API_KEY
+python app.py
+```
 
-3. **Initialize MSW (Mock Service Worker)**
-   ```bash
-   npx msw init public/ --save
-   ```
+### Frontend (React)
+```bash
+# From project root
+npm install
+npm run dev
+```
 
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
+**See `SETUP_GUIDE.md` for detailed instructions.**
+
+## 📚 Documentation
+
+- **`SETUP_GUIDE.md`** - Complete setup instructions
+- **`README_FULL_STACK.md`** - Full stack documentation
+- **`server/README.md`** - Backend API documentation
+- **`API_CONTRACT.md`** - API endpoint specifications
 
    The app will be available at `http://localhost:3000`
 

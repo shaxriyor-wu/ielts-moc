@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { adminAPI, resultsAPI, testsAPI } from '../utils/api'
+import AdminSidebar from '../components/AdminSidebar'
+import AdminUsers from './AdminUsers'
+import AdminDashboard from './AdminDashboard'
+import AdminTestManagement from './AdminTestManagement'
+import AdminGrading from './AdminGrading'
+import AdminAnalytics from './AdminAnalytics'
+import AdminMessages from './AdminMessages'
+import AdminSettings from './AdminSettings'
 import { motion } from 'framer-motion'
-import { Upload, Download, FileText, Users, Award, Plus, Play, Pause } from 'lucide-react'
+import { Upload, Download, FileText, Users, Award, Plus, Play, Pause, Menu, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function Admin() {
+  const location = useLocation()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [attempts, setAttempts] = useState([])
   const [selectedAttempt, setSelectedAttempt] = useState(null)
   const [gradingScores, setGradingScores] = useState({ writing: '', speaking: '' })
@@ -96,18 +106,79 @@ export default function Admin() {
     )
   }
 
-  return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
-          <p className="text-gray-600">Manage tests and grade submissions</p>
+  // If on dashboard, show dashboard component
+  if (location.pathname === '/admin' || location.pathname === '/admin/') {
+    return <AdminDashboard />
+  }
+
+  // If on users page, show users component
+  if (location.pathname === '/admin/users') {
+    return (
+      <div className="flex min-h-screen">
+        <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+        <div className="flex-1 lg:ml-64">
+          <div className="p-4 lg:hidden">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
+          <AdminUsers />
         </div>
-        <Link to="/admin/create-test" className="btn-primary flex items-center space-x-2">
-          <Plus className="h-5 w-5" />
-          <span>Yangi Test Yaratish</span>
-        </Link>
       </div>
+    )
+  }
+
+  // If on tests page, show test management component
+  if (location.pathname === '/admin/tests') {
+    return <AdminTestManagement />
+  }
+
+  // If on grading page
+  if (location.pathname === '/admin/grading') {
+    return <AdminGrading />
+  }
+
+  // If on analytics page
+  if (location.pathname === '/admin/analytics') {
+    return <AdminAnalytics />
+  }
+
+  // If on messages page
+  if (location.pathname === '/admin/messages') {
+    return <AdminMessages />
+  }
+
+  // If on settings page
+  if (location.pathname === '/admin/settings') {
+    return <AdminSettings />
+  }
+
+  return (
+    <div className="flex min-h-screen">
+      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="flex-1 lg:ml-64">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8 flex items-center justify-between">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="p-2 hover:bg-gray-100 rounded-lg lg:hidden"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h1>
+                <p className="text-gray-600">Manage tests and grade submissions</p>
+              </div>
+            </div>
+            <Link to="/admin/create-test" className="btn-primary flex items-center space-x-2">
+              <Plus className="h-5 w-5" />
+              <span>Yangi Test Yaratish</span>
+            </Link>
+          </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content */}
@@ -429,6 +500,8 @@ export default function Admin() {
               <p>Select an attempt to grade</p>
             </motion.div>
           )}
+        </div>
+      </div>
         </div>
       </div>
     </div>

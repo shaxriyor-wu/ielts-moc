@@ -81,6 +81,12 @@ export function AuthProvider({ children }) {
     toast.success('Logged out successfully')
   }
 
+  const updateUser = (updatedData) => {
+    if (user) {
+      setUser({ ...user, ...updatedData })
+    }
+  }
+
   const value = {
     user,
     loading,
@@ -88,6 +94,7 @@ export function AuthProvider({ children }) {
     register,
     logout,
     getProfile: loadProfile,
+    updateUser,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

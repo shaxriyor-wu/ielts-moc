@@ -448,5 +448,40 @@ export const adminAPI = {
   },
 }
 
+export const aiAPI = {
+  evaluateWriting: async (text, taskNumber = 1) => {
+    if (USE_MOCK) {
+      try {
+        const response = await api.post('/api/evaluate-writing', { text, task: taskNumber })
+        return response.data
+      } catch (error) {
+        if (error.response?.status === 404 || error.code === 'ERR_NETWORK' || !error.response) {
+          // Mock evaluation for development
+          return {
+            success: true,
+            scores: {
+              TaskResponse: 7.0,
+              CoherenceCohesion: 6.5,
+              LexicalResource: 7.0,
+              GrammarRangeAccuracy: 6.5,
+              OverallBand: 6.75,
+              Feedback: 'Good structure and vocabulary. However, there are some grammatical errors and the coherence could be improved. Try to use more linking words and complex sentence structures.',
+            },
+            evaluationId: `eval-${Date.now()}`,
+          }
+        }
+        throw error
+      }
+    } else {
+      const response = await api.post('/api/evaluate-writing', { text, task: taskNumber })
+      return response.data
+    }
+  },
+  getWritingResults: async () => {
+    const response = await api.get('/api/writing-results')
+    return response.data
+  },
+}
+
 export default api
 

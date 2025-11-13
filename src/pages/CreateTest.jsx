@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import AdminSidebar from '../components/AdminSidebar'
 import { motion } from 'framer-motion'
-import { Save, Upload, FileText, Headphones, PenTool, CheckCircle } from 'lucide-react'
+import { Save, Upload, FileText, Headphones, PenTool, CheckCircle, Menu } from 'lucide-react'
 import toast from 'react-hot-toast'
 
 export default function CreateTest() {
   const navigate = useNavigate()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [step, setStep] = useState(1)
   const [testData, setTestData] = useState({
     title: '',
@@ -69,11 +71,22 @@ export default function CreateTest() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Yangi Test Yaratish</h1>
-        <p className="text-gray-600">Test ma'lumotlarini kiriting</p>
-      </div>
+    <div className="flex min-h-screen">
+      <AdminSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      <div className="flex-1 lg:ml-64">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8 flex items-center space-x-4">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 hover:bg-gray-100 rounded-lg lg:hidden"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Yangi Test Yaratish</h1>
+              <p className="text-gray-600">Test ma'lumotlarini kiriting</p>
+            </div>
+          </div>
 
       {/* Progress Steps */}
       <div className="mb-8">
@@ -459,6 +472,8 @@ export default function CreateTest() {
           </motion.div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   )
 }

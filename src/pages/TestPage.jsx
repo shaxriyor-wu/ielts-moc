@@ -380,6 +380,46 @@ function ReadingSection({ passages, answers, onChange, getQuestionIndex }) {
 
 // Writing Section Component
 function WritingSection({ tasks, answers, onChange }) {
+  const [evaluatingTask1, setEvaluatingTask1] = useState(false)
+  const [evaluatingTask2, setEvaluatingTask2] = useState(false)
+  const [task1Result, setTask1Result] = useState(null)
+  const [task2Result, setTask2Result] = useState(null)
+
+  const handleEvaluate = async (taskNumber, text) => {
+    if (!text || text.replace(/<[^>]*>/g, '').trim().length < 50) {
+      toast.error('Please write at least 50 words before evaluating')
+      return
+    }
+
+    if (taskNumber === 1) {
+      setEvaluatingTask1(true)
+    } else {
+      setEvaluatingTask2(true)
+    }
+
+    try {
+      const { aiAPI } = await import('../utils/api')
+      const result = await aiAPI.evaluateWriting(text, taskNumber)
+      
+      if (taskNumber === 1) {
+        setTask1Result(result)
+      } else {
+        setTask2Result(result)
+      }
+      
+      toast.success('AI evaluation completed!')
+    } catch (error) {
+      console.error('Evaluation error:', error)
+      toast.error('Failed to evaluate. Please try again.')
+    } finally {
+      if (taskNumber === 1) {
+        setEvaluatingTask1(false)
+      } else {
+        setEvaluatingTask2(false)
+      }
+    }
+  }
+
   return (
     <div className="space-y-6">
       <motion.div
@@ -395,6 +435,28 @@ function WritingSection({ tasks, answers, onChange }) {
           minWords={150}
           placeholder="Write your response here (minimum 150 words)..."
         />
+        <div className="mt-4 flex items-center justify-between">
+          <button
+            onClick={() => handleEvaluate(1, answers.task1)}
+            disabled={evaluatingTask1 || !answers.task1}
+            className="btn-primary flex items-center space-x-2 disabled:opacity-50"
+          >
+            {evaluatingTask1 ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                <span>Evaluating with AI...</span>
+              </>
+            ) : (
+              <>
+                <span>🤖</span>
+                <span>Check with DeepSeek AI</span>
+              </>
+            )}
+          </button>
+        </div>
+        {task1Result && (
+          <WritingEvaluationResult result={task1Result} taskNumber={1} />
+        )}
       </motion.div>
 
       <motion.div
@@ -410,7 +472,109 @@ function WritingSection({ tasks, answers, onChange }) {
           minWords={250}
           placeholder="Write your essay here (minimum 250 words)..."
         />
+        <div className="mt-4 flex items-center justify-between">
+          <button
+            onClick={() => handleEvaluate(2, answers.task2)}
+            disabled={evaluatingTask2 || !answers.task2}
+            className="btn-primary flex items-center space-x-2 disabled:opacity-50"
+          >
+            {evaluatingTask2 ? (
+              <>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
+                <span>Evaluating with AI...</span>
+              </>
+            ) : (
+              <>
+                <span>🤖</span>
+                <span>Check with DeepSeek AI</span>
+              </>
+            )}
+          </button>
+        </div>
+        {task2Result && (
+          <WritingEvaluationResult result={task2Result} taskNumber={2} />
+        )}
       </motion.div>
+    </div>
+  )
+}
+
+// Writing Evaluation Result Component
+function WritingEvaluationResult({ result, taskNumber }) {
+  const scores = result.scores || {}
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="mt-6 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200"
+    >
+      <div className="flex items-center space-x-2 mb-4">
+        <span className="text-2xl">🤖</span>
+        <h3 className="text-xl font-bold text-gray-900">AI Evaluation - Task {taskNumber}</h3>
+      </div>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <ScoreCard
+          label="Task Response"
+          score={scores.TaskResponse}
+          color="blue"
+        />
+        <ScoreCard
+          label="Coherence & Cohesion"
+          score={scores.CoherenceCohesion}
+          color="green"
+        />
+        <ScoreCard
+          label="Lexical Resource"
+          score={scores.LexicalResource}
+          color="yellow"
+        />
+        <ScoreCard
+          label="Grammar"
+          score={scores.GrammarRangeAccuracy}
+          color="purple"
+        />
+      </div>
+      
+      <div className="mb-4 p-4 bg-white rounded-lg">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-lg font-bold text-gray-900">Overall Band Score</span>
+          <span className="text-3xl font-bold text-primary-500">
+            {scores.OverallBand?.toFixed(1) || 'N/A'}
+          </span>
+        </div>
+        <div className="w-full bg-gray-200 rounded-full h-3">
+          <div
+            className="bg-primary-500 h-3 rounded-full transition-all duration-500"
+            style={{ width: `${((scores.OverallBand || 0) / 9) * 100}%` }}
+          />
+        </div>
+      </div>
+      
+      {scores.Feedback && (
+        <div className="p-4 bg-white rounded-lg">
+          <h4 className="font-bold text-gray-900 mb-2">Feedback:</h4>
+          <p className="text-gray-700 leading-relaxed">{scores.Feedback}</p>
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+// Score Card Component
+function ScoreCard({ label, score, color }) {
+  const colorClasses = {
+    blue: 'bg-blue-100 text-blue-700 border-blue-300',
+    green: 'bg-green-100 text-green-700 border-green-300',
+    yellow: 'bg-yellow-100 text-yellow-700 border-yellow-300',
+    purple: 'bg-purple-100 text-purple-700 border-purple-300',
+  }
+  
+  return (
+    <div className={`p-4 rounded-lg border-2 ${colorClasses[color]}`}>
+      <p className="text-xs font-medium mb-1">{label}</p>
+      <p className="text-2xl font-bold">{score?.toFixed(1) || 'N/A'}</p>
     </div>
   )
 }
