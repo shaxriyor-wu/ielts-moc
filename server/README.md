@@ -1,69 +1,68 @@
-# IELTS CD Mock Platform - Backend Server
+# IELTS Exam Platform - Backend
 
-Flask backend server for IELTS Computer-Delivered Mock Test Platform with DeepSeek AI integration.
+Node.js/Express backend server.
+
+## Default Owner Credentials
+
+**Login:** `owner`  
+**Password:** `owner123`
+
+Configure in `.env` file:
+```
+OWNER_EMAIL=owner@example.com
+OWNER_PASSWORD=owner123
+```
+
+Note: You can login with either `owner` (login) or `owner@example.com` (email)
 
 ## Setup
 
 1. Install dependencies:
 ```bash
-pip install -r requirements.txt
+npm install
 ```
 
-2. Create `.env` file:
+2. Copy environment file:
 ```bash
 cp .env.example .env
 ```
 
-3. Add your DeepSeek API key to `.env`:
-```
-DEEPSEEK_API_KEY=your-api-key-here
-JWT_SECRET_KEY=your-secret-key
-```
-
-4. Run the server:
+3. Initialize database:
 ```bash
-python app.py
+npm run init-db
 ```
 
-Server will run on `http://localhost:5000`
+4. Start server:
+```bash
+npm start
+```
+
+For development with auto-reload:
+```bash
+npm run dev
+```
 
 ## API Endpoints
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login
-- `GET /api/auth/profile` - Get user profile (requires JWT)
-
-### Tests
-- `GET /api/tests` - Get all published tests
-- `GET /api/tests/<id>` - Get test by ID
-- `POST /api/tests/<id>/submit` - Submit test answers
-
-### Results
-- `GET /api/results` - Get user's results
-- `GET /api/results/<attempt_id>` - Get specific result
-
-### AI Evaluation
-- `POST /api/evaluate-writing` - Evaluate writing with DeepSeek AI
-- `GET /api/writing-results` - Get writing evaluation history
+### Owner
+- `POST /api/owner/login`
+- `POST /api/owner/admins`
+- `GET /api/owner/admins`
+- `DELETE /api/owner/admins/:id`
+- `GET /api/owner/stats`
 
 ### Admin
-- `GET /api/admin/users` - Get all users (admin only)
-- `GET /api/admin/export` - Export results as CSV (admin only)
-- `POST /api/admin/speaking/<attempt_id>` - Review speaking (admin only)
+- `POST /api/admin/login`
+- `POST /api/admin/register` (for student registration)
+- `POST /api/admin/tests`
+- `GET /api/admin/tests`
+- `POST /api/admin/test-keys`
 
-## Database
-
-Uses JSON files in `data/` directory:
-- `users.json` - User accounts
-- `tests.json` - Test definitions
-- `results.json` - Test results
-- `writing_results.json` - AI writing evaluations
-
-## DeepSeek AI Integration
-
-The platform uses DeepSeek API for automated IELTS Writing evaluation. Make sure to:
-1. Get API key from https://platform.deepseek.com
-2. Add it to `.env` file
-3. The AI will evaluate writing tasks and return band scores
+### Student
+- `POST /api/student/access`
+- `GET /api/student/test`
+- `POST /api/student/answers/reading`
+- `POST /api/student/submit`
+- `GET /api/student/profile`
+- `GET /api/student/stats`
 
