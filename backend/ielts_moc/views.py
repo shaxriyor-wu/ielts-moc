@@ -30,31 +30,32 @@ def react_app_view(request):
     """
     Serve React app index.html for all non-API routes (SPA routing).
     Checks multiple possible locations for the React build.
+    Prefer the collected static index to ensure correct /static/ asset URLs.
     """
-    # Possible locations for React build
-    possible_paths = [
+    # Prefer the collected static index (served with WhiteNoise at /static/)
+    preferred_static_index = os.path.join(settings.STATIC_ROOT, 'index.html') if settings.STATIC_ROOT else None
+
+    # Other possible locations for React build
+    fallback_paths = [
+        os.path.join(settings.BASE_DIR, 'staticfiles', 'index.html'),  # Default collectstatic output
         os.path.join(settings.BASE_DIR.parent, 'client', 'dist', 'index.html'),  # Original build location
-        os.path.join(settings.BASE_DIR, 'staticfiles', 'index.html'),  # After collectstatic
-        os.path.join(settings.STATIC_ROOT, 'index.html') if settings.STATIC_ROOT else None,  # Static root
     ]
-    
-    # Filter out None values
-    possible_paths = [path for path in possible_paths if path]
-    
-    # Try to find and serve the React app
-    for frontend_build_path in possible_paths:
-        if os.path.exists(frontend_build_path):
+
+    # Build ordered list (preferred first)
+    possible_paths = ([preferred_static_index] if preferred_static_index else []) + fallback_paths
+
+    for path in possible_paths:
+        if path and os.path.exists(path):
             try:
-                with open(frontend_build_path, 'r', encoding='utf-8') as f:
+                with open(path, 'r', encoding='utf-8') as f:
                     return HttpResponse(f.read(), content_type='text/html')
-            except Exception as e:
+            except Exception:
                 continue
-    
-    # If not found, return error message
+
     return HttpResponse(
         '<h1>Frontend build not found. Please build the React app first.</h1>'
         '<p>Expected locations:</p><ul>'
-        + ''.join([f'<li>{path}</li>' for path in possible_paths])
+        + ''.join([f'<li>{p}</li>' for p in possible_paths if p])
         + '</ul>',
         status=404
     )
