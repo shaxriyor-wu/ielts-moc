@@ -1,6 +1,23 @@
 # 🚀 Render.com Quick Start Guide
 
-## Tezkor Deploy Qadamlari
+## ⚡ Avtomatik Deploy (Tavsiya etiladi)
+
+Agar `render.yaml` fayli repository da bo'lsa, Render avtomatik ravishda barcha servicelarni deploy qiladi:
+
+1. Render Dashboard → **New** → **Blueprint**
+2. GitHub repository ni ulang
+3. **Apply** tugmasini bosing
+4. Render avtomatik ravishda:
+   - Database yaratadi
+   - Backend deploy qiladi
+   - Frontend deploy qiladi
+   - Environment variable'larni sozlaydi
+
+**Muhim**: Frontend deploy bo'lgandan so'ng, backend da CORS sozlamalarini qo'lda qo'shing (4-bosqichga qarang).
+
+---
+
+## 📋 Qo'lda Deploy Qadamlari
 
 ### 1️⃣ Database yaratish (5 daqiqa)
 
@@ -88,9 +105,29 @@ FRONTEND_URL=https://ielts-moc-frontend.onrender.com
 
 ## 🔧 Muammolar?
 
-- **Backend 500 error**: Database migration tekshiring
-- **CORS error**: `CORS_ALLOWED_ORIGINS` ni tekshiring
-- **Frontend API error**: `VITE_API_URL` ni tekshiring
+### Backend 404 Error
+- ✅ Root URL (`/`) endi ishlaydi - API ma'lumotlarini ko'rsatadi
+- Agar boshqa URL lar ishlamasa, URL patterns ni tekshiring
+
+### Backend 500 Error
+- Database migration tekshiring: `python manage.py migrate`
+- Environment variable'larni tekshiring (SECRET_KEY, DATABASE_URL)
+- Logs ni ko'rib chiqing: Render Dashboard → Backend Service → Logs
+
+### CORS Error
+- Backend da `CORS_ALLOWED_ORIGINS` ni tekshiring
+- Frontend URL ni to'g'ri qo'shing: `https://ielts-moc-frontend.onrender.com`
+- `FRONTEND_URL` environment variable ni ham qo'shing
+
+### Frontend API Error
+- `VITE_API_URL` ni tekshiring (build vaqtida o'rnatiladi)
+- Backend URL to'g'ri ishlayotganini tekshiring
+- Browser Console da xatolarni ko'ring
+
+### Frontend Blank Page
+- Build loglarni tekshiring
+- `client/dist` papkasi yaratilganini tekshiring
+- Browser Console da JavaScript xatolarini ko'ring
 
 ## 📝 Eslatma
 
