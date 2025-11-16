@@ -85,6 +85,26 @@ def logout(request):
         return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register(request):
+    """Student registration endpoint."""
+    from .serializers import RegisterSerializer
+    
+    serializer = RegisterSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+        
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'accessToken': str(refresh.access_token),
+            'refreshToken': str(refresh),
+            'user': UserSerializer(user).data,
+            'role': user.role
+        }, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def current_user(request):
