@@ -3,15 +3,32 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from accounts.models import CustomUser
 from student_portal.models import StudentTest, TestResult
 from .services import grade_test
+
+
+def check_is_admin(user):
+    """Helper function to check if user is admin."""
+    if hasattr(user, 'is_admin'):
+        return user.is_admin()
+    elif hasattr(user, 'role'):
+        return user.role == 'admin'
+    elif hasattr(user, 'is_authenticated') and user.is_authenticated:
+        # Reload user from database to ensure we have latest role
+        try:
+            db_user = CustomUser.objects.get(id=user.id)
+            return db_user.role == 'admin'
+        except CustomUser.DoesNotExist:
+            return False
+    return False
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def grade_student_test(request, test_id):
     """Grade a submitted test."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN

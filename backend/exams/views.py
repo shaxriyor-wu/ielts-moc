@@ -12,10 +12,26 @@ from .serializers import (
 )
 
 
+def check_is_admin(user):
+    """Helper function to check if user is admin."""
+    if hasattr(user, 'is_admin'):
+        return user.is_admin()
+    elif hasattr(user, 'role'):
+        return user.role == 'admin'
+    elif hasattr(user, 'is_authenticated') and user.is_authenticated:
+        # Reload user from database to ensure we have latest role
+        try:
+            db_user = CustomUser.objects.get(id=user.id)
+            return db_user.role == 'admin'
+        except CustomUser.DoesNotExist:
+            return False
+    return False
+
+
 def require_admin(view_func):
     """Decorator to require admin role."""
     def wrapper(request, *args, **kwargs):
-        if not request.user.is_admin():
+        if not check_is_admin(request.user):
             return Response(
                 {'error': 'Admin access required.'},
                 status=status.HTTP_403_FORBIDDEN
@@ -28,7 +44,7 @@ def require_admin(view_func):
 @permission_classes([IsAuthenticated])
 def variant_list_create(request):
     """List all variants (GET) or create a new variant (POST)."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -54,7 +70,7 @@ def variant_list_create(request):
 @permission_classes([IsAuthenticated])
 def variant_detail(request, variant_id):
     """Get (GET), update (PUT), or delete (DELETE) variant."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -82,7 +98,7 @@ def variant_detail(request, variant_id):
 @permission_classes([IsAuthenticated])
 def upload_test_file(request):
     """Upload test file (reading, listening, or writing)."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -128,7 +144,7 @@ def upload_test_file(request):
 @permission_classes([IsAuthenticated])
 def create_answers(request):
     """Create or update answers for a variant."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -163,7 +179,7 @@ def create_answers(request):
 @permission_classes([IsAuthenticated])
 def get_stats(request):
     """Get admin statistics."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -188,7 +204,7 @@ def get_stats(request):
 @permission_classes([IsAuthenticated])
 def generate_code(request, variant_id):
     """Generate a new unique 6-digit code for a variant."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -212,7 +228,7 @@ def generate_code(request, variant_id):
 @permission_classes([IsAuthenticated])
 def start_mock(request, variant_id):
     """Activate a variant and assign variants to waiting students."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
@@ -285,7 +301,7 @@ def start_mock(request, variant_id):
 @permission_classes([IsAuthenticated])
 def stop_mock(request, variant_id):
     """Deactivate a variant."""
-    if not request.user.is_admin():
+    if not check_is_admin(request.user):
         return Response(
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
