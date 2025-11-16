@@ -31,6 +31,7 @@ def react_app_view(request):
     Serve React app index.html for all non-API routes (SPA routing).
     Checks multiple possible locations for the React build.
     Prefer the collected static index to ensure correct /static/ asset URLs.
+    Also performs a safe rewrite from /assets → /static/assets if needed.
     """
     # Prefer the collected static index (served with WhiteNoise at /static/)
     preferred_static_index = os.path.join(settings.STATIC_ROOT, 'index.html') if settings.STATIC_ROOT else None
@@ -48,7 +49,14 @@ def react_app_view(request):
         if path and os.path.exists(path):
             try:
                 with open(path, 'r', encoding='utf-8') as f:
-                    return HttpResponse(f.read(), content_type='text/html')
+                    html = f.read()
+                # If asset paths point to /assets, rewrite to /static/assets
+                if '"/assets/' in html or "'/assets/" in html or '="assets/' in html or "='assets/" in html:
+                    html = html.replace('"/assets/', '"/static/assets/')
+                    html = html.replace("'/assets/", "'/static/assets/")
+                    html = html.replace('="assets/', '="/static/assets/')
+                    html = html.replace("='assets/", "='/static/assets/")
+                return HttpResponse(html, content_type='text/html')
             except Exception:
                 continue
 
