@@ -43,8 +43,8 @@ def enter_test_code(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    # Check if variant with this code exists and is active
-    variant = Variant.objects.filter(code=test_code, is_active=True).first()
+    # Check if variant with this code exists (doesn't need to be active yet)
+    variant = Variant.objects.filter(code=test_code).first()
     
     if not variant:
         return Response(
@@ -67,6 +67,39 @@ def enter_test_code(request):
             'queue_entry_id': queue_entry.id,
             'assigned_variant_id': queue_entry.assigned_variant_id if queue_entry.assigned_variant else None,
         })
+    
+    # If variant is already active, assign immediately
+    if variant.is_active and queue_entry.status == 'waiting':
+        from student_portal.models import StudentTest
+        import random
+        
+        # Get all active variants
+        active_variants = list(Variant.objects.filter(is_active=True))
+        
+        if active_variants:
+            # Randomly assign a variant
+            assigned_variant = random.choice(active_variants)
+            
+            # Create StudentTest
+            StudentTest.objects.get_or_create(
+                student=request.user,
+                variant=assigned_variant,
+                defaults={'status': 'in_progress'}
+            )
+            
+            # Update queue entry
+            queue_entry.assigned_variant = assigned_variant
+            queue_entry.status = 'preparation'
+            queue_entry.assigned_at = timezone.now()
+            queue_entry.preparation_started_at = timezone.now()
+            queue_entry.save()
+            
+            return Response({
+                'status': 'preparation',
+                'message': 'Test assigned. Preparation time starting.',
+                'queue_entry_id': queue_entry.id,
+                'assigned_variant_id': assigned_variant.id,
+            })
     
     return Response({
         'status': 'waiting',
