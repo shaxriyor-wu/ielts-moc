@@ -9,18 +9,45 @@ from .services import grade_test
 
 
 def check_is_admin(user):
-    """Helper function to check if user is admin."""
-    if hasattr(user, 'is_admin'):
-        return user.is_admin()
-    elif hasattr(user, 'role'):
-        return user.role == 'admin'
-    elif hasattr(user, 'is_authenticated') and user.is_authenticated:
-        # Reload user from database to ensure we have latest role
-        try:
-            db_user = CustomUser.objects.get(id=user.id)
-            return db_user.role == 'admin'
-        except CustomUser.DoesNotExist:
+    """Helper function to check if user is admin or owner."""
+    if not user:
+        return False
+    
+    # Check if user is authenticated (is_authenticated is a property, not attribute)
+    try:
+        if not getattr(user, 'is_authenticated', False):
             return False
+    except (AttributeError, TypeError):
+        return False
+    
+    # First try to use the method if available
+    try:
+        if hasattr(user, 'is_admin') and callable(user.is_admin):
+            if user.is_admin():
+                return True
+        
+        if hasattr(user, 'is_owner') and callable(user.is_owner):
+            if user.is_owner():
+                return True  # Owners can access admin endpoints
+    except (AttributeError, TypeError):
+        pass
+    
+    # Check role attribute directly
+    try:
+        if hasattr(user, 'role') and user.role in ['admin', 'owner']:
+            return True
+    except (AttributeError, TypeError):
+        pass
+    
+    # Reload user from database to ensure we have latest role
+    try:
+        if hasattr(user, 'id') and user.id:
+            db_user = CustomUser.objects.get(id=user.id)
+            if db_user.role in ['admin', 'owner']:
+                return True
+    except (CustomUser.DoesNotExist, AttributeError, ValueError, TypeError):
+        pass
+    
     return False
 
 
