@@ -32,9 +32,11 @@ Start Command: gunicorn ielts_moc.wsgi:application --bind 0.0.0.0:$PORT
 ```
 SECRET_KEY=<random-string-generate-qiling>
 DEBUG=False
-DATABASE_URL=<database-connection-string>
+DATABASE_URL=<internal-database-url-nusxalang>
 PYTHON_VERSION=3.11.0
 ```
+
+**Muhim**: Database Info sahifasida **Internal Database URL** ni nusxalang (External emas!)
 
 5. **Create Web Service**
 
