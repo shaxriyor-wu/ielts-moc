@@ -16,5 +16,6 @@ export const HIGHLIGHT_COLORS = {
   GREEN: 'green',
 };
 
-export const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+// Use relative path for production (same domain) or env variable for development
+export const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:8000/api');
 

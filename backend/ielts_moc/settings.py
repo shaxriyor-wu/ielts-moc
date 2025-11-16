@@ -148,6 +148,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# React frontend build directory
+FRONTEND_BUILD_DIR = BASE_DIR.parent / 'client' / 'dist'
+
+# Additional static files directories (React build)
+STATICFILES_DIRS = [
+    FRONTEND_BUILD_DIR,  # React build output
+]
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files
@@ -185,6 +194,8 @@ SIMPLE_JWT = {
 }
 
 # CORS Settings
+# Since frontend is served from same domain, CORS is less critical
+# But we keep it for development and API access
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",
@@ -199,11 +210,17 @@ if cors_origins_env:
     additional_origins = [origin.strip() for origin in cors_origins_env.split(',') if origin.strip()]
     CORS_ALLOWED_ORIGINS.extend(additional_origins)
 
-# Add Render frontend URL if available
+# Add Render frontend URL if available (for separate frontend service)
 if os.getenv('FRONTEND_URL'):
     frontend_url = os.getenv('FRONTEND_URL').strip()
     if frontend_url and frontend_url not in CORS_ALLOWED_ORIGINS:
         CORS_ALLOWED_ORIGINS.append(frontend_url)
+
+# Add Render service URL to CORS (for same-origin requests)
+if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
+    render_url = f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"
+    if render_url not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(render_url)
 
 CORS_ALLOW_CREDENTIALS = True
 

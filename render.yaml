@@ -1,41 +1,40 @@
 services:
-  # Django Backend API
+  # Full-Stack Web Application (Django Backend + React Frontend)
   - type: web
-    name: ielts-moc-backend
+    name: ielts-moc-app
     env: python
     region: frankfurt
     plan: free
-    buildCommand: pip install -r backend/requirements.txt && cd backend && python manage.py collectstatic --noinput && python manage.py migrate && python manage.py init_users
+    buildCommand: |
+      # Install Node.js dependencies and build React frontend
+      cd client && npm install && npm run build && cd ..
+      # Install Python dependencies
+      pip install -r backend/requirements.txt
+      # Collect static files (including React build)
+      cd backend && python manage.py collectstatic --noinput
+      # Run database migrations
+      python manage.py migrate
+      # Initialize default users
+      python manage.py init_users
     startCommand: cd backend && gunicorn ielts_moc.wsgi:application --bind 0.0.0.0:$PORT
     healthCheckPath: /
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.0
+      - key: NODE_VERSION
+        value: 18.17.0
       - key: SECRET_KEY
         generateValue: true
       - key: DEBUG
-        value: False
+        value: "False"
       - key: DATABASE_URL
         fromDatabase:
           name: ielts-moc-db
           property: internalConnectionString
+      - key: ALLOWED_HOSTS
+        sync: false
       - key: CORS_ALLOWED_ORIGINS
         sync: false
-
-  # React Frontend (Static Site)
-  - type: static
-    name: ielts-moc-frontend
-    buildCommand: cd client && npm install && npm run build
-    staticPublishPath: ./client/dist
-    envVars:
-      - key: NODE_VERSION
-        value: 18.17.0
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: ielts-moc-backend
-          property: host
-          format: https://{{host}}/api
       - key: NODE_ENV
         value: production
 

@@ -18,4 +18,10 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    // Use relative paths for production (served from same domain)
+    base: './',
+  },
 });
