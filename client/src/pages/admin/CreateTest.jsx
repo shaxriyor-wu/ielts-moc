@@ -12,7 +12,7 @@ import Progress from '../../components/Progress';
 import { showToast } from '../../components/Toast';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { ChevronLeft, ChevronRight, Save } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Save, Upload, FileText, X } from 'lucide-react';
 
 const STEPS = [
   { id: 1, name: 'Basic Info' },
@@ -54,6 +54,10 @@ const CreateTest = () => {
       writing: {},
     },
   });
+  const [readingAnswerMode, setReadingAnswerMode] = useState('file'); // 'file' or 'text'
+  const [listeningAnswerMode, setListeningAnswerMode] = useState('file'); // 'file' or 'text'
+  const [readingAnswersText, setReadingAnswersText] = useState('');
+  const [listeningAnswersText, setListeningAnswersText] = useState('');
 
   const handleFileUpload = async (file, section, type) => {
     try {

@@ -3,12 +3,18 @@ import api from '../utils/api';
 export const studentApi = {
   login: (email, password) => api.post('/student/login', { email, password }),
   register: (data) => api.post('/student/register', data),
+  // Test code entry and queue
+  enterTestCode: (testCode) => api.post('/student/enter-test-code', { testCode }),
+  checkQueueStatus: () => api.get('/student/queue-status'),
+  startTest: () => api.post('/student/start-test'),
+  // Legacy endpoints
   accessTest: (testKey, fullName) => api.post('/student/access', { testKey, fullName }),
   getTest: () => api.get('/student/test'),
   getAttempt: () => api.get('/student/attempt'),
   saveReadingAnswers: (answers) => api.post('/student/answers/reading', { answers }),
   saveListeningAnswers: (answers) => api.post('/student/answers/listening', { answers }),
   saveWriting: (content) => api.post('/student/answers/writing', { content }),
+  saveWritingTask: (taskNumber, content) => api.post('/student/answers/writing-task', { task_number: taskNumber, content }),
   saveHighlights: (highlights) => api.post('/student/highlights', { highlights }),
   submitTest: () => api.post('/student/submit'),
   getProfile: () => api.get('/student/profile'),

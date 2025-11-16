@@ -34,6 +34,7 @@ import ReadingAnswerSheet from '../pages/student/ReadingAnswerSheet';
 import ListeningAnswerSheet from '../pages/student/ListeningAnswerSheet';
 import AnswerSheet from '../pages/student/AnswerSheet';
 import Finish from '../pages/student/Finish';
+import Results from '../pages/student/Results';
 import StudentLayout from '../layouts/StudentLayout';
 import StudentDashboard from '../pages/student/StudentDashboard';
 import StudentProfile from '../pages/student/StudentProfile';
@@ -151,6 +152,10 @@ const AppRouter = () => {
         <Route path="dashboard" element={<StudentDashboard />} />
         <Route path="profile" element={<StudentProfile />} />
         <Route path="tests" element={<StudentTests />} />
+        <Route path="listening" element={<ListeningSection />} />
+        <Route path="reading" element={<ReadingSection />} />
+        <Route path="writing" element={<WritingSection />} />
+        <Route path="results" element={<Results />} />
       </Route>
       <Route
         path="/exam/:key"

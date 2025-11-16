@@ -16,17 +16,35 @@ export const ExamProvider = ({ children }) => {
   const [timeRemaining, setTimeRemaining] = useState(0);
 
   const updateAnswer = (section, questionId, value) => {
-    setAnswers(prev => ({
-      ...prev,
-      [section]: {
-        ...prev[section],
-        [questionId]: value,
-      },
-    }));
+    setAnswers(prev => {
+      // If questionId is an object, treat it as bulk update
+      if (typeof questionId === 'object' && questionId !== null) {
+        return {
+          ...prev,
+          [section]: {
+            ...prev[section],
+            ...questionId,
+          },
+        };
+      }
+      // Otherwise, single answer update
+      return {
+        ...prev,
+        [section]: {
+          ...prev[section],
+          [questionId]: value,
+        },
+      };
+    });
   };
 
   const addHighlight = (highlight) => {
-    setHighlights(prev => [...prev, highlight]);
+    // If highlight is an array, replace all highlights
+    if (Array.isArray(highlight)) {
+      setHighlights(highlight);
+    } else {
+      setHighlights(prev => [...prev, highlight]);
+    }
   };
 
   const removeHighlight = (index) => {

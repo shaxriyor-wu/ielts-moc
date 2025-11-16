@@ -32,33 +32,29 @@ const Login = () => {
     }
     setLoading(true);
     try {
-      console.log('Attempting login with:', { login: loginData.login });
+      // Use unified login endpoint
       const response = await api.post('/auth/login', {
         login: loginData.login,
         password: loginData.password,
       });
-      
-      console.log('Login response:', response.data);
-      const { user, role, accessToken, refreshToken } = response.data;
-      
-      if (!user || !role || !accessToken) {
+
+      const { user, accessToken, refreshToken } = response.data;
+      if (!user || !user.role || !accessToken) {
         throw new Error('Invalid response from server');
       }
-      
-      login(
-        { ...user, role },
-        accessToken,
-        refreshToken
-      );
-      
+
+      login(user, accessToken, refreshToken);
       showToast('Login successful', 'success');
-      
+
+      const role = user.role;
       if (role === 'owner') {
         navigate('/owner/dashboard');
       } else if (role === 'admin') {
         navigate('/admin/dashboard');
       } else if (role === 'student') {
         navigate('/student/dashboard');
+      } else {
+        navigate('/');
       }
     } catch (error) {
       console.error('Login error details:', {
@@ -67,7 +63,12 @@ const Login = () => {
         status: error.response?.status,
         config: error.config
       });
-      const errorMessage = error.response?.data?.error || error.response?.data?.errors?.[0]?.msg || error.message || 'Login failed. Please check your credentials.';
+      const errorMessage = error.response?.data?.error || 
+                          (error.response?.data?.login ? error.response.data.login[0] : null) ||
+                          (error.response?.data?.password ? error.response.data.password[0] : null) ||
+                          error.response?.data?.errors?.[0]?.msg || 
+                          error.message || 
+                          'Login failed. Please check your credentials.';
       showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
