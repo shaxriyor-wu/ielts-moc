@@ -158,9 +158,59 @@ const ListeningSection = () => {
         </div>
       </div>
 
-      {/* Audio Player (Hidden, Auto-play) */}
+      {/* Audio Player Section */}
       {audioUrl && !audioEnded && (
-        <AutoPlayAudio src={audioUrl} onEnded={handleAudioEnded} />
+        <div className="max-w-7xl mx-auto px-6 pb-4">
+          <Card className="bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Headphones className="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                <div>
+                  <h3 className="font-semibold text-green-900 dark:text-green-300">
+                    Listening Audio
+                  </h3>
+                  <p className="text-sm text-green-700 dark:text-green-400">
+                    Audio will play automatically. You can only listen once.
+                  </p>
+                </div>
+              </div>
+              <audio
+                controls
+                src={audioUrl}
+                onEnded={handleAudioEnded}
+                className="w-full md:max-w-md"
+                preload="auto"
+                crossOrigin="anonymous"
+                onError={(e) => {
+                  console.error('Audio error:', e);
+                  showToast('Failed to load audio. Please refresh the page.', 'error');
+                }}
+                onPlay={() => {
+                  // When user manually plays, ensure autoplay doesn't interfere
+                  audioEndedRef.current = false;
+                }}
+              />
+            </div>
+          </Card>
+          {/* Hidden autoplay component - tries to autoplay, but visible player takes precedence */}
+          <AutoPlayAudio src={audioUrl} onEnded={handleAudioEnded} />
+        </div>
+      )}
+      
+      {audioEnded && (
+        <Card className="bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800">
+          <div className="flex items-center gap-3">
+            <Clock className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+            <div>
+              <h3 className="font-semibold text-orange-900 dark:text-orange-300">
+                Audio Finished
+              </h3>
+              <p className="text-sm text-orange-700 dark:text-orange-400">
+                You now have 10 minutes to transfer your answers to the answer sheet.
+              </p>
+            </div>
+          </div>
+        </Card>
       )}
 
       {/* Main Content */}

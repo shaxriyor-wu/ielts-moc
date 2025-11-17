@@ -17,14 +17,76 @@ urlpatterns = [
     path('api/', include('grading.urls')),
 ]
 
-# Serve media files in development
-# In production, media files should be served via a CDN or separate storage
+# Serve media files in both development and production
+# WhiteNoise handles static files automatically, but we need to serve media files
+# In production, media files should ideally be served via a CDN or separate storage
+# For now, we'll serve them directly with proper headers
+from django.views.static import serve as static_serve
+from django.urls import re_path
+from django.views.decorators.cache import cache_control
+
+def media_serve(request, path):
+    """Serve media files with proper headers for audio and PDF."""
+    try:
+        response = static_serve(request, path, document_root=settings.MEDIA_ROOT)
+        
+        # Set appropriate content type and headers based on file extension
+        path_lower = path.lower()
+        if path_lower.endswith('.mp3'):
+            response['Content-Type'] = 'audio/mpeg'
+            response['Accept-Ranges'] = 'bytes'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.wav'):
+            response['Content-Type'] = 'audio/wav'
+            response['Accept-Ranges'] = 'bytes'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.ogg') or path_lower.endswith('.oga'):
+            response['Content-Type'] = 'audio/ogg'
+            response['Accept-Ranges'] = 'bytes'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.pdf'):
+            response['Content-Type'] = 'application/pdf'
+            response['X-Content-Type-Options'] = 'nosniff'
+            response['Cache-Control'] = 'public, max-age=3600'
+            # Allow PDF to be embedded in iframes (same origin)
+            response['X-Frame-Options'] = 'SAMEORIGIN'
+        
+        # Allow CORS for media files (needed for cross-origin requests)
+        origin = request.META.get('HTTP_ORIGIN', '*')
+        # Only allow CORS from same origin or configured origins
+        if origin == request.build_absolute_uri('/')[:-1] or origin == '*':
+            response['Access-Control-Allow-Origin'] = origin
+        else:
+            # Check if origin is in allowed CORS origins
+            from django.conf import settings
+            allowed_origins = getattr(settings, 'CORS_ALLOWED_ORIGINS', [])
+            if origin in allowed_origins:
+                response['Access-Control-Allow-Origin'] = origin
+        
+        response['Access-Control-Allow-Methods'] = 'GET, HEAD, OPTIONS'
+        response['Access-Control-Allow-Headers'] = 'Content-Type'
+        
+        return response
+    except Exception as e:
+        # Log error and return 404
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error serving media file {path}: {e}")
+        from django.http import Http404
+        raise Http404("Media file not found")
+
+# Serve media files
+urlpatterns += [
+    re_path(
+        r'^media/(?P<path>.*)$',
+        cache_control(max_age=3600)(media_serve),
+        name='media'
+    ),
+]
+
+# Serve static files in development (WhiteNoise handles in production)
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-else:
-    # In production, serve media files (WhiteNoise handles static files automatically)
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Serve React app for all non-API routes (SPA routing)
 # This must be last to catch all routes not matched above

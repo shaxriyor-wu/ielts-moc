@@ -401,20 +401,24 @@ def get_current_test(request):
     reading_file = TestFile.objects.filter(variant=variant, file_type='reading').first()
     writing_files = TestFile.objects.filter(variant=variant, file_type='writing')
     
-    # Build file URLs
-    base_url = request.build_absolute_uri('/')[:-1]  # Remove trailing slash
+    # Build file URLs - use request.build_absolute_uri for proper absolute URLs
+    def build_media_url(file_field):
+        """Build absolute URL for media file."""
+        if not file_field:
+            return None
+        return request.build_absolute_uri(file_field.url)
     
     test_data['files'] = {
         'listening': {
-            'file_url': f"{base_url}{listening_file.file.url}" if listening_file else None,
-            'audio_url': f"{base_url}{listening_file.audio_file.url}" if listening_file and listening_file.audio_file else None,
+            'file_url': build_media_url(listening_file.file if listening_file else None),
+            'audio_url': build_media_url(listening_file.audio_file if listening_file and listening_file.audio_file else None),
         },
         'reading': {
-            'file_url': f"{base_url}{reading_file.file.url}" if reading_file else None,
+            'file_url': build_media_url(reading_file.file if reading_file else None),
         },
         'writing': {
-            'task1_url': f"{base_url}{writing_files.filter(task_number=1).first().file.url}" if writing_files.filter(task_number=1).first() else None,
-            'task2_url': f"{base_url}{writing_files.filter(task_number=2).first().file.url}" if writing_files.filter(task_number=2).first() else None,
+            'task1_url': build_media_url(writing_files.filter(task_number=1).first().file if writing_files.filter(task_number=1).first() else None),
+            'task2_url': build_media_url(writing_files.filter(task_number=2).first().file if writing_files.filter(task_number=2).first() else None),
         }
     }
     
