@@ -87,10 +87,14 @@ def enter_test_code(request):
                 defaults={'status': 'in_progress'}
             )
             
-            # Update queue entry
+            # Update queue entry - first mark as assigned, then move to preparation
             queue_entry.assigned_variant = assigned_variant
-            queue_entry.status = 'preparation'
+            queue_entry.status = 'assigned'
             queue_entry.assigned_at = timezone.now()
+            queue_entry.save()
+            
+            # Immediately move to preparation
+            queue_entry.status = 'preparation'
             queue_entry.preparation_started_at = timezone.now()
             queue_entry.save()
             
@@ -129,10 +133,25 @@ def check_queue_status(request):
             'message': 'No active queue entry'
         })
     
+    # Check for timeout (10 minutes)
+    joined_at = queue_entry.joined_at
+    now = timezone.now()
+    minutes_waiting = (now - joined_at).total_seconds() / 60
+    
+    if minutes_waiting >= 10 and queue_entry.status != 'started':
+        queue_entry.status = 'timeout'
+        queue_entry.timeout_at = now
+        queue_entry.save()
+        return Response({
+            'status': 'timeout',
+            'message': 'Test did not start within 10 minutes'
+        })
+    
     response_data = {
         'status': queue_entry.status,
         'queue_entry_id': queue_entry.id,
         'assigned_variant_id': queue_entry.assigned_variant_id if queue_entry.assigned_variant else None,
+        'joined_at': queue_entry.joined_at.isoformat() if queue_entry.joined_at else None,
     }
     
     if queue_entry.status == 'preparation' and queue_entry.preparation_started_at:
@@ -194,6 +213,46 @@ def start_test(request):
         'message': 'Test started successfully.',
         'student_test': StudentTestSerializer(student_test).data,
         'variant_id': queue_entry.assigned_variant_id
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def leave_queue(request):
+    """Leave the test queue."""
+    if not request.user.is_student():
+        return Response(
+            {'error': 'Student access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    # Find active queue entry
+    queue_entry = TestQueue.objects.filter(
+        student=request.user,
+        status__in=['waiting', 'assigned', 'preparation']
+    ).order_by('-joined_at').first()
+    
+    if not queue_entry:
+        return Response({
+            'success': True,
+            'message': 'Not in queue'
+        })
+    
+    # Check if test already started
+    if queue_entry.status == 'started':
+        return Response(
+            {'error': 'Cannot leave - test already started'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    # Mark as left
+    queue_entry.status = 'left'
+    queue_entry.left_at = timezone.now()
+    queue_entry.save()
+    
+    return Response({
+        'success': True,
+        'message': 'Left queue successfully'
     })
 
 

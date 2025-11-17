@@ -58,6 +58,8 @@ class TestQueue(models.Model):
         ('assigned', 'Assigned'),
         ('preparation', 'Preparation'),
         ('started', 'Started'),
+        ('left', 'Left'),
+        ('timeout', 'Timeout'),
     ]
     
     student = models.ForeignKey(
@@ -85,6 +87,8 @@ class TestQueue(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
     assigned_at = models.DateTimeField(null=True, blank=True)
     preparation_started_at = models.DateTimeField(null=True, blank=True)
+    left_at = models.DateTimeField(null=True, blank=True)
+    timeout_at = models.DateTimeField(null=True, blank=True)
     
     class Meta:
         db_table = 'test_queue'

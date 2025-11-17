@@ -5,6 +5,7 @@ urlpatterns = [
     path('student/enter-test-code', views.enter_test_code, name='enter_test_code'),
     path('student/queue-status', views.check_queue_status, name='check_queue_status'),
     path('student/start-test', views.start_test, name='start_test'),
+    path('student/leave-queue', views.leave_queue, name='leave_queue'),
     path('student/access', views.enter_test_code, name='access_test'),
     path('student/test', views.get_current_test, name='get_current_test'),
     path('student/attempt', views.get_current_attempt, name='get_current_attempt'),
