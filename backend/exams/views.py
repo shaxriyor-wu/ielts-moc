@@ -13,8 +13,15 @@ from .serializers import (
 
 
 def check_is_admin(user):
-    """Helper function to check if user is admin."""
+    """
+    Helper function to check if user is admin.
+    This function ensures the user is properly loaded from the database.
+    """
     if not user:
+        return False
+    
+    # Check if user is AnonymousUser
+    if hasattr(user, 'is_anonymous') and user.is_anonymous:
         return False
     
     # Check if user is authenticated
@@ -24,33 +31,20 @@ def check_is_admin(user):
     except (AttributeError, TypeError):
         return False
     
-    # Check if user is AnonymousUser
-    if hasattr(user, 'is_anonymous') and user.is_anonymous:
-        return False
-    
-    # Reload user from database to ensure we have latest role (most reliable)
+    # Always reload user from database to ensure we have latest role and all attributes
+    # This is the most reliable method and follows Django best practices
     try:
         if hasattr(user, 'id') and user.id:
-            db_user = CustomUser.objects.select_related().get(id=user.id)
-            if db_user.role == 'admin':
-                return True
-    except (CustomUser.DoesNotExist, AttributeError, ValueError, TypeError):
-        pass
-    
-    # Fallback: Check role attribute directly
-    try:
-        if hasattr(user, 'role') and user.role == 'admin':
-            return True
-    except (AttributeError, TypeError):
-        pass
-    
-    # Fallback: Try to use the method if available
-    try:
-        if hasattr(user, 'is_admin') and callable(user.is_admin):
-            if user.is_admin():
-                return True
-    except (AttributeError, TypeError):
-        pass
+            # Use get() with select_related to ensure we get a fresh instance
+            db_user = CustomUser.objects.get(id=user.id)
+            # Verify the role is 'admin'
+            return db_user.role == 'admin'
+    except (CustomUser.DoesNotExist, AttributeError, ValueError, TypeError) as e:
+        # Log error in production, but don't expose to user
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f'Error checking admin status: {e}')
+        return False
     
     return False
 

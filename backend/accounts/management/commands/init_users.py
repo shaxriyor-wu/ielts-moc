@@ -9,33 +9,6 @@ class Command(BaseCommand):
     help = 'Initialize default admin and student users'
 
     def handle(self, *args, **options):
-        # Create owner user
-        owner_user, created = CustomUser.objects.get_or_create(
-            username='owner',
-            defaults={
-                'email': 'owner@ielts-moc.com',
-                'role': 'owner',
-                'is_staff': True,
-                'is_superuser': True,
-            }
-        )
-        if created:
-            owner_user.set_password('owner123')
-            owner_user.save()
-            self.stdout.write(
-                self.style.SUCCESS(f'Successfully created owner user: owner/owner123')
-            )
-        else:
-            # Update password if user exists
-            owner_user.set_password('owner123')
-            owner_user.role = 'owner'
-            owner_user.is_staff = True
-            owner_user.is_superuser = True
-            owner_user.save()
-            self.stdout.write(
-                self.style.WARNING(f'Owner user already exists. Password reset to: owner123')
-            )
-
         # Create admin user
         admin_user, created = CustomUser.objects.get_or_create(
             username='admin',
