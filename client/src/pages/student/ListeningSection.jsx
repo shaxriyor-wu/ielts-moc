@@ -183,7 +183,12 @@ const ListeningSection = () => {
                 crossOrigin="anonymous"
                 onError={(e) => {
                   console.error('Audio error:', e);
-                  showToast('Failed to load audio. Please refresh the page.', 'error');
+                  const audioElement = e.target;
+                  if (audioElement.error?.code === 4) {
+                    showToast('Audio file not found. Please contact administrator.', 'error');
+                  } else {
+                    showToast('Failed to load audio. Please refresh the page.', 'error');
+                  }
                 }}
                 onPlay={() => {
                   // When user manually plays, ensure autoplay doesn't interfere
@@ -194,6 +199,24 @@ const ListeningSection = () => {
           </Card>
           {/* Hidden autoplay component - tries to autoplay, but visible player takes precedence */}
           <AutoPlayAudio src={audioUrl} onEnded={handleAudioEnded} />
+        </div>
+      )}
+      
+      {!audioUrl && testData && (
+        <div className="max-w-7xl mx-auto px-6 pb-4">
+          <Card className="bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800">
+            <div className="flex items-center gap-3">
+              <Headphones className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+              <div>
+                <h3 className="font-semibold text-yellow-900 dark:text-yellow-300">
+                  Audio File Not Available
+                </h3>
+                <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                  The listening audio file has not been uploaded yet. Please contact your administrator.
+                </p>
+              </div>
+            </div>
+          </Card>
         </div>
       )}
       

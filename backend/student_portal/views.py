@@ -401,20 +401,33 @@ def get_current_test(request):
     reading_file = TestFile.objects.filter(variant=variant, file_type='reading').first()
     writing_files = TestFile.objects.filter(variant=variant, file_type='writing')
     
-    # Build file URLs - use request.build_absolute_uri for proper absolute URLs
+    # Build file URLs - Django FileField.url already returns the correct relative URL
     def build_media_url(file_field):
         """Build absolute URL for media file."""
         if not file_field:
             return None
-        return request.build_absolute_uri(file_field.url)
+        
+        try:
+            # Django FileField.url returns a URL that starts with MEDIA_URL
+            # For example: '/media/test_files/2025/11/17/file.pdf'
+            relative_url = file_field.url
+            
+            # Build absolute URL from the relative URL
+            absolute_url = request.build_absolute_uri(relative_url)
+            return absolute_url
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f'Error building media URL for field {file_field}: {e}', exc_info=True)
+            return None
     
     test_data['files'] = {
         'listening': {
-            'file_url': build_media_url(listening_file.file if listening_file else None),
+            'file_url': build_media_url(listening_file.file if listening_file and listening_file.file else None),
             'audio_url': build_media_url(listening_file.audio_file if listening_file and listening_file.audio_file else None),
         },
         'reading': {
-            'file_url': build_media_url(reading_file.file if reading_file else None),
+            'file_url': build_media_url(reading_file.file if reading_file and reading_file.file else None),
         },
         'writing': {
             'task1_url': build_media_url(writing_files.filter(task_number=1).first().file if writing_files.filter(task_number=1).first() else None),

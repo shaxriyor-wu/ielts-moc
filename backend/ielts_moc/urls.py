@@ -27,7 +27,35 @@ from django.views.decorators.cache import cache_control
 
 def media_serve(request, path):
     """Serve media files with proper headers for audio and PDF."""
+    import os
+    from django.http import Http404, HttpResponse
+    
     try:
+        # Normalize the path (remove leading/trailing slashes, handle URL encoding)
+        path = path.lstrip('/')
+        
+        # Build full file path
+        full_path = os.path.join(settings.MEDIA_ROOT, path)
+        
+        # Normalize paths to handle different OS path separators
+        full_path = os.path.normpath(full_path)
+        media_root = os.path.normpath(str(settings.MEDIA_ROOT))
+        
+        # Security check: ensure the file is within MEDIA_ROOT
+        if not full_path.startswith(media_root):
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Security: Attempted access outside MEDIA_ROOT: {full_path}")
+            raise Http404("Media file not found")
+        
+        # Check if file exists
+        if not os.path.exists(full_path) or not os.path.isfile(full_path):
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.warning(f"Media file not found: {full_path} (requested path: {path})")
+            raise Http404("Media file not found")
+        
+        # Serve the file
         response = static_serve(request, path, document_root=settings.MEDIA_ROOT)
         
         # Set appropriate content type and headers based on file extension
@@ -58,7 +86,6 @@ def media_serve(request, path):
             response['Access-Control-Allow-Origin'] = origin
         else:
             # Check if origin is in allowed CORS origins
-            from django.conf import settings
             allowed_origins = getattr(settings, 'CORS_ALLOWED_ORIGINS', [])
             if origin in allowed_origins:
                 response['Access-Control-Allow-Origin'] = origin
@@ -67,12 +94,14 @@ def media_serve(request, path):
         response['Access-Control-Allow-Headers'] = 'Content-Type'
         
         return response
+    except Http404:
+        # Re-raise 404
+        raise
     except Exception as e:
         # Log error and return 404
         import logging
         logger = logging.getLogger(__name__)
         logger.error(f"Error serving media file {path}: {e}")
-        from django.http import Http404
         raise Http404("Media file not found")
 
 # Serve media files

@@ -17,12 +17,34 @@ const AutoPlayAudio = ({ src, onEnded, className = '' }) => {
     // Set up error handlers
     const handleError = (e) => {
       console.error('Audio error:', e);
-      const errorMsg = audio.error 
-        ? `Audio error: ${audio.error.code === 4 ? 'Format not supported' : 'Failed to load'}`
-        : 'Failed to load audio file';
+      let errorMsg = 'Failed to load audio file';
+      
+      if (audio.error) {
+        switch (audio.error.code) {
+          case 1: // MEDIA_ERR_ABORTED
+            errorMsg = 'Audio loading was aborted';
+            break;
+          case 2: // MEDIA_ERR_NETWORK
+            errorMsg = 'Network error. Please check your connection.';
+            break;
+          case 3: // MEDIA_ERR_DECODE
+            errorMsg = 'Audio format not supported';
+            break;
+          case 4: // MEDIA_ERR_SRC_NOT_SUPPORTED
+            errorMsg = 'Audio file not found or format not supported';
+            break;
+          default:
+            errorMsg = 'Failed to load audio file';
+        }
+      }
+      
       setError(errorMsg);
       setIsLoading(false);
-      showToast('Audio failed to load. Please check your connection.', 'error');
+      
+      // Only show toast for network/file errors, not autoplay blocks
+      if (audio.error?.code === 2 || audio.error?.code === 4) {
+        showToast('Audio file not found. Please contact administrator.', 'error');
+      }
     };
 
     const handleCanPlay = () => {

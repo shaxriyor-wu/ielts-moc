@@ -37,13 +37,20 @@ const FileViewer = ({ fileUrl, fileType, className = '' }) => {
           try {
             const response = await fetch(fileUrl, { method: 'HEAD' });
             if (!response.ok) {
+              if (response.status === 404) {
+                throw new Error('File not found. Please contact administrator.');
+              }
               throw new Error(`HTTP ${response.status}`);
             }
             clearTimeout(timeout);
             setLoading(false);
           } catch (err) {
             clearTimeout(timeout);
-            setError(`Failed to access PDF file: ${err.message}`);
+            if (err.message.includes('404') || err.message.includes('not found')) {
+              setError('PDF file not found. The file may not have been uploaded yet.');
+            } else {
+              setError(`Failed to access PDF file: ${err.message}`);
+            }
             setLoading(false);
           }
         } else if (fileType === 'docx' || fileType === 'doc') {

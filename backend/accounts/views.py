@@ -93,16 +93,46 @@ def register(request):
     
     serializer = RegisterSerializer(data=request.data)
     if serializer.is_valid():
-        user = serializer.save()
+        try:
+            user = serializer.save()
+            
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                'accessToken': str(refresh.access_token),
+                'refreshToken': str(refresh),
+                'user': UserSerializer(user).data,
+                'role': user.role
+            }, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f'Registration error: {e}')
+            return Response(
+                {'error': 'Registration failed. Please try again.'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    # Return validation errors in a consistent format
+    errors = serializer.errors
+    if isinstance(errors, dict):
+        # Extract first error message
+        error_messages = []
+        for field, field_errors in errors.items():
+            if isinstance(field_errors, list):
+                error_messages.extend(field_errors)
+            else:
+                error_messages.append(str(field_errors))
         
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'accessToken': str(refresh.access_token),
-            'refreshToken': str(refresh),
-            'user': UserSerializer(user).data,
-            'role': user.role
-        }, status=status.HTTP_201_CREATED)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        error_message = error_messages[0] if error_messages else 'Invalid registration data'
+        return Response(
+            {'error': error_message, 'errors': errors},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    return Response(
+        {'error': 'Invalid registration data', 'errors': errors},
+        status=status.HTTP_400_BAD_REQUEST
+    )
 
 
 @api_view(['GET'])

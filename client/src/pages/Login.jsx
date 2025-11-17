@@ -98,9 +98,43 @@ const Login = () => {
       showToast('Registration successful', 'success');
       navigate('/student/dashboard');
     } catch (error) {
-      const errorMessage = error.response?.data?.error || error.response?.data?.errors?.[0]?.msg || error.message || 'Registration failed';
+      // Handle different error response formats
+      let errorMessage = 'Registration failed';
+      
+      if (error.response?.data) {
+        const errorData = error.response.data;
+        if (errorData.error) {
+          errorMessage = errorData.error;
+        } else if (errorData.errors) {
+          // Handle validation errors
+          if (typeof errorData.errors === 'string') {
+            errorMessage = errorData.errors;
+          } else if (Array.isArray(errorData.errors)) {
+            errorMessage = errorData.errors[0]?.msg || errorData.errors[0] || 'Invalid registration data';
+          } else if (typeof errorData.errors === 'object') {
+            // Get first error message from object
+            const firstError = Object.values(errorData.errors)[0];
+            if (Array.isArray(firstError)) {
+              errorMessage = firstError[0];
+            } else {
+              errorMessage = firstError || 'Invalid registration data';
+            }
+          }
+        } else if (errorData.non_field_errors) {
+          errorMessage = Array.isArray(errorData.non_field_errors) 
+            ? errorData.non_field_errors[0] 
+            : errorData.non_field_errors;
+        }
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
       showToast(errorMessage, 'error');
-      console.error('Registration error:', error);
+      console.error('Registration error:', {
+        message: errorMessage,
+        response: error.response?.data,
+        status: error.response?.status,
+      });
     } finally {
       setLoading(false);
     }

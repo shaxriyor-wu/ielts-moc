@@ -161,6 +161,7 @@ def upload_test_file(request):
         )
     
     # Update or create test file
+    # Ensure files are properly saved
     test_file, created = TestFile.objects.update_or_create(
         variant=variant,
         file_type=file_type,
@@ -170,6 +171,29 @@ def upload_test_file(request):
             'audio_file': audio_file if audio_file else None,
         }
     )
+    
+    # Save the instance to ensure files are written to disk
+    test_file.save()
+    
+    # Verify files were saved correctly
+    import os
+    from django.conf import settings
+    import logging
+    logger = logging.getLogger(__name__)
+    
+    if test_file.file:
+        file_path = test_file.file.path
+        if os.path.exists(file_path):
+            logger.info(f"File saved successfully: {file_path}")
+        else:
+            logger.error(f"File not found after save: {file_path}")
+    
+    if test_file.audio_file:
+        audio_path = test_file.audio_file.path
+        if os.path.exists(audio_path):
+            logger.info(f"Audio file saved successfully: {audio_path}")
+        else:
+            logger.error(f"Audio file not found after save: {audio_path}")
     
     serializer = TestFileSerializer(test_file)
     return Response(serializer.data, status=status.HTTP_201_CREATED if created else status.HTTP_200_OK)
