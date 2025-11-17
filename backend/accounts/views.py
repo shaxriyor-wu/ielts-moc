@@ -9,7 +9,7 @@ from .serializers import LoginSerializer, UserSerializer
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def unified_login(request):
-    """Unified login endpoint that handles owner, admin, and student."""
+    """Unified login endpoint that handles admin and student."""
     serializer = LoginSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.validated_data['user']

@@ -22,12 +22,29 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const status = error.response?.status;
+    
+    if (status === 401) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
       window.location.href = '/';
+      return Promise.reject(error);
     }
+    
+    // Only redirect to error pages for critical server errors
+    // 400 errors are usually validation errors and should be handled by components
+    // 404 errors on API calls might be expected (resource not found)
+    // Only redirect for 500+ server errors that indicate system issues
+    if (status >= 500) {
+      // Only redirect if it's not a handled error (check if error was already handled)
+      const shouldRedirect = !error.config?.skipErrorRedirect;
+      if (shouldRedirect) {
+        window.location.href = '/error/500';
+        return Promise.reject(error);
+      }
+    }
+    
     return Promise.reject(error);
   }
 );

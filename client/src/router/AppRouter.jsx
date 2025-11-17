@@ -31,6 +31,10 @@ import StudentDashboard from '../pages/student/StudentDashboard';
 import StudentProfile from '../pages/student/StudentProfile';
 import StudentTests from '../pages/student/StudentTests';
 
+import Error400 from '../pages/errors/Error400';
+import Error404 from '../pages/errors/Error404';
+import Error500 from '../pages/errors/Error500';
+
 const ProtectedRoute = ({ children, requiredRole }) => {
   const { user, loading } = useAuth();
   useProtectedRoute(requiredRole);
@@ -140,7 +144,10 @@ const AppRouter = () => {
         <Route path="finish" element={<Finish />} />
       </Route>
 
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/error/400" element={<Error400 />} />
+      <Route path="/error/404" element={<Error404 />} />
+      <Route path="/error/500" element={<Error500 />} />
+      <Route path="*" element={<Error404 />} />
     </Routes>
   );
 };

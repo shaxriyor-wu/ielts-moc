@@ -2,7 +2,7 @@ import api from '../utils/api';
 
 export const studentApi = {
   login: (email, password) => api.post('/student/login', { email, password }),
-  register: (data) => api.post('/student/register', data),
+  register: (data) => api.post('/auth/register', data),
   // Test code entry and queue
   enterTestCode: (testCode) => api.post('/student/enter-test-code', { testCode }),
   checkQueueStatus: () => api.get('/student/queue-status'),
@@ -24,6 +24,4 @@ export const studentApi = {
   getAttempts: () => api.get('/student/attempts'),
   getTests: () => api.get('/student/tests'),
   getAllTests: () => api.get('/student/all-tests'),
-  joinTest: (testKey) => api.post('/student/join-test', { testKey }),
-  checkTestStatus: (testKey) => api.get(`/student/test-status/${testKey}`),
 };

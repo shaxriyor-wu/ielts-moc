@@ -180,7 +180,7 @@ def start_test(request):
     
     queue_entry = TestQueue.objects.filter(
         student=request.user,
-        status='preparation'
+        status__in=['preparation', 'started']
     ).order_by('-joined_at').first()
     
     if not queue_entry or not queue_entry.assigned_variant:
@@ -188,6 +188,20 @@ def start_test(request):
             {'error': 'No test assigned or preparation not completed.'},
             status=status.HTTP_400_BAD_REQUEST
         )
+    
+    # If already started, just return success
+    if queue_entry.status == 'started':
+        student_test = StudentTest.objects.filter(
+            student=request.user,
+            variant=queue_entry.assigned_variant
+        ).first()
+        
+        if student_test:
+            return Response({
+                'message': 'Test already started.',
+                'student_test': StudentTestSerializer(student_test).data,
+                'variant_id': queue_entry.assigned_variant_id
+            })
     
     # Check if preparation time is over
     if queue_entry.preparation_started_at:

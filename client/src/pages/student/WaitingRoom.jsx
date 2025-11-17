@@ -66,23 +66,26 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
 
   // Calculate waiting time
   useEffect(() => {
-    const updateWaitingTime = async () => {
-      if (joinedAt && status !== 'started' && status !== 'left' && status !== 'timeout') {
-        const now = new Date();
-        const joined = new Date(joinedAt);
-        const minutesWaiting = (now - joined) / (1000 * 60);
-        setWaitingTime(Math.floor(minutesWaiting));
-        
-        // Auto-timeout after 10 minutes
-        if (minutesWaiting >= 10) {
-          try {
-            await studentApi.leaveQueue();
+    if (!joinedAt || status === 'started' || status === 'left' || status === 'timeout') {
+      return;
+    }
+
+    const updateWaitingTime = () => {
+      const now = new Date();
+      const joined = new Date(joinedAt);
+      const minutesWaiting = (now - joined) / (1000 * 60);
+      setWaitingTime(Math.floor(minutesWaiting));
+      
+      // Auto-timeout after 10 minutes
+      if (minutesWaiting >= 10) {
+        studentApi.leaveQueue()
+          .then(() => {
             showToast('Test did not start within 10 minutes. You have been removed from the queue.', 'error');
             navigate('/student/dashboard');
-          } catch (error) {
+          })
+          .catch((error) => {
             console.error('Failed to leave queue:', error);
-          }
-        }
+          });
       }
     };
 
