@@ -87,6 +87,7 @@ class TestQueue(models.Model):
     joined_at = models.DateTimeField(auto_now_add=True)
     assigned_at = models.DateTimeField(null=True, blank=True)
     preparation_started_at = models.DateTimeField(null=True, blank=True)
+    started_at = models.DateTimeField(null=True, blank=True)
     left_at = models.DateTimeField(null=True, blank=True)
     timeout_at = models.DateTimeField(null=True, blank=True)
     

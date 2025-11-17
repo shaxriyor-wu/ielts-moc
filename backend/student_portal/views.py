@@ -10,7 +10,89 @@ from exams.models import Variant
 from .serializers import (
     StudentTestSerializer, TestResponseSerializer, TestResultSerializer
 )
-import random
+
+STATUS_LABELS = {
+    'waiting': 'Waiting for activation',
+    'assigned': 'Variant assigned',
+    'preparation': 'Preparation in progress',
+    'started': 'Test started',
+    'timeout': 'Removed due to inactivity',
+    'left': 'Left the queue',
+}
+
+STATUS_DESCRIPTIONS = {
+    'waiting': 'Please stay ready. An administrator will start the mock shortly.',
+    'assigned': 'Your variant has been assigned. Preparation timer will begin soon.',
+    'preparation': 'Use this minute to prepare yourself before the test begins.',
+    'started': 'Your test is live. You can proceed to the Listening section.',
+    'timeout': 'You were removed because the test did not start within 10 minutes.',
+    'left': 'You have left the queue manually.',
+}
+
+
+def serialize_queue_entry(queue_entry, *, include_student_test=False, student_test=None, extra=None):
+    """Return a consistent payload for queue state."""
+    if not queue_entry:
+        return None
+
+    now = timezone.now()
+
+    data = {
+        'queue_entry_id': queue_entry.id,
+        'status': queue_entry.status,
+        'status_label': STATUS_LABELS.get(queue_entry.status, queue_entry.status.title()),
+        'status_description': STATUS_DESCRIPTIONS.get(queue_entry.status, ''),
+        'test_code': queue_entry.test_code,
+        'assigned_variant_id': queue_entry.assigned_variant_id,
+        'assigned_variant_name': queue_entry.assigned_variant.name if queue_entry.assigned_variant else None,
+        'joined_at': queue_entry.joined_at.isoformat() if queue_entry.joined_at else None,
+        'assigned_at': queue_entry.assigned_at.isoformat() if queue_entry.assigned_at else None,
+        'preparation_started_at': queue_entry.preparation_started_at.isoformat() if queue_entry.preparation_started_at else None,
+        'started_at': queue_entry.started_at.isoformat() if getattr(queue_entry, 'started_at', None) else None,
+        'timeout_at': queue_entry.timeout_at.isoformat() if queue_entry.timeout_at else None,
+        'left_at': queue_entry.left_at.isoformat() if queue_entry.left_at else None,
+    }
+
+    if queue_entry.joined_at:
+        wait_seconds = int((now - queue_entry.joined_at).total_seconds())
+        wait_seconds = max(0, wait_seconds)
+        data['waiting_duration_seconds'] = wait_seconds
+        timeout_deadline = queue_entry.joined_at + timedelta(minutes=10)
+        data['timeout_deadline'] = timeout_deadline.isoformat()
+
+    if queue_entry.preparation_started_at:
+        elapsed = (now - queue_entry.preparation_started_at).total_seconds()
+        remaining = max(0, 60 - int(elapsed))
+        data['preparation_time_remaining'] = remaining
+        auto_start_at = queue_entry.preparation_started_at + timedelta(seconds=60)
+        data['auto_start_at'] = auto_start_at.isoformat()
+        data['can_start'] = remaining <= 0
+    else:
+        data['preparation_time_remaining'] = None
+        data['auto_start_at'] = None
+        data['can_start'] = False
+
+    if queue_entry.assigned_variant_id and student_test is None:
+        student_test = StudentTest.objects.filter(
+            student=queue_entry.student,
+            variant=queue_entry.assigned_variant
+        ).first()
+
+    if student_test:
+        data['student_test_id'] = student_test.id
+        data['student_test_status'] = student_test.status
+        if include_student_test:
+            data['student_test'] = StudentTestSerializer(student_test).data
+    else:
+        data['student_test_id'] = None
+        data['student_test_status'] = None
+        if include_student_test:
+            data['student_test'] = None
+
+    if extra:
+        data.update(extra)
+
+    return data
 
 
 def require_student(view_func):
@@ -52,64 +134,71 @@ def enter_test_code(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    # Check if student already has a queue entry for this code
     queue_entry, created = TestQueue.objects.get_or_create(
         student=request.user,
         test_code=test_code,
         defaults={'status': 'waiting'}
     )
-    
-    if not created:
-        # Return current status
-        return Response({
-            'status': queue_entry.status,
-            'message': 'Already in queue',
-            'queue_entry_id': queue_entry.id,
-            'assigned_variant_id': queue_entry.assigned_variant_id if queue_entry.assigned_variant else None,
-        })
-    
+
+    # Allow re-entry if previous attempt was completed/left/timeout
+    if not created and queue_entry.status in ['left', 'timeout', 'started']:
+        queue_entry.status = 'waiting'
+        queue_entry.assigned_variant = None
+        queue_entry.assigned_at = None
+        queue_entry.preparation_started_at = None
+        queue_entry.started_at = None
+        queue_entry.left_at = None
+        queue_entry.timeout_at = None
+        queue_entry.save(
+            update_fields=[
+                'status',
+                'assigned_variant',
+                'assigned_at',
+                'preparation_started_at',
+                'started_at',
+                'left_at',
+                'timeout_at',
+            ]
+        )
+        created = True
+
+    message = 'Already in queue' if not created else 'Test Starting Soon - Please Wait'
+
     # If variant is already active, assign immediately
     if variant.is_active and queue_entry.status == 'waiting':
-        from student_portal.models import StudentTest
-        import random
+        student_test, _ = StudentTest.objects.get_or_create(
+            student=request.user,
+            variant=variant,
+            defaults={'status': 'in_progress'}
+        )
         
-        # Get all active variants
-        active_variants = list(Variant.objects.filter(is_active=True))
+        now = timezone.now()
+        queue_entry.assigned_variant = variant
+        queue_entry.status = 'preparation'
+        queue_entry.assigned_at = now
+        queue_entry.preparation_started_at = now
+        queue_entry.save(
+            update_fields=[
+                'assigned_variant',
+                'status',
+                'assigned_at',
+                'preparation_started_at'
+            ]
+        )
         
-        if active_variants:
-            # Randomly assign a variant
-            assigned_variant = random.choice(active_variants)
-            
-            # Create StudentTest
-            StudentTest.objects.get_or_create(
-                student=request.user,
-                variant=assigned_variant,
-                defaults={'status': 'in_progress'}
-            )
-            
-            # Update queue entry - first mark as assigned, then move to preparation
-            queue_entry.assigned_variant = assigned_variant
-            queue_entry.status = 'assigned'
-            queue_entry.assigned_at = timezone.now()
-            queue_entry.save()
-            
-            # Immediately move to preparation
-            queue_entry.status = 'preparation'
-            queue_entry.preparation_started_at = timezone.now()
-            queue_entry.save()
-            
-            return Response({
-                'status': 'preparation',
-                'message': 'Test assigned. Preparation time starting.',
-                'queue_entry_id': queue_entry.id,
-                'assigned_variant_id': assigned_variant.id,
-            })
-    
-    return Response({
-        'status': 'waiting',
-        'message': 'Test Starting Soon - Please Wait',
-        'queue_entry_id': queue_entry.id,
-    })
+        payload = serialize_queue_entry(
+            queue_entry,
+            include_student_test=True,
+            student_test=student_test,
+            extra={'message': 'Test assigned. Preparation time starting.'}
+        )
+        return Response(payload)
+
+    payload = serialize_queue_entry(
+        queue_entry,
+        extra={'message': message}
+    )
+    return Response(payload)
 
 
 @api_view(['GET'])
@@ -124,8 +213,8 @@ def check_queue_status(request):
     
     queue_entry = TestQueue.objects.filter(
         student=request.user,
-        status__in=['waiting', 'assigned', 'preparation']
-    ).order_by('-joined_at').first()
+        status__in=['waiting', 'assigned', 'preparation', 'started']
+    ).select_related('assigned_variant', 'student').order_by('-joined_at').first()
     
     if not queue_entry:
         return Response({
@@ -147,25 +236,21 @@ def check_queue_status(request):
             'message': 'Test did not start within 10 minutes'
         })
     
-    response_data = {
-        'status': queue_entry.status,
-        'queue_entry_id': queue_entry.id,
-        'assigned_variant_id': queue_entry.assigned_variant_id if queue_entry.assigned_variant else None,
-        'joined_at': queue_entry.joined_at.isoformat() if queue_entry.joined_at else None,
-    }
-    
     if queue_entry.status == 'preparation' and queue_entry.preparation_started_at:
         elapsed = (timezone.now() - queue_entry.preparation_started_at).total_seconds()
-        remaining = max(0, 60 - elapsed)  # 60 seconds preparation time
-        response_data['preparation_time_remaining'] = int(remaining)
-        
-        # If preparation time is over, mark as started
-        if remaining <= 0:
+        if elapsed >= 60 and queue_entry.status != 'started':
             queue_entry.status = 'started'
-            queue_entry.save()
-            response_data['status'] = 'started'
-    
-    return Response(response_data)
+            queue_entry.started_at = timezone.now()
+            queue_entry.save(update_fields=['status', 'started_at'])
+            if queue_entry.assigned_variant_id:
+                StudentTest.objects.get_or_create(
+                    student=request.user,
+                    variant=queue_entry.assigned_variant,
+                    defaults={'status': 'in_progress'}
+                )
+
+    payload = serialize_queue_entry(queue_entry)
+    return Response(payload)
 
 
 @api_view(['POST'])
@@ -181,7 +266,7 @@ def start_test(request):
     queue_entry = TestQueue.objects.filter(
         student=request.user,
         status__in=['preparation', 'started']
-    ).order_by('-joined_at').first()
+    ).select_related('assigned_variant', 'student').order_by('-joined_at').first()
     
     if not queue_entry or not queue_entry.assigned_variant:
         return Response(
@@ -189,19 +274,29 @@ def start_test(request):
             status=status.HTTP_400_BAD_REQUEST
         )
     
-    # If already started, just return success
-    if queue_entry.status == 'started':
+    student_test = None
+    if queue_entry.assigned_variant_id:
         student_test = StudentTest.objects.filter(
             student=request.user,
             variant=queue_entry.assigned_variant
         ).first()
-        
-        if student_test:
-            return Response({
-                'message': 'Test already started.',
-                'student_test': StudentTestSerializer(student_test).data,
-                'variant_id': queue_entry.assigned_variant_id
-            })
+    
+    # If already started, just return success
+    if queue_entry.status == 'started':
+        if not student_test and queue_entry.assigned_variant_id:
+            student_test, _ = StudentTest.objects.get_or_create(
+                student=request.user,
+                variant=queue_entry.assigned_variant,
+                defaults={'status': 'in_progress'}
+            )
+        payload = serialize_queue_entry(
+            queue_entry,
+            include_student_test=True,
+            student_test=student_test,
+            extra={'message': 'Test already started.'}
+        )
+        payload['variant_id'] = queue_entry.assigned_variant_id
+        return Response(payload)
     
     # Check if preparation time is over
     if queue_entry.preparation_started_at:
@@ -214,20 +309,24 @@ def start_test(request):
     
     # Mark queue entry as started
     queue_entry.status = 'started'
-    queue_entry.save()
+    queue_entry.started_at = timezone.now()
+    queue_entry.save(update_fields=['status', 'started_at'])
     
     # Get or create StudentTest
-    student_test, created = StudentTest.objects.get_or_create(
+    student_test, _ = StudentTest.objects.get_or_create(
         student=request.user,
         variant=queue_entry.assigned_variant,
         defaults={'status': 'in_progress'}
     )
     
-    return Response({
-        'message': 'Test started successfully.',
-        'student_test': StudentTestSerializer(student_test).data,
-        'variant_id': queue_entry.assigned_variant_id
-    })
+    payload = serialize_queue_entry(
+        queue_entry,
+        include_student_test=True,
+        student_test=student_test,
+        extra={'message': 'Test started successfully.'}
+    )
+    payload['variant_id'] = queue_entry.assigned_variant_id
+    return Response(payload)
 
 
 @api_view(['POST'])

@@ -261,60 +261,47 @@ def start_mock(request, variant_id):
     
     # Import here to avoid circular imports
     from student_portal.models import TestQueue, StudentTest
-    import random
     
     # Get all waiting students for this test code
     waiting_students = TestQueue.objects.filter(
         test_code=variant.code,
         status='waiting'
-    )
+    ).select_related('student')
     
-    # Get all active variants
-    active_variants = list(Variant.objects.filter(is_active=True))
-    
-    if not active_variants:
-        return Response({
-            'message': 'No active variants available.',
-            'variant': VariantSerializer(variant).data
-        })
-    
-    # Randomly assign variants to waiting students
     assigned_count = 0
+    now = timezone.now()
     for queue_entry in waiting_students:
-        # Randomly select a variant
-        assigned_variant = random.choice(active_variants)
-        
-        # Create StudentTest
-        student_test, created = StudentTest.objects.get_or_create(
+        StudentTest.objects.get_or_create(
             student=queue_entry.student,
-            variant=assigned_variant,
+            variant=variant,
             defaults={'status': 'in_progress'}
         )
         
-        # Update queue entry
-        queue_entry.assigned_variant = assigned_variant
+        queue_entry.assigned_variant = variant
         queue_entry.status = 'assigned'
-        queue_entry.assigned_at = timezone.now()
-        queue_entry.save()
+        queue_entry.assigned_at = now
+        queue_entry.save(
+            update_fields=['assigned_variant', 'status', 'assigned_at']
+        )
         
         assigned_count += 1
     
-    # Start preparation phase for all assigned students
     assigned_entries = TestQueue.objects.filter(
         test_code=variant.code,
         status='assigned'
     )
     
-    for queue_entry in assigned_entries:
-        queue_entry.status = 'preparation'
-        queue_entry.preparation_started_at = timezone.now()
-        queue_entry.save()
+    prep_started_at = timezone.now()
+    assigned_entries.update(
+        status='preparation',
+        preparation_started_at=prep_started_at
+    )
     
     return Response({
         'message': f'Mock test activated. {assigned_count} students assigned variants.',
         'variant': VariantSerializer(variant).data,
         'assigned_count': assigned_count,
-        'total_variants': len(active_variants)
+        'total_variants': 1
     })
 
 

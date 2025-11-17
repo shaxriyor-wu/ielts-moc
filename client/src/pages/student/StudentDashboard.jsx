@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { studentApi } from '../../api/studentApi';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
@@ -38,6 +39,7 @@ const StudentDashboard = () => {
   const [showEnterTestModal, setShowEnterTestModal] = useState(false);
   const [showWaitingRoom, setShowWaitingRoom] = useState(false);
   const [queueStatus, setQueueStatus] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadData();
@@ -62,23 +64,21 @@ const StudentDashboard = () => {
   const checkQueueStatus = async () => {
     try {
       const response = await studentApi.checkQueueStatus();
-      const status = response.data.status;
-      
-      if (status === 'waiting' || status === 'assigned' || status === 'preparation') {
-        setQueueStatus(response.data);
+      const payload = response.data;
+      const status = payload.status;
+
+      if (['waiting', 'assigned', 'preparation', 'started'].includes(status)) {
+        setQueueStatus(payload);
         setShowWaitingRoom(true);
-      } else if (status === 'started') {
-        // Test already started, redirect to test
-        window.location.href = '/student/listening';
-      } else if (status === 'timeout') {
-        // Timeout occurred, show message
-        showToast('Test did not start within 10 minutes', 'error');
-        setQueueStatus(null);
-        setShowWaitingRoom(false);
-      } else {
-        setQueueStatus(null);
-        setShowWaitingRoom(false);
+        return;
       }
+
+      if (status === 'timeout') {
+        showToast(payload.message || 'Test did not start within 10 minutes', 'error');
+      }
+
+      setQueueStatus(null);
+      setShowWaitingRoom(false);
     } catch (error) {
       // No active queue entry
       setQueueStatus(null);
@@ -89,15 +89,24 @@ const StudentDashboard = () => {
   const handleEnterTest = async (testCode) => {
     try {
       const response = await studentApi.enterTestCode(testCode);
+      const payload = response.data;
       setShowEnterTestModal(false);
-      
-      if (response.data.status === 'waiting' || response.data.status === 'assigned' || response.data.status === 'preparation') {
-        setQueueStatus(response.data);
+
+      if (payload.message) {
+        const tone = payload.status === 'preparation' ? 'success' : 'info';
+        showToast(payload.message, tone);
+      }
+
+      if (['waiting', 'assigned', 'preparation', 'started'].includes(payload.status)) {
+        setQueueStatus(payload);
         setShowWaitingRoom(true);
-        showToast('Test Starting Soon - Please Wait', 'info');
-      } else if (response.data.status === 'started') {
-        // Test already started, redirect to test
-        window.location.href = '/student/listening';
+        if (payload.status === 'started') {
+          // Let WaitingRoom handle the auto-start
+          return;
+        }
+      } else {
+        setQueueStatus(null);
+        setShowWaitingRoom(false);
       }
     } catch (error) {
       showToast(error.response?.data?.error || 'Invalid Test Code - Please Try Again', 'error');
@@ -112,10 +121,13 @@ const StudentDashboard = () => {
       <WaitingRoom
         queueStatus={queueStatus}
         onStatusUpdate={setQueueStatus}
-        onStartTest={() => {
+        onStartTest={(startData) => {
           setShowWaitingRoom(false);
-          // Redirect to listening section
-          window.location.href = '/student/listening';
+          setQueueStatus(null);
+          if (startData?.message) {
+            showToast(startData.message, 'success');
+          }
+          navigate('/student/listening', { replace: true });
         }}
       />
     );
