@@ -47,9 +47,7 @@ const Login = () => {
       showToast('Login successful', 'success');
 
       const role = user.role;
-      if (role === 'owner') {
-        navigate('/owner/dashboard');
-      } else if (role === 'admin') {
+      if (role === 'admin') {
         navigate('/admin/dashboard');
       } else if (role === 'student') {
         navigate('/student/dashboard');
@@ -120,10 +118,74 @@ const Login = () => {
             IELTS Exam Platform
           </h1>
           <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Login to your account</p>
-          <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg text-left border border-blue-200 dark:border-blue-800">
-            <p className="text-xs font-semibold text-blue-900 dark:text-blue-300 mb-2">🔑 Owner Login:</p>
-            <p className="text-xs text-blue-700 dark:text-blue-400 font-mono">Login: owner</p>
-            <p className="text-xs text-blue-700 dark:text-blue-400 font-mono">Password: owner123</p>
+          
+          {/* Auto Login Buttons */}
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <button
+              onClick={async () => {
+                setLoginData({ login: 'admin', password: 'admin123' });
+                setLoading(true);
+                try {
+                  const response = await api.post('/auth/login', {
+                    login: 'admin',
+                    password: 'admin123',
+                  });
+                  const { user, accessToken, refreshToken } = response.data;
+                  if (user && user.role && accessToken) {
+                    login(user, accessToken, refreshToken);
+                    showToast('Login successful', 'success');
+                    navigate('/admin/dashboard');
+                  }
+                } catch (error) {
+                  showToast('Auto-login failed', 'error');
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className="px-3 py-2 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              disabled={loading}
+            >
+              🔑 Admin
+            </button>
+            <button
+              onClick={async () => {
+                setLoginData({ login: 'student', password: 'student123' });
+                setLoading(true);
+                try {
+                  const response = await api.post('/auth/login', {
+                    login: 'student',
+                    password: 'student123',
+                  });
+                  const { user, accessToken, refreshToken } = response.data;
+                  if (user && user.role && accessToken) {
+                    login(user, accessToken, refreshToken);
+                    showToast('Login successful', 'success');
+                    navigate('/student/dashboard');
+                  }
+                } catch (error) {
+                  // If student doesn't exist, try to register
+                  try {
+                    const registerResponse = await api.post('/auth/register', {
+                      fullName: 'Test Student',
+                      login: 'student',
+                      password: 'student123',
+                    });
+                    const { user, role, accessToken, refreshToken } = registerResponse.data;
+                    login({ ...user, role }, accessToken, refreshToken);
+                    showToast('Registration successful', 'success');
+                    navigate('/student/dashboard');
+                  } catch (regError) {
+                    showToast('Auto-login failed', 'error');
+                  }
+                } finally {
+                  setLoading(false);
+                }
+              }}
+              className="px-3 py-2 text-xs bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+              disabled={loading}
+            >
+              👤 Student
+            </button>
           </div>
         </div>
 

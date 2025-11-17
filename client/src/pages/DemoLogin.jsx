@@ -9,14 +9,6 @@ const DemoLogin = () => {
 
   const roles = [
     {
-      id: 'owner',
-      title: 'Owner',
-      description: 'System administrator with full access to manage admins and view all statistics',
-      icon: <Shield className="w-12 h-12" />,
-      color: 'purple',
-      path: '/owner/login',
-    },
-    {
       id: 'admin',
       title: 'Admin',
       description: 'Create and manage tests, generate keys, and track student results',
@@ -56,7 +48,7 @@ const DemoLogin = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {roles.map((role, index) => (
             <motion.div
               key={role.id}

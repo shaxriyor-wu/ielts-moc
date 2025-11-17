@@ -31,8 +31,8 @@ def admin_login(request):
     if serializer.is_valid():
         user = serializer.validated_data['user']
         
-        # Check if user is admin or owner
-        if not (user.is_admin() or user.is_owner()):
+        # Check if user is admin
+        if not user.is_admin():
             return Response(
                 {'error': 'Access denied. Admin role required.'},
                 status=status.HTTP_403_FORBIDDEN

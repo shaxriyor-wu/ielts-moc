@@ -190,5 +190,46 @@ export class StudentController {
       res.status(400).json({ error: error.message });
     }
   }
+
+  static async enterTestCode(req, res, next) {
+    try {
+      const { testCode } = req.body;
+      const result = await StudentService.enterTestCode(req.user.id, testCode);
+      res.json(result);
+    } catch (error) {
+      logger.error('Enter test code error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  static async checkQueueStatus(req, res, next) {
+    try {
+      const status = await StudentService.checkQueueStatus(req.user.id);
+      res.json(status);
+    } catch (error) {
+      logger.error('Check queue status error:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async startTest(req, res, next) {
+    try {
+      const result = await StudentService.startTest(req.user.id);
+      res.json(result);
+    } catch (error) {
+      logger.error('Start test error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  }
+
+  static async leaveQueue(req, res, next) {
+    try {
+      const result = await StudentService.leaveQueue(req.user.id);
+      res.json(result);
+    } catch (error) {
+      logger.error('Leave queue error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
 

@@ -2,18 +2,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useProtectedRoute } from '../hooks/useProtectedRoute';
 
-import OwnerLayout from '../layouts/OwnerLayout';
 import AdminLayout from '../layouts/AdminLayout';
 
 import Login from '../pages/Login';
-
-import OwnerLogin from '../pages/owner/OwnerLogin';
-import OwnerDashboard from '../pages/owner/OwnerDashboard';
-import AdminManagement from '../pages/owner/AdminManagement';
-import AdminDetail from '../pages/owner/AdminDetail';
-import OwnerStudents from '../pages/owner/OwnerStudents';
-import OwnerTests from '../pages/owner/OwnerTests';
-import OwnerSettings from '../pages/owner/OwnerSettings';
 
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminDashboard from '../pages/admin/AdminDashboard';
@@ -53,9 +44,8 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   }
 
   if (requiredRole && user.role !== requiredRole) {
-    if (user.role === 'owner') return <Navigate to="/owner/dashboard" replace />;
     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
-    if (user.role === 'student') return <Navigate to="/exam-access" replace />;
+    if (user.role === 'student') return <Navigate to="/student/dashboard" replace />;
     return <Navigate to="/" replace />;
   }
 
@@ -70,9 +60,8 @@ const PublicRoute = ({ children, redirectIfAuth }) => {
   }
 
   if (user && redirectIfAuth) {
-    if (user.role === 'owner') return <Navigate to="/owner/dashboard" replace />;
     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
-    if (user.role === 'student') return <Navigate to="/exam-access" replace />;
+    if (user.role === 'student') return <Navigate to="/student/dashboard" replace />;
   }
 
   return children;
@@ -82,30 +71,6 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-
-      <Route
-        path="/owner/login"
-        element={
-          <PublicRoute redirectIfAuth>
-            <OwnerLogin />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path="/owner"
-        element={
-          <ProtectedRoute requiredRole="owner">
-            <OwnerLayout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="dashboard" element={<OwnerDashboard />} />
-        <Route path="admins" element={<AdminManagement />} />
-        <Route path="admins/:id" element={<AdminDetail />} />
-        <Route path="students" element={<OwnerStudents />} />
-        <Route path="tests" element={<OwnerTests />} />
-        <Route path="settings" element={<OwnerSettings />} />
-      </Route>
 
       <Route
         path="/admin/login"

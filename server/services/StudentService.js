@@ -2,6 +2,7 @@ import { TestKeyModel } from '../models/TestKey.js';
 import { Test } from '../models/Test.js';
 import { Attempt } from '../models/Attempt.js';
 import { Student } from '../models/Student.js';
+import { Queue } from '../models/Queue.js';
 import { generateAccessToken, generateRefreshToken } from '../config/jwt.js';
 import logger from '../utils/logger.js';
 
@@ -323,6 +324,144 @@ export class StudentService {
     }
 
     return await Attempt.submit(attemptId);
+  }
+
+  static async enterTestCode(studentId, testCode) {
+    const db = await import('../config/database.js').then(m => m.loadDb());
+    const keyRecord = db.testKeys.find(k => k.key === testCode.toUpperCase().trim());
+    
+    if (!keyRecord) {
+      throw new Error('Invalid test code');
+    }
+
+    const test = db.tests.find(t => t.id === keyRecord.testId);
+    if (!test) {
+      throw new Error('Test not found');
+    }
+
+    // Check if student is already in queue
+    let queueEntry = await Queue.findByStudentId(studentId);
+    
+    if (queueEntry && queueEntry.status === 'started') {
+      throw new Error('Test already started');
+    }
+
+    if (!queueEntry) {
+      queueEntry = await Queue.create({
+        studentId,
+        testCode: testCode.toUpperCase().trim(),
+        testId: test.id
+      });
+    }
+
+    // Check if test is active
+    if (test.isActive) {
+      queueEntry = await Queue.update(queueEntry.id, {
+        status: 'assigned',
+        assignedAt: new Date().toISOString()
+      });
+    }
+
+    return {
+      status: queueEntry.status,
+      queueId: queueEntry.id,
+      testCode: queueEntry.testCode,
+      joinedAt: queueEntry.joinedAt
+    };
+  }
+
+  static async checkQueueStatus(studentId) {
+    const queueEntry = await Queue.findByStudentId(studentId);
+    
+    if (!queueEntry) {
+      return { status: 'none' };
+    }
+
+    // Check for timeout (10 minutes)
+    const joinedAt = new Date(queueEntry.joinedAt);
+    const now = new Date();
+    const minutesWaiting = (now - joinedAt) / (1000 * 60);
+
+    if (minutesWaiting >= 10 && queueEntry.status !== 'started' && queueEntry.status !== 'left') {
+      await Queue.markAsTimeout(studentId);
+      return { status: 'timeout', message: 'Test did not start within 10 minutes' };
+    }
+
+    const db = await import('../config/database.js').then(m => m.loadDb());
+    const test = db.tests.find(t => t.id === queueEntry.testId);
+
+    // If test is now active and student is waiting/assigned, move to preparation
+    if (test && test.isActive && (queueEntry.status === 'waiting' || queueEntry.status === 'assigned')) {
+      queueEntry = await Queue.update(queueEntry.id, {
+        status: 'preparation',
+        preparationStartedAt: new Date().toISOString()
+      });
+    }
+
+    // Calculate preparation time remaining (60 seconds)
+    let preparationTimeRemaining = null;
+    if (queueEntry.status === 'preparation' && queueEntry.preparationStartedAt) {
+      const prepStart = new Date(queueEntry.preparationStartedAt);
+      const elapsed = (now - prepStart) / 1000; // seconds
+      preparationTimeRemaining = Math.max(0, 60 - elapsed);
+      
+      if (preparationTimeRemaining <= 0) {
+        queueEntry = await Queue.update(queueEntry.id, {
+          status: 'started',
+          startedAt: new Date().toISOString()
+        });
+      }
+    }
+
+    return {
+      status: queueEntry.status,
+      queueId: queueEntry.id,
+      testCode: queueEntry.testCode,
+      joinedAt: queueEntry.joinedAt,
+      preparation_time_remaining: preparationTimeRemaining ? Math.floor(preparationTimeRemaining) : null
+    };
+  }
+
+  static async startTest(studentId) {
+    const queueEntry = await Queue.findByStudentId(studentId);
+    
+    if (!queueEntry) {
+      throw new Error('Not in queue');
+    }
+
+    if (queueEntry.status === 'started') {
+      return { status: 'started', queueId: queueEntry.id };
+    }
+
+    const db = await import('../config/database.js').then(m => m.loadDb());
+    const test = db.tests.find(t => t.id === queueEntry.testId);
+
+    if (!test || !test.isActive) {
+      throw new Error('Test is not active');
+    }
+
+    // Update queue status to started
+    await Queue.update(queueEntry.id, {
+      status: 'started',
+      startedAt: new Date().toISOString()
+    });
+
+    return { status: 'started', queueId: queueEntry.id };
+  }
+
+  static async leaveQueue(studentId) {
+    const queueEntry = await Queue.findByStudentId(studentId);
+    
+    if (!queueEntry) {
+      return { success: true, message: 'Not in queue' };
+    }
+
+    if (queueEntry.status === 'started') {
+      throw new Error('Cannot leave - test already started');
+    }
+
+    await Queue.markAsLeft(studentId);
+    return { success: true, message: 'Left queue successfully' };
   }
 }
 

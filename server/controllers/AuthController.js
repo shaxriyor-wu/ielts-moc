@@ -1,4 +1,3 @@
-import { Owner } from '../models/Owner.js';
 import { Admin } from '../models/Admin.js';
 import { Student } from '../models/Student.js';
 import { generateAccessToken, generateRefreshToken } from '../config/jwt.js';
@@ -18,34 +17,22 @@ export class AuthController {
 
       logger.info(`Login attempt: ${login}`);
       
-      const owner = await Owner.findByLogin(login) || await Owner.findByEmail(login);
-      if (owner) {
-        logger.info(`Owner found: ${owner.id}`);
-        const isValid = await Owner.verifyPassword(owner, password);
-        logger.info(`Password valid: ${isValid}`);
-        if (isValid) {
-          user = { id: owner.id, email: owner.email || owner.login, name: owner.name };
-          role = 'owner';
-          await Owner.updateLastLogin(owner.id);
-        }
-      }
-
-      if (!user) {
-        const admin = await Admin.findByLogin(login) || await Admin.findByEmail(login);
-        if (admin) {
-          logger.info(`Admin found: ${admin.id}, isActive: ${admin.isActive}`);
-          if (admin.isActive) {
-            const isValid = await Admin.verifyPassword(admin, password);
-            logger.info(`Admin password valid: ${isValid}`);
-            if (isValid) {
-              user = { id: admin.id, email: admin.email || admin.login, name: admin.name };
-              role = 'admin';
-              await Admin.updateLastLogin(admin.id);
-            }
+      // Try admin first
+      const admin = await Admin.findByLogin(login) || await Admin.findByEmail(login);
+      if (admin) {
+        logger.info(`Admin found: ${admin.id}, isActive: ${admin.isActive}`);
+        if (admin.isActive) {
+          const isValid = await Admin.verifyPassword(admin, password);
+          logger.info(`Admin password valid: ${isValid}`);
+          if (isValid) {
+            user = { id: admin.id, email: admin.email || admin.login, name: admin.name };
+            role = 'admin';
+            await Admin.updateLastLogin(admin.id);
           }
         }
       }
 
+      // Try student if admin not found
       if (!user) {
         const student = await Student.findByLogin(login) || await Student.findByEmail(login);
         if (student) {

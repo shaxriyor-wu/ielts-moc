@@ -23,6 +23,10 @@ router.post('/answers/listening', authenticate, requireStudent, StudentControlle
 router.post('/answers/writing', authenticate, requireStudent, StudentController.saveWriting);
 router.post('/highlights', authenticate, requireStudent, StudentController.saveHighlights);
 router.post('/submit', authenticate, requireStudent, StudentController.submitTest);
+router.post('/enter-test-code', authenticate, requireStudent, StudentController.enterTestCode);
+router.get('/queue-status', authenticate, requireStudent, StudentController.checkQueueStatus);
+router.post('/start-test', authenticate, requireStudent, StudentController.startTest);
+router.post('/leave-queue', authenticate, requireStudent, StudentController.leaveQueue);
 
 export default router;
 

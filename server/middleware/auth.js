@@ -18,14 +18,6 @@ export const authenticate = (req, res, next) => {
   }
 };
 
-export const requireOwner = (req, res, next) => {
-  if (req.user && req.user.role === 'owner') {
-    next();
-  } else {
-    res.status(403).json({ error: 'Owner access required' });
-  }
-};
-
 export const requireAdmin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();

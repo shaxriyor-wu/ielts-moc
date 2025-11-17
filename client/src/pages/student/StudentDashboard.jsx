@@ -67,10 +67,22 @@ const StudentDashboard = () => {
       if (status === 'waiting' || status === 'assigned' || status === 'preparation') {
         setQueueStatus(response.data);
         setShowWaitingRoom(true);
+      } else if (status === 'started') {
+        // Test already started, redirect to test
+        window.location.href = '/student/listening';
+      } else if (status === 'timeout') {
+        // Timeout occurred, show message
+        showToast('Test did not start within 10 minutes', 'error');
+        setQueueStatus(null);
+        setShowWaitingRoom(false);
+      } else {
+        setQueueStatus(null);
+        setShowWaitingRoom(false);
       }
     } catch (error) {
       // No active queue entry
       setQueueStatus(null);
+      setShowWaitingRoom(false);
     }
   };
 
@@ -79,10 +91,13 @@ const StudentDashboard = () => {
       const response = await studentApi.enterTestCode(testCode);
       setShowEnterTestModal(false);
       
-      if (response.data.status === 'waiting') {
+      if (response.data.status === 'waiting' || response.data.status === 'assigned' || response.data.status === 'preparation') {
         setQueueStatus(response.data);
         setShowWaitingRoom(true);
         showToast('Test Starting Soon - Please Wait', 'info');
+      } else if (response.data.status === 'started') {
+        // Test already started, redirect to test
+        window.location.href = '/student/listening';
       }
     } catch (error) {
       showToast(error.response?.data?.error || 'Invalid Test Code - Please Try Again', 'error');

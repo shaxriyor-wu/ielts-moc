@@ -7,6 +7,7 @@ export const studentApi = {
   enterTestCode: (testCode) => api.post('/student/enter-test-code', { testCode }),
   checkQueueStatus: () => api.get('/student/queue-status'),
   startTest: () => api.post('/student/start-test'),
+  leaveQueue: () => api.post('/student/leave-queue'),
   // Legacy endpoints
   accessTest: (testKey, fullName) => api.post('/student/access', { testKey, fullName }),
   getTest: () => api.get('/student/test'),

@@ -4,13 +4,11 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
-import ownerRoutes from './routes/owner.js';
 import adminRoutes from './routes/admin.js';
 import studentRoutes from './routes/student.js';
 import mocRoutes from './routes/moc.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
 import logger from './utils/logger.js';
-import { Owner } from './models/Owner.js';
 
 dotenv.config();
 
@@ -27,7 +25,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use('/api/auth', authRoutes);
-app.use('/api/owner', ownerRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin', mocRoutes);
 app.use('/api/student', studentRoutes);
@@ -41,34 +38,27 @@ app.use(errorHandler);
 
 const initializeDatabase = async () => {
   try {
-    const ownerEmail = process.env.OWNER_EMAIL || 'owner@example.com';
-    const ownerPassword = process.env.OWNER_PASSWORD || 'owner123';
+    // Initialize default admin if needed
+    const { Admin } = await import('./models/Admin.js');
+    const adminEmail = process.env.ADMIN_EMAIL || 'admin@example.com';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
 
-    const existing = await Owner.findByEmail(ownerEmail) || await Owner.findByLogin('owner');
+    const existing = await Admin.findByEmail(adminEmail) || await Admin.findByLogin('admin');
     if (!existing) {
-      await Owner.create({
-        email: ownerEmail,
-        login: 'owner',
-        password: ownerPassword,
-        name: 'System Owner'
+      await Admin.create({
+        email: adminEmail,
+        login: 'admin',
+        password: adminPassword,
+        name: 'System Admin',
+        isActive: true
       });
-      logger.info('Owner account created');
-      console.log('✅ Owner account created');
-      console.log('📧 Login: owner');
-      console.log('🔑 Password: owner123');
+      logger.info('Default admin account created');
+      console.log('✅ Default admin account created');
+      console.log('📧 Login: admin');
+      console.log('🔑 Password: admin123');
     } else {
-      const db = await import('./config/database.js').then(m => m.loadDb());
-      const owner = db.owners.find(o => o.id === existing.id);
-      if (owner && !owner.login) {
-        owner.login = 'owner';
-        await import('./config/database.js').then(m => m.saveDb(db));
-        logger.info('Owner login field added');
-        console.log('✅ Owner login field added');
-      }
-      logger.info('Owner account already exists');
-      console.log('ℹ️  Owner account already exists');
-      console.log('📧 Login: owner');
-      console.log('🔑 Password: owner123');
+      logger.info('Admin account already exists');
+      console.log('ℹ️  Admin account already exists');
     }
   } catch (error) {
     logger.error('Database initialization error:', error);
