@@ -6,7 +6,6 @@ class CustomUser(AbstractUser):
     """Custom User model extending Django's AbstractUser with role field."""
     
     ROLE_CHOICES = [
-        ('owner', 'Owner'),
         ('admin', 'Admin'),
         ('student', 'Student'),
     ]
@@ -27,9 +26,6 @@ class CustomUser(AbstractUser):
     
     def __str__(self):
         return f"{self.username} ({self.role})"
-    
-    def is_owner(self):
-        return self.role == 'owner'
     
     def is_admin(self):
         return self.role == 'admin'

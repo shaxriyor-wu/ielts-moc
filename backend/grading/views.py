@@ -9,43 +9,43 @@ from .services import grade_test
 
 
 def check_is_admin(user):
-    """Helper function to check if user is admin or owner."""
+    """Helper function to check if user is admin."""
     if not user:
         return False
     
-    # Check if user is authenticated (is_authenticated is a property, not attribute)
+    # Check if user is authenticated
     try:
-        if not getattr(user, 'is_authenticated', False):
+        if not user.is_authenticated:
             return False
     except (AttributeError, TypeError):
         return False
     
-    # First try to use the method if available
+    # Check if user is AnonymousUser
+    if hasattr(user, 'is_anonymous') and user.is_anonymous:
+        return False
+    
+    # Reload user from database to ensure we have latest role (most reliable)
     try:
-        if hasattr(user, 'is_admin') and callable(user.is_admin):
-            if user.is_admin():
+        if hasattr(user, 'id') and user.id:
+            db_user = CustomUser.objects.select_related().get(id=user.id)
+            if db_user.role == 'admin':
                 return True
-        
-        if hasattr(user, 'is_owner') and callable(user.is_owner):
-            if user.is_owner():
-                return True  # Owners can access admin endpoints
-    except (AttributeError, TypeError):
+    except (CustomUser.DoesNotExist, AttributeError, ValueError, TypeError):
         pass
     
-    # Check role attribute directly
+    # Fallback: Check role attribute directly
     try:
-        if hasattr(user, 'role') and user.role in ['admin', 'owner']:
+        if hasattr(user, 'role') and user.role == 'admin':
             return True
     except (AttributeError, TypeError):
         pass
     
-    # Reload user from database to ensure we have latest role
+    # Fallback: Try to use the method if available
     try:
-        if hasattr(user, 'id') and user.id:
-            db_user = CustomUser.objects.get(id=user.id)
-            if db_user.role in ['admin', 'owner']:
+        if hasattr(user, 'is_admin') and callable(user.is_admin):
+            if user.is_admin():
                 return True
-    except (CustomUser.DoesNotExist, AttributeError, ValueError, TypeError):
+    except (AttributeError, TypeError):
         pass
     
     return False
