@@ -12,8 +12,17 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
+      // Always set Authorization header, even for FormData requests
       config.headers.Authorization = `Bearer ${token}`;
     }
+    
+    // For FormData, don't set Content-Type - let axios set it with boundary
+    // This ensures the Authorization header is preserved
+    if (config.data instanceof FormData) {
+      // Remove any manually set Content-Type to let axios handle it
+      delete config.headers['Content-Type'];
+    }
+    
     return config;
   },
   (error) => Promise.reject(error)
@@ -30,6 +39,16 @@ api.interceptors.response.use(
       localStorage.removeItem('user');
       window.location.href = '/';
       return Promise.reject(error);
+    }
+    
+    // Log 403 errors for debugging (admin permission issues)
+    if (status === 403) {
+      console.error('403 Forbidden:', {
+        url: error.config?.url,
+        method: error.config?.method,
+        message: error.response?.data?.error || 'Access denied',
+        hasToken: !!localStorage.getItem('accessToken'),
+      });
     }
     
     // Only redirect to error pages for critical server errors

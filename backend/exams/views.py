@@ -31,11 +31,25 @@ def check_is_admin(user):
     except (AttributeError, TypeError):
         return False
     
-    # Always reload user from database to ensure we have latest role and all attributes
+    # First try using the is_admin() method if available (most efficient)
+    try:
+        if hasattr(user, 'is_admin') and callable(user.is_admin):
+            return user.is_admin()
+    except (AttributeError, TypeError):
+        pass
+    
+    # Then check if role attribute exists on the user object (might already be loaded)
+    try:
+        if hasattr(user, 'role') and user.role == 'admin':
+            return True
+    except (AttributeError, TypeError):
+        pass
+    
+    # If role not found or not admin, reload user from database to ensure we have latest role
     # This is the most reliable method and follows Django best practices
     try:
         if hasattr(user, 'id') and user.id:
-            # Use get() with select_related to ensure we get a fresh instance
+            # Use get() to ensure we get a fresh instance with all attributes
             db_user = CustomUser.objects.get(id=user.id)
             # Verify the role is 'admin'
             return db_user.role == 'admin'
@@ -43,7 +57,7 @@ def check_is_admin(user):
         # Log error in production, but don't expose to user
         import logging
         logger = logging.getLogger(__name__)
-        logger.error(f'Error checking admin status: {e}')
+        logger.error(f'Error checking admin status for user {getattr(user, "id", "unknown")}: {e}')
         return False
     
     return False

@@ -23,9 +23,9 @@ export const adminApi = {
     if (taskNumber) {
       formData.append('task_number', taskNumber);
     }
-    return api.post('/admin/tests/upload', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
+    // Don't set Content-Type manually - axios will set it automatically with boundary
+    // This ensures Authorization header is still included
+    return api.post('/admin/tests/upload', formData);
   },
   // Answers
   createAnswers: (variantId, answers) => api.post('/admin/tests/answers', {

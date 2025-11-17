@@ -23,7 +23,13 @@ class CustomJWTAuthentication(JWTAuthentication):
                 raise InvalidToken('Token contained no recognizable user identification')
             
             # Load user from database to ensure all attributes are current
+            # Use select_related/prefetch_related if needed, but for now just get the user
             user = CustomUser.objects.get(id=user_id)
+            
+            # Ensure the user object has the role attribute properly set
+            # Refresh from database to avoid any caching issues
+            user.refresh_from_db()
+            
             return user
         except CustomUser.DoesNotExist:
             raise InvalidToken('User not found')
