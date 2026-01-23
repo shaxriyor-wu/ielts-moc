@@ -30,7 +30,7 @@ app.use('/api/admin', mocRoutes);
 app.use('/api/student', studentRoutes);
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'IELTS Exam Platform API' });
+  res.json({ status: 'ok', message: 'CD IELTS EMPIRE API' });
 });
 
 app.use(notFound);

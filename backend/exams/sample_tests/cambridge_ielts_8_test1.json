@@ -1,0 +1,850 @@
+{
+    "variant_name": "Cambridge IELTS 8 - Test 1",
+    "listening": {
+        "audio_url": "audio_files/listening.m4a",
+        "duration_minutes": 40,
+        "total_questions": 40,
+        "sections": [
+            {
+                "section_number": 1,
+                "title": "Section 1: Questions 1-10",
+                "context": "Example: In the library George found",
+                "questions": [
+                    {
+                        "id": 1,
+                        "type": "multiple",
+                        "question": "1. In the lobby of the library George saw",
+                        "options": [
+                            "A. a group playing music.",
+                            "B. a display of instruments.",
+                            "C. a video about the festival."
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "type": "multiple",
+                        "question": "2. George wants to sit at the back so they can",
+                        "options": [
+                            "A. see well.",
+                            "B. hear clearly.",
+                            "C. pay less."
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "type": "fill",
+                        "question": "ADDRESS: 3 .................., Wesleton"
+                    },
+                    {
+                        "id": 4,
+                        "type": "fill",
+                        "question": "POSTCODE: 4 ..................."
+                    },
+                    {
+                        "id": 5,
+                        "type": "fill",
+                        "question": "TELEPHONE: 5 ..................."
+                    },
+                    {
+                        "id": 6,
+                        "type": "fill",
+                        "question": "17 June | Singer (price includes 6 ................... in the garden) | £6.00"
+                    },
+                    {
+                        "id": 7,
+                        "type": "fill",
+                        "question": "22 June | 7 ................... (Anna Ventura) | £7.00"
+                    },
+                    {
+                        "id": 8,
+                        "type": "fill",
+                        "question": "23 June | Spanish Dance & Guitar Concert | Price per ticket: 8 £ ..................."
+                    },
+                    {
+                        "id": 9,
+                        "type": "fill",
+                        "question": "23 June | Spanish Dance & Guitar Concert | No. of tickets: 9 ..................."
+                    },
+                    {
+                        "id": 10,
+                        "type": "fill",
+                        "question": "NB Children/Students/Senior Citizens have 10 ................... discount on all tickets."
+                    }
+                ]
+            },
+            {
+                "section_number": 2,
+                "title": "Section 2: Questions 11-20",
+                "context": "The Dinosaur Museum",
+                "questions": [
+                    {
+                        "id": 11,
+                        "type": "fill",
+                        "question": "The museum closes at 11 ................... p.m. on Mondays."
+                    },
+                    {
+                        "id": 12,
+                        "type": "fill",
+                        "question": "The museum is not open on 12 ..................."
+                    },
+                    {
+                        "id": 13,
+                        "type": "fill",
+                        "question": "School groups are met by tour guides in the 13 ..................."
+                    },
+                    {
+                        "id": 14,
+                        "type": "fill",
+                        "question": "The whole visit takes 90 minutes, including 14 ................... minutes for the guided tour."
+                    },
+                    {
+                        "id": 15,
+                        "type": "fill",
+                        "question": "There are 15 ................... behind the museum where students can have lunch."
+                    },
+                    {
+                        "id": 16,
+                        "type": "multiple",
+                        "question": "16-18. Choose THREE letters, A-G. Which THREE things can students have with them in the museum?",
+                        "options": [
+                            "A. food",
+                            "B. water",
+                            "C. cameras",
+                            "D. books",
+                            "E. bags",
+                            "F. pens",
+                            "G. worksheets"
+                        ]
+                    },
+                    {
+                        "id": 17,
+                        "type": "multiple",
+                        "question": "(Question 16-18 continued)",
+                        "options": [
+                            "A. food",
+                            "B. water",
+                            "C. cameras",
+                            "D. books",
+                            "E. bags",
+                            "F. pens",
+                            "G. worksheets"
+                        ]
+                    },
+                    {
+                        "id": 18,
+                        "type": "multiple",
+                        "question": "(Question 16-18 continued)",
+                        "options": [
+                            "A. food",
+                            "B. water",
+                            "C. cameras",
+                            "D. books",
+                            "E. bags",
+                            "F. pens",
+                            "G. worksheets"
+                        ]
+                    },
+                    {
+                        "id": 19,
+                        "type": "multiple",
+                        "question": "19-20. Choose TWO letters, A-E. Which TWO activities can students do after the tour at present?",
+                        "options": [
+                            "A. build model dinosaurs",
+                            "B. watch films",
+                            "C. draw pictures",
+                            "D. find dinosaur eggs",
+                            "E. play computer games"
+                        ]
+                    },
+                    {
+                        "id": 20,
+                        "type": "multiple",
+                        "question": "(Question 19-20 continued)",
+                        "options": [
+                            "A. build model dinosaurs",
+                            "B. watch films",
+                            "C. draw pictures",
+                            "D. find dinosaur eggs",
+                            "E. play computer games"
+                        ]
+                    }
+                ]
+            },
+            {
+                "section_number": 3,
+                "title": "Section 3: Questions 21-30",
+                "context": "Field Trip Proposal",
+                "questions": [
+                    {
+                        "id": 21,
+                        "type": "multiple",
+                        "question": "21. The tutor thinks that Sandra's proposal",
+                        "options": [
+                            "A. should be re-ordered in some parts.",
+                            "B. needs a contents page.",
+                            "C. ought to include more information."
+                        ]
+                    },
+                    {
+                        "id": 22,
+                        "type": "multiple",
+                        "question": "22. The proposal would be easier to follow if Sandra",
+                        "options": [
+                            "A. inserted subheadings.",
+                            "B. used more paragraphs.",
+                            "C. shortened her sentences."
+                        ]
+                    },
+                    {
+                        "id": 23,
+                        "type": "multiple",
+                        "question": "23. What was the problem with the formatting on Sandra's proposal?",
+                        "options": [
+                            "A. Separate points were not clearly identified.",
+                            "B. The headings were not always clear.",
+                            "C. Page numbering was not used in an appropriate way."
+                        ]
+                    },
+                    {
+                        "id": 24,
+                        "type": "multiple",
+                        "question": "24. Sandra became interested in visiting the Navajo National Park through",
+                        "options": [
+                            "A. articles she read.",
+                            "B. movies she saw as a child.",
+                            "C. photographs she found on the internet."
+                        ]
+                    },
+                    {
+                        "id": 25,
+                        "type": "multiple",
+                        "question": "25-27. Which THREE topics does Sandra agree to include in the proposal? Choose THREE letters, A-G.",
+                        "options": [
+                            "A. climate change",
+                            "B. field trip activities",
+                            "C. geographical features",
+                            "D. impact of tourism",
+                            "E. myths and legends",
+                            "F. plant and animal life",
+                            "G. social history"
+                        ]
+                    },
+                    {
+                        "id": 26,
+                        "type": "multiple",
+                        "question": "(Question 25-27 continued)",
+                        "options": [
+                            "A. climate change",
+                            "B. field trip activities",
+                            "C. geographical features",
+                            "D. impact of tourism",
+                            "E. myths and legends",
+                            "F. plant and animal life",
+                            "G. social history"
+                        ]
+                    },
+                    {
+                        "id": 27,
+                        "type": "multiple",
+                        "question": "(Question 25-27 continued)",
+                        "options": [
+                            "A. climate change",
+                            "B. field trip activities",
+                            "C. geographical features",
+                            "D. impact of tourism",
+                            "E. myths and legends",
+                            "F. plant and animal life",
+                            "G. social history"
+                        ]
+                    },
+                    {
+                        "id": 28,
+                        "type": "fill",
+                        "question": "28. The tribal park covers .................... hectares."
+                    },
+                    {
+                        "id": 29,
+                        "type": "fill",
+                        "question": "29. Sandra suggests that they share the .................... for transport."
+                    },
+                    {
+                        "id": 30,
+                        "type": "fill",
+                        "question": "30. She says they could also explore the local .................... ."
+                    }
+                ]
+            },
+            {
+                "section_number": 4,
+                "title": "Section 4: Questions 31-40",
+                "context": "Geography",
+                "questions": [
+                    {
+                        "id": 31,
+                        "type": "fill",
+                        "question": "31. Studying geography helps us to understand: the effects of different processes on the .................... of the Earth"
+                    },
+                    {
+                        "id": 32,
+                        "type": "fill",
+                        "question": "32. the dynamic between .................... and population"
+                    },
+                    {
+                        "id": 33,
+                        "type": "fill",
+                        "question": "33. Two main branches of study: physical features and human lifestyles and their ...................."
+                    },
+                    {
+                        "id": 34,
+                        "type": "fill",
+                        "question": "34. Specific study areas: biophysical, topographic, political, social, economic, historical and .................... geography, and also cartography"
+                    },
+                    {
+                        "id": 35,
+                        "type": "fill",
+                        "question": "35. Key point: geography helps us to understand our surroundings and the associated ...................."
+                    },
+                    {
+                        "id": 36,
+                        "type": "fill",
+                        "question": "36. What do geographers do? find data – e.g. conduct censuses, collect information in the form of .................... using computer and satellite technology"
+                    },
+                    {
+                        "id": 37,
+                        "type": "fill",
+                        "question": "37. analyse data – identify ...................., e.g. cause and effect"
+                    },
+                    {
+                        "id": 38,
+                        "type": "fill",
+                        "question": "38. publish findings in form of: a) maps - easy to carry, can show physical features of large and small areas, BUT a two-dimensional map will always have some ...................."
+                    },
+                    {
+                        "id": 39,
+                        "type": "fill",
+                        "question": "39. b) aerial photos - can show vegetation problems, .................... density, ocean floor etc."
+                    },
+                    {
+                        "id": 40,
+                        "type": "fill",
+                        "question": "40. c) Landsat pictures sent to receiving stations - used for monitoring .................... conditions etc."
+                    }
+                ]
+            }
+        ]
+    },
+    "listening_answers": {
+        "1": "Sarah Johnson",
+        "2": "555-0123",
+        "3": "DX-3000",
+        "4": "June 15",
+        "5": "freezes",
+        "6": "4532 1234 5678 9012",
+        "7": "03/25",
+        "8": "S. Johnson",
+        "9": "remote control",
+        "10": "3",
+        "11": "B",
+        "12": "C",
+        "13": "0.50",
+        "14": "B",
+        "15": "10pm",
+        "16": "9am",
+        "17": "Sundays",
+        "18": "student",
+        "19": "3",
+        "20": "help",
+        "21": "C",
+        "22": "50",
+        "23": "A",
+        "24": "March 20",
+        "25": "SPSS",
+        "26": "A",
+        "27": "graphs",
+        "28": "20",
+        "29": "500",
+        "30": "positive",
+        "31": "3",
+        "32": "renewable",
+        "33": "B",
+        "34": "water",
+        "35": "organic",
+        "36": "B",
+        "37": "50",
+        "38": "solar-powered",
+        "39": "efficiency",
+        "40": "smart grid"
+    },
+    "reading": {
+        "duration_minutes": 60,
+        "total_questions": 40,
+        "passages": [
+            {
+                "passage_number": 1,
+                "title": "Passage 1: A Chronicle of Timekeeping",
+                "text": "Our conception of time depends on the way we measure it\n\n**A** According to archaeological evidence, at least 5,000 years ago, and long before the advent of the Roman Empire, the Babylonians began to measure time, introducing calendars to co-ordinate communal activities, to plan the shipment of goods and, in particular, to regulate planting and harvesting. They based their calendars on three natural cycles: the solar day, marked by the successive periods of light and darkness as the earth rotates on its axis; the lunar month, following the phases of the moon as it orbits the earth; and the solar year, defined by the changing seasons that accompany our planet's revolution around the sun.\n\n**B** Before the invention of artificial light, the moon had greater social impact. And, for those living near the equator in particular, its waxing and waning was more conspicuous than the passing of the seasons. Hence, the calendars that were developed at the lower latitudes were influenced more by the lunar cycle than by the solar year. In more northern climes, however, where seasonal agriculture was practised, the solar year became more crucial. As the Roman Empire expanded northward, it organised its activity chart for the most part around the solar year.\n\n**C** Centuries before the Roman Empire, the Egyptians had formulated a municipal calendar having 12 months of 30 days, with five days added to approximate the solar year. Each period of ten days was marked by the appearance of specific groups of stars called decans. At the rise of the star Sirius just before sunrise, which occurred around the all-important annual flooding of the Nile, 12 decans could be seen spanning the heavens. The cosmic significance the Egyptians placed in the 12 decans led them to develop a system in which each interval of darkness (and later, each interval of daylight) was divided into a dozen equal parts. These periods became known as temporal hours because their duration varied according to the changing length of days and nights with the passing of the seasons. Summer hours were long, winter ones short; only at the spring and autumn equinoxes were the hours of daylight and darkness equal. Temporal hours, which were first adopted by the Greeks and then the Romans, who disseminated them through Europe, remained in use for more than 2,500 years.\n\n**D** In order to track temporal hours during the day, inventors created sundials, which indicate time by the length or direction of the sun's shadow. The sundial's counterpart, the water clock, was designed to measure temporal hours at night. One of the first water clocks was a basin with a small hole near the bottom through which the water dripped out. The falling water level denoted the passing hour as it dipped below hour lines inscribed on the inner surface. Although these devices performed satisfactorily around the Mediterranean, they could not always be depended on in the cloudy and often freezing weather of northern Europe.\n\n**E** The advent of the mechanical clock meant that although it could be adjusted to maintain temporal hours, it was naturally suited to keeping equal ones. With these, however, arose the question of when to begin counting, and so, in the early 14th century, a number of systems evolved. The schemes that divided the day into 24 equal parts varied according to the start of the count: Italian hours began at sunset, Babylonian hours at sunrise, astronomical hours at midday and 'great clock' hours, used for some large public clocks in Germany, at midnight. Eventually these were superseded by 'small clock', or French, hours, which split the day into two 12-hour periods commencing at midnight.\n\n**F** The earliest recorded weight-driven mechanical clock was built in 1283 in Bedfordshire in England. The revolutionary aspect of this new timekeeper was neither the descending weight that provided its motive force nor the gear wheels (which had been around for at least 1,300 years) that transferred the power; it was the part called the escapement. In the early 1400s came the invention of the coiled spring or fusee which maintained constant force to the gear wheels of the timekeeper despite the changing tension of its mainspring. By the 16th century, a pendulum clock had been devised, but the pendulum swung in a large arc and thus was not very efficient.\n\n**G** To address this, a variation on the original escapement was invented in 1670, in England. It was called the anchor escapement, which was a lever-based device shaped like a ship's anchor. The motion of a pendulum rocks this device so that it catches and then releases each tooth of the escape wheel, in turn allowing it to turn a precise amount. Unlike the original form used in early pendulum clocks, the anchor escapement permitted the pendulum to travel in a very small arc. Moreover, this invention allowed the use of a long pendulum which could beat once a second and thus led to the development of a new floor-standing case design, which became known as the grandfather clock.\n\n**H** Today, highly accurate timekeeping instruments set the beat for most electronic devices. Nearly all computers contain a quartz-crystal clock to regulate their operation. Moreover, not only do time signals beamed down from Global Positioning System satellites calibrate the functions of precision navigation equipment, they do so as well for mobile phones, instant stock-trading systems and nationwide power-distribution grids. So integral have these time-based technologies become to day-to-day existence that our dependency on them is recognised only when they fail to work.",
+                "questions": [
+                    {
+                        "id": 1,
+                        "type": "multiple",
+                        "question": "1. a description of an early timekeeping invention affected by cold temperatures",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F",
+                            "G",
+                            "H"
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "type": "multiple",
+                        "question": "2. an explanation of the importance of geography in the development of the calendar in farming communities",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F",
+                            "G",
+                            "H"
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "type": "multiple",
+                        "question": "3. a description of the origins of the pendulum clock",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F",
+                            "G",
+                            "H"
+                        ]
+                    },
+                    {
+                        "id": 4,
+                        "type": "multiple",
+                        "question": "4. details of the simultaneous efforts of different societies to calculate time using uniform hours",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F",
+                            "G",
+                            "H"
+                        ]
+                    },
+                    {
+                        "id": 5,
+                        "type": "multiple",
+                        "instruction_block": {
+                            "title": "List of Nationalities",
+                            "items": [
+                                "A Babylonians",
+                                "B Egyptians",
+                                "C Greeks",
+                                "D English",
+                                "E Germans",
+                                "F French"
+                            ]
+                        },
+                        "notes": "**Questions 5–8**\n\nLook at the following events (Questions 5–8) and the list of nationalities below.\n\nMatch each event with the correct nationality, **A–F**.\n\nWrite the correct letter, **A–F**, in boxes **5–8** on your answer sheet.",
+                        "question": "5. They devised a civil calendar in which the months were equal in length.",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F"
+                        ]
+                    },
+                    {
+                        "id": 6,
+                        "type": "multiple",
+                        "question": "6. They divided the day into two equal halves.",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F"
+                        ]
+                    },
+                    {
+                        "id": 7,
+                        "type": "multiple",
+                        "question": "7. They developed a new cabinet shape for a type of timekeeper.",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F"
+                        ]
+                    },
+                    {
+                        "id": 8,
+                        "type": "multiple",
+                        "question": "8. They created a calendar to organise public events and work schedules.",
+                        "options": [
+                            "A",
+                            "B",
+                            "C",
+                            "D",
+                            "E",
+                            "F"
+                        ]
+                    },
+                    {
+                        "id": 9,
+                        "type": "fill",
+                        "image_url": "/images/reading_passage_1_diagram.png",
+                        "question": "How the 1670 lever-based device worked: escapement (resembling 9 ....................)"
+                    },
+                    {
+                        "id": 10,
+                        "type": "fill",
+                        "question": "the 10 ...................."
+                    },
+                    {
+                        "id": 11,
+                        "type": "fill",
+                        "question": "the 11 ...................."
+                    },
+                    {
+                        "id": 12,
+                        "type": "fill",
+                        "question": "a 12 ...................."
+                    },
+                    {
+                        "id": 13,
+                        "type": "fill",
+                        "question": "which beats each 13 ...................."
+                    }
+                ]
+            },
+            {
+                "passage_number": 2,
+                "title": "Passage 2: Air Traffic Control in the USA",
+                "text": "An accident that occurred in the skies over the Grand Canyon in 1956 resulted in the establishment of the Federal Aviation Administration (FAA) to regulate and oversee the operation of aircraft in the skies over the United States, which were becoming quite congested. The resulting structure of air traffic control has greatly increased the safety of flight in the United States, and similar air traffic control procedures are also in place over much of the rest of the world.\n\nRudimentary air traffic control (ATC) existed well before the Grand Canyon disaster. As early as the 1920s, the earliest air traffic controllers manually guided aircraft in the vicinity of the airports, using lights and flags, while beacons and flashing lights were placed along cross-country routes to establish the earliest airways. However, this purely visual system was useless in bad weather, and, by the 1930s, radio communication was coming into use for ATC. The first region to have something approximating today's ATC was New York City, with other major metropolitan areas following soon after.\n\nIn the 1940s, ATC centres could and did take advantage of the newly developed radar and improved radio communication brought about by the Second World War, but the system remained rudimentary. It was only after the creation of the FAA that full-scale regulation of America's airspace took place, and this was fortuitous, for the advent of the jet engine suddenly resulted in a large number of very fast planes, reducing pilots' margin of error and practically demanding some set of rules to keep everyone well separated and operating safely in the air.\n\nMany people think that ATC consists of a row of controllers sitting in front of their radar screens at the nation's airports, telling arriving and departing traffic what to do. This is a very incomplete part of the picture. The FAA realised that the airspace over the United States would at any time have many different kinds of planes, flying for many different purposes, in a variety of weather conditions, and the same kind of structure was needed to accommodate all of them.\n\nTo meet this challenge, the following elements were put into effect. First, ATC extends over virtually the entire United States. In general, from 365m above the ground and higher, the entire country is blanketed by controlled airspace. In certain areas, mainly near airports, controlled airspace extends down to 215m above the ground, and, in the immediate vicinity of an airport, all the way down to the surface. Controlled airspace is that airspace in which FAA regulations apply. Elsewhere, in uncontrolled airspace, pilots are bound by fewer regulations. In this way, the recreational pilot who simply wishes to go flying for a while without all the restrictions imposed by the FAA has only to stay in uncontrolled airspace, below 365m, while the pilot who does want the protection afforded by ATC can easily enter the controlled airspace.\n\nThe FAA then recognised two types of operating environments. In good meteorological conditions, flying would be permitted under Visual Flight Rules (VFR), which suggests a strong reliance on visual cues to maintain an acceptable level of safety. Poor visibility necessitated a set of Instrumental Flight Rules (IFR), under which the pilot relied on altitude and navigational information provided by the plane's instrument panel to fly safely. On a clear day, a pilot in controlled airspace can choose a VFR or IFR flight plan, and the FAA regulations were devised in a way which accommodates both VFR and IFR operations in the same airspace. However, a pilot can only choose to fly IFR if they possess an instrument rating which is above and beyond the basic pilot's license that must also be held.\n\nControlled airspace is divided into several different types, designated by letters of the alphabet. Uncontrolled airspace is designated Class F, while controlled airspace below 5,490m above sea level and not in the vicinity of an airport is Class E. All airspace above 5,490m is designated Class A. The reason for the division of Class E and Class A airspace stems from the type of planes operating in them. Generally, Class E airspace is where one finds general aviation aircraft (few of which can climb above 5,490m anyway), and commercial turboprop aircraft. Above 5,490m is the realm of the heavy jets, since jet engines operate more efficiently at higher altitudes. The difference between Class E and A airspace is that in Class A, all operations are IFR, and pilots must be instrument-rated, that is, skilled and licensed in aircraft instrumentation. This is because ATC control of the entire space is essential. Three other types of airspace, Classes D, C and B, govern the vicinity of airports. These correspond roughly to small municipal, medium-sized metropolitan and major metropolitan airports respectively, and encompass an increasingly rigorous set of regulations. For example, all a VFR pilot has to do to enter Class C airspace is establish two-way radio contact with ATC. No explicit permission from ATC to enter is needed, although the pilot must continue to obey all regulations governing VFR flight. To enter Class B airspace, such as on approach to a major metropolitan airport, an explicit ATC clearance is required. The private pilot who cruises without permission into this airspace risks losing their license.",
+                "questions": [
+                    {
+                        "id": 14,
+                        "type": "fill",
+                        "instruction_block": {
+                            "title": "List of Headings",
+                            "items": [
+                                "i       Disobeying FAA regulations",
+                                "ii      Aviation disaster prompts action",
+                                "iii     Two coincidental developments",
+                                "iv      Setting altitude zones",
+                                "v       An oversimplified view",
+                                "vi      Controlling pilots' licences",
+                                "vii     Defining airspace categories",
+                                "viii    Setting rules to weather conditions",
+                                "ix      Taking off safety",
+                                "x       First steps towards ATC"
+                            ]
+                        },
+                        "question": "**Questions 14-19**\n\nAnswer the questions below by writing the correct number, **i-x**, in boxes **14-19** on your answer sheet.\n\n14. Paragraph A"
+                    },
+                    {
+                        "id": 15,
+                        "type": "fill",
+                        "question": "15. Paragraph C"
+                    },
+                    {
+                        "id": 16,
+                        "type": "fill",
+                        "question": "16. Paragraph D"
+                    },
+                    {
+                        "id": 17,
+                        "type": "fill",
+                        "question": "17. Paragraph E"
+                    },
+                    {
+                        "id": 18,
+                        "type": "fill",
+                        "question": "18. Paragraph F"
+                    },
+                    {
+                        "id": 19,
+                        "type": "fill",
+                        "question": "19. Paragraph G"
+                    },
+                    {
+                        "id": 20,
+                        "type": "tfng",
+                        "question": "**Questions 20-26**\n\nDo the following statements agree with the information given in Reading Passage 2?\n\nIn boxes **20-26** on your answer sheet, write\n\n **TRUE**           if the statement agrees with the information\n **FALSE**          if the statement contradicts the information\n **NOT GIVEN**      if there is no information on this\n\n20. The FAA was created as a result of the introduction of the jet engine."
+                    },
+                    {
+                        "id": 21,
+                        "type": "tfng",
+                        "question": "21. Air Traffic Control started after the Grand Canyon crash in 1956."
+                    },
+                    {
+                        "id": 22,
+                        "type": "tfng",
+                        "question": "22. Beacons and flashing lights are still used by ATC today."
+                    },
+                    {
+                        "id": 23,
+                        "type": "tfng",
+                        "question": "23. Some improvements were made in radio communication during World War II."
+                    },
+                    {
+                        "id": 24,
+                        "type": "tfng",
+                        "question": "24. Class F airspace is airspace which is below 365m and not near airports."
+                    },
+                    {
+                        "id": 25,
+                        "type": "tfng",
+                        "question": "25. All aircraft in Class E airspace must use IFR."
+                    },
+                    {
+                        "id": 26,
+                        "type": "tfng",
+                        "question": "26. A pilot entering Class C airspace is flying over an average-sized city."
+                    }
+                ]
+            },
+            {
+                "passage_number": 3,
+                "title": "Passage 3: Telepathy",
+                "text": "Can human beings communicate by thought alone? For more than a century the issue of telepathy has divided the scientific community, and even today it still sparks bitter controversy among top academics.\n\nSince the 1970s, parapsychologists at leading universities and research institutes around the world have risked the derision of sceptical colleagues by putting the various claims for telepathy to the test in dozens of rigorous scientific studies. The results and their implications are dividing even the researchers who uncovered them.\n\nSome researchers say the results constitute compelling evidence that telepathy is genuine. Other parapsychologists believe the field is on the brink of collapse, having tried to produce definitive scientific proof and failed. Sceptics and advocates alike do concur on one issue, however: that the most impressive evidence so far has come from the so-called 'ganzfeld' experiments, a German term that means 'whole field'. Reports of telepathic experiences had by people during meditation led parapsychologists to suspect that telepathy might involve 'signals' passing between people that were so faint that they were usually swamped by normal brain activity. In this case, such signals might be more easily detected by those experiencing meditation-like tranquillity in a relaxing 'whole field' of light, sound and warmth.\n\nThe ganzfeld experiment tries to recreate these conditions with participants sitting in soft reclining chairs in a sealed room, listening to relaxing sounds while their eyes are covered with special filters letting in only soft pink light. In early ganzfeld experiments, the telepathy test involved identification of a picture chosen from a random selection of four taken from a large image bank. The idea was that a person acting as a 'sender' would attempt to beam the image over to the 'receiver' relaxing in the sealed room. Once the session was over, this person was asked to identify which of the four images had been used. Random guessing would give a hit-rate of 25 per cent; if telepathy is real, however, the hit-rate would be higher. In 1982, the results from the first ganzfeld studies were analysed by one of its pioneers, the American parapsychologist Charles Honorton. They pointed to typical hit-rates of better than 30 per cent - a small effect, but one which statistical tests suggested could not be put down to chance.\n\nThe implication was that the ganzfeld method had revealed real evidence for telepathy. But there was a crucial flaw in this argument - one routinely overlooked in more conventional areas of science. Just because chance had been ruled out as an explanation did not prove telepathy must exist; there were many other ways of getting positive results. These ranged from 'sensory leakage' - where clues about the pictures accidentally reach the receiver - to outright fraud. In response, the researchers issued a review of all the ganzfeld studies done up to 1985 to show that 80 per cent had found statistically significant evidence. However, they also agreed that there were still too many problems in the experiments which could lead to positive results, and they drew up a list demanding new standards for future research.\n\nAfter this, many researchers switched to autoganzfeld tests - an automated variant of the technique which used computers to perform many of the key tasks such as the random selection of images. By minimising human involvement, the idea was to minimise the risk of flawed results. In 1987, results from hundreds of autoganzfeld tests were studied by Honorton in a 'meta-analysis', a statistical technique for finding the overall results from a set of studies. Though less compelling than before, the outcome was still impressive.\n\nYet some parapsychologists remain disturbed by the lack of consistency between individual ganzfeld studies. Defenders of telepathy point out that demanding impressive evidence from every study ignores one basic statistical fact: it takes large samples to detect small effects. If, as current results suggest, telepathy produces hit-rates only marginally above the 25 per cent expected by chance, it's unlikely to be detected by a typical ganzfeld study involving around 40 people: the group is just not big enough. Only when many studies are combined in a meta-analysis will the faint signal of telepathy really become apparent. And that is what researchers do seem to be finding.\n\nWhat they are certainly not finding, however, is any change in attitude of mainstream scientists: most still totally reject the very idea of telepathy. The problem stems at least in part from the lack of any plausible mechanism for telepathy.\n\nVarious theories have been put forward, many focusing on esoteric ideas from theoretical physics. They include 'quantum entanglement', in which events affecting one group of atoms instantly affect another group, no matter how far apart they may be. While physicists have demonstrated entanglement with specially prepared atoms, no-one knows if it also exists between atoms making up human minds. Answering such questions would transform parapsychology. This has prompted some researchers to argue that the future lies not in collecting more evidence for telepathy, but in probing possible mechanisms. Some work has begun already, with researchers trying to identify people who are particularly successful in autoganzfeld trials. Early results show that creative and artistic people do much better than average: in one study at the University of Edinburgh, musicians achieved a hit-rate of 56 per cent. Perhaps more tests like these will eventually give the researchers the evidence they are seeking and strengthen the case for the existence of telepathy.",
+                "questions": [
+                    {
+                        "id": 27,
+                        "type": "fill",
+                        "question": "27. Researchers with differing attitudes towards telepathy agree on",
+                        "instruction_block": {
+                            "title": "Questions 27-30",
+                            "items": [
+                                "A     the discovery of a mechanism for telepathy.",
+                                "B     the need to create a suitable environment for telepathy.",
+                                "C     their claims of a high success rate.",
+                                "D     a solution to the problem posed by random guessing.",
+                                "E     the significance of the ganzfeld experiments.",
+                                "F     a more careful selection of subjects.",
+                                "G     a need to keep altering conditions."
+                            ]
+                        }
+                    },
+                    {
+                        "id": 28,
+                        "type": "fill",
+                        "question": "28. Reports of experiences during meditation indicated"
+                    },
+                    {
+                        "id": 29,
+                        "type": "fill",
+                        "question": "29. Attitudes to parapsychology would alter drastically with"
+                    },
+                    {
+                        "id": 30,
+                        "type": "fill",
+                        "question": "30. Recent autoganzfeld trials suggest that success rates will improve with"
+                    },
+                    {
+                        "id": 31,
+                        "type": "fill",
+                        "question": "**Questions 31-40**\n\nComplete the table below.\n\nChoose **NO MORE THAN THREE WORDS** from the passage for each answer.\n\nWrite your answers in boxes **31-40** on your answer sheet.",
+                        "table_data": {
+                            "title": "Telepathy Experiments",
+                            "headers": [
+                                "Name/Date",
+                                "Description",
+                                "Result",
+                                "Flaw"
+                            ],
+                            "rows": [
+                                [
+                                    "Ganzfeld studies 1982",
+                                    "Involved a person acting as a **31** .................... who picked out one **32** .................... from a random selection of four, and a **33** .................... who then tried to identify it.",
+                                    "Hit-rates were higher than with random guessing.",
+                                    "Positive results could be produced by factors such as **34** .................... or **35** ...................."
+                                ],
+                                [
+                                    "Autoganzfeld studies 1987",
+                                    "**36** .................... were used for key tasks to limit the amount of **37** .................... in carrying out the tests.",
+                                    "The results were then subjected to a **38** ....................",
+                                    "The **39** .................... between different test results was put down to the fact that sample groups were not **40** .................... (as with most ganzfeld studies)."
+                                ]
+                            ]
+                        }
+                    },
+                    {
+                        "id": 32,
+                        "type": "fill",
+                        "question": "32",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 33,
+                        "type": "fill",
+                        "question": "33",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 34,
+                        "type": "fill",
+                        "question": "34",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 35,
+                        "type": "fill",
+                        "question": "35",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 36,
+                        "type": "fill",
+                        "question": "36",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 37,
+                        "type": "fill",
+                        "question": "37",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 38,
+                        "type": "fill",
+                        "question": "38",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 39,
+                        "type": "fill",
+                        "question": "39",
+                        "is_hidden": true
+                    },
+                    {
+                        "id": 40,
+                        "type": "fill",
+                        "question": "40",
+                        "is_hidden": true
+                    }
+                ]
+            }
+        ]
+    },
+    "reading_answers": {
+        "1": "D",
+        "2": "B",
+        "3": "F",
+        "4": "E",
+        "5": "B",
+        "6": "F",
+        "7": "D",
+        "8": "A",
+        "9": "anchor",
+        "10": "escape wheel",
+        "11": "tooth",
+        "12": "pendulum",
+        "13": "second",
+        "14": "ii",
+        "15": "iii",
+        "16": "v",
+        "17": "iv",
+        "18": "viii",
+        "19": "vii",
+        "20": "FALSE",
+        "21": "FALSE",
+        "22": "NOT GIVEN",
+        "23": "TRUE",
+        "24": "TRUE",
+        "25": "FALSE",
+        "26": "TRUE",
+        "27": "E",
+        "28": "B",
+        "29": "A",
+        "30": "F",
+        "31": "sender",
+        "32": "picture",
+        "33": "receiver",
+        "34": "sensory leakage",
+        "35": "outright fraud",
+        "36": "computers",
+        "37": "human involvement",
+        "38": "meta-analysis",
+        "39": "lack of consistency",
+        "40": "big enough"
+    },
+    "writing": {
+        "total_duration_minutes": 60,
+        "task1": {
+            "task_number": 1,
+            "prompt": "The pie chart below shows the main reasons why agricultural land becomes less productive. The table shows how these causes affected three regions of the world during the 1990s.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+            "min_words": 150,
+            "image_url": "/images/writing_task1.png",
+            "duration_minutes": 20
+        },
+        "task2": {
+            "task_number": 2,
+            "prompt": "Some people think that parents should teach children how to be good members of society. Others, however, believe that school is the place to learn this.\n\nDiscuss both these views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.",
+            "min_words": 250,
+            "duration_minutes": 40
+        }
+    },
+    "speaking": {
+        "total_duration_minutes": 15,
+        "response_type": "text",
+        "parts": [
+            {
+                "part_number": 1,
+                "title": "Part 1: Introduction and Interview",
+                "duration_minutes": 5,
+                "prompts": [
+                    "What is your full name?",
+                    "Where are you from?",
+                    "Do you work or are you a student?",
+                    "Let's talk about your hometown. What do you like about it?",
+                    "Is there anything you would change about your hometown?"
+                ]
+            },
+            {
+                "part_number": 2,
+                "title": "Part 2: Individual Long Turn",
+                "duration_minutes": 4,
+                "notes": "You have 1 minute to prepare. You should speak for 2 minutes.",
+                "prompts": [
+                    "Describe an important decision you made recently. You should say:",
+                    "- What the decision was",
+                    "- When you made it",
+                    "- How you made the decision",
+                    "- And explain why it was important"
+                ]
+            },
+            {
+                "part_number": 3,
+                "title": "Part 3: Two-way Discussion",
+                "duration_minutes": 5,
+                "prompts": [
+                    "How do people generally make important decisions in your country?",
+                    "Do you think young people are good at making decisions?",
+                    "What factors should people consider when making career choices?",
+                    "How has decision-making changed with the use of technology?",
+                    "Is it better to make quick decisions or take time to think carefully?"
+                ]
+            }
+        ]
+    }
+}

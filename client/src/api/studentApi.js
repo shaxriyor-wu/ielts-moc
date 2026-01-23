@@ -10,13 +10,15 @@ export const studentApi = {
   leaveQueue: () => api.post('/student/leave-queue'),
   // Legacy endpoints
   accessTest: (testKey, fullName) => api.post('/student/access', { testKey, fullName }),
-  getTest: () => api.get('/student/test'),
-  getAttempt: () => api.get('/student/attempt'),
-  saveReadingAnswers: (answers) => api.post('/student/answers/reading', { answers }),
-  saveListeningAnswers: (answers) => api.post('/student/answers/listening', { answers }),
-  saveWriting: (content) => api.post('/student/answers/writing', { content }),
-  saveWritingTask: (taskNumber, content) => api.post('/student/answers/writing-task', { task_number: taskNumber, content }),
-  saveHighlights: (highlights) => api.post('/student/highlights', { highlights }),
+  // Test data endpoints with skipErrorRedirect to prevent 500 redirects during test sections
+  getTest: () => api.get('/student/test', { skipErrorRedirect: true }),
+  getAttempt: () => api.get('/student/attempt', { skipErrorRedirect: true }),
+  // Save answer endpoints with skipErrorRedirect to prevent 500 redirects during test
+  saveReadingAnswers: (answers) => api.post('/student/answers/reading', { answers }, { skipErrorRedirect: true }),
+  saveListeningAnswers: (answers) => api.post('/student/answers/listening', { answers }, { skipErrorRedirect: true }),
+  saveWriting: (content) => api.post('/student/answers/writing', { content }, { skipErrorRedirect: true }),
+  saveWritingTask: (taskNumber, content) => api.post('/student/answers/writing-task', { task_number: taskNumber, content }, { skipErrorRedirect: true }),
+  saveHighlights: (highlights) => api.post('/student/highlights', { highlights }, { skipErrorRedirect: true }),
   submitTest: () => api.post('/student/submit'),
   getProfile: () => api.get('/student/profile'),
   updateProfile: (data) => api.put('/student/profile', data),

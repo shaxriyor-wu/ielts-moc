@@ -5,15 +5,15 @@ const IELTSAnswerSheet = ({ section, answers, onAnswerChange, className = '' }) 
   const [localAnswers, setLocalAnswers] = useState(answers || {});
 
   const handleChange = (questionNum, value) => {
-    const upperValue = value.toUpperCase().slice(0, 1);
-    const newAnswers = { ...localAnswers, [questionNum]: upperValue };
+    // Allow unlimited text, no restrictions
+    const newAnswers = { ...localAnswers, [questionNum]: value };
     setLocalAnswers(newAnswers);
     if (onAnswerChange) {
       onAnswerChange(newAnswers);
     }
   };
 
-  // IELTS Answer Sheet Layout - Official Format
+  // IELTS Answer Sheet Layout - 2 Column Format
   const renderAnswerSheet = () => {
     return (
       <div className={`bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg p-6 ${className}`}>
@@ -22,92 +22,31 @@ const IELTSAnswerSheet = ({ section, answers, onAnswerChange, className = '' }) 
             {section === 'listening' ? 'LISTENING' : 'READING'} ANSWER SHEET
           </h3>
           <div className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
-            Write your answers in the spaces provided below
+            Write your answers in the spaces provided below (you can write letters, words, numbers, or phrases)
           </div>
         </div>
 
-        {/* Answer Grid - 40 questions in IELTS format */}
-        <div className="space-y-3">
-          {/* Questions 1-10 */}
-          <div className="grid grid-cols-5 gap-3">
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((qNum) => (
-              <div key={qNum} className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-6">
-                  {qNum}
-                </span>
-                <input
-                  type="text"
-                  value={localAnswers[qNum] || ''}
-                  onChange={(e) => handleChange(qNum, e.target.value)}
-                  className="w-12 h-10 text-center text-lg font-semibold border-2 border-gray-400 dark:border-gray-500 rounded focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-900 uppercase dark:bg-gray-700 dark:text-white"
-                  maxLength="1"
-                  placeholder=""
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Questions 11-20 */}
-          <div className="grid grid-cols-5 gap-3">
-            {Array.from({ length: 10 }, (_, i) => i + 11).map((qNum) => (
-              <div key={qNum} className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-6">
-                  {qNum}
-                </span>
-                <input
-                  type="text"
-                  value={localAnswers[qNum] || ''}
-                  onChange={(e) => handleChange(qNum, e.target.value)}
-                  className="w-12 h-10 text-center text-lg font-semibold border-2 border-gray-400 dark:border-gray-500 rounded focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-900 uppercase dark:bg-gray-700 dark:text-white"
-                  maxLength="1"
-                  placeholder=""
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Questions 21-30 */}
-          <div className="grid grid-cols-5 gap-3">
-            {Array.from({ length: 10 }, (_, i) => i + 21).map((qNum) => (
-              <div key={qNum} className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-6">
-                  {qNum}
-                </span>
-                <input
-                  type="text"
-                  value={localAnswers[qNum] || ''}
-                  onChange={(e) => handleChange(qNum, e.target.value)}
-                  className="w-12 h-10 text-center text-lg font-semibold border-2 border-gray-400 dark:border-gray-500 rounded focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-900 uppercase dark:bg-gray-700 dark:text-white"
-                  maxLength="1"
-                  placeholder=""
-                />
-              </div>
-            ))}
-          </div>
-
-          {/* Questions 31-40 */}
-          <div className="grid grid-cols-5 gap-3">
-            {Array.from({ length: 10 }, (_, i) => i + 31).map((qNum) => (
-              <div key={qNum} className="flex items-center gap-2">
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-6">
-                  {qNum}
-                </span>
-                <input
-                  type="text"
-                  value={localAnswers[qNum] || ''}
-                  onChange={(e) => handleChange(qNum, e.target.value)}
-                  className="w-12 h-10 text-center text-lg font-semibold border-2 border-gray-400 dark:border-gray-500 rounded focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-900 uppercase dark:bg-gray-700 dark:text-white"
-                  maxLength="1"
-                  placeholder=""
-                />
-              </div>
-            ))}
-          </div>
+        {/* Answer Grid - 40 questions in 2 COLUMNS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+          {Array.from({ length: 40 }, (_, i) => i + 1).map((qNum) => (
+            <div key={qNum} className="flex items-center gap-3">
+              <span className="text-sm font-bold text-gray-700 dark:text-gray-300 min-w-[2rem]">
+                {qNum}.
+              </span>
+              <input
+                type="text"
+                value={localAnswers[qNum] || ''}
+                onChange={(e) => handleChange(qNum, e.target.value)}
+                className="flex-1 px-3 py-2 text-base border-2 border-gray-400 dark:border-gray-500 rounded focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200 dark:focus:ring-primary-900 dark:bg-gray-700 dark:text-white"
+                placeholder="Your answer"
+              />
+            </div>
+          ))}
         </div>
 
         <div className="mt-6 pt-4 border-t border-gray-300 dark:border-gray-600">
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-            Please write your answers clearly. Each answer should be a single letter (A, B, C, D) or word.
+            Write your answers clearly. You can write letters (A, B, C, D), numbers, words, or short phrases.
           </p>
         </div>
       </div>

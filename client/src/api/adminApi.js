@@ -42,4 +42,14 @@ export const adminApi = {
   deleteTest: (id) => api.delete(`/admin/tests/${id}`),
   startTest: (id) => api.post(`/admin/tests/${id}/start-mock`),
   stopTest: (id) => api.post(`/admin/tests/${id}/stop-mock`),
+  // Students/Users Management
+  getStudents: () => api.get('/admin/students'),
+  createUser: (data) => api.post('/admin/users', data),
+  updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
+  deleteUser: (id) => api.delete(`/admin/users/${id}/delete`),
+  // Test Keys
+  getTestKeys: () => api.get('/admin/test-keys'),
+  generateTestKey: (variantId) => api.post(`/admin/tests/${variantId}/generate-code`),
+  // Results
+  getResults: () => api.get('/admin/results'),
 };

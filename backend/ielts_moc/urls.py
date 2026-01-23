@@ -72,6 +72,10 @@ def media_serve(request, path):
             response['Content-Type'] = 'audio/ogg'
             response['Accept-Ranges'] = 'bytes'
             response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.m4a'):
+            response['Content-Type'] = 'audio/mp4'
+            response['Accept-Ranges'] = 'bytes'
+            response['Cache-Control'] = 'public, max-age=3600'
         elif path_lower.endswith('.pdf'):
             response['Content-Type'] = 'application/pdf'
             response['X-Content-Type-Options'] = 'nosniff'

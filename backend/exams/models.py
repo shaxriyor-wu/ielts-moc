@@ -79,6 +79,16 @@ class TestFile(models.Model):
         blank=True,
         help_text='Audio file for listening section (optional)'
     )
+    questions_data = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='Structured question data in JSON format'
+    )
+    duration_minutes = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text='Duration for this section in minutes'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -114,8 +124,17 @@ class Answer(models.Model):
         help_text='Question number'
     )
     correct_answer = models.CharField(
-        max_length=10,
+        max_length=200,
         help_text='Correct answer (e.g., A, B, C, D, TRUE, FALSE, etc.)'
+    )
+    alternative_answers = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='Alternative acceptable answers (array of strings)'
+    )
+    case_sensitive = models.BooleanField(
+        default=False,
+        help_text='Whether answer matching should be case-sensitive'
     )
     
     class Meta:

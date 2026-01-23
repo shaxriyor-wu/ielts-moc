@@ -20,5 +20,6 @@ urlpatterns = [
     path('student/attempts', views.get_attempts, name='get_attempts'),
     path('student/tests', views.get_tests, name='get_tests'),
     path('student/all-tests', views.get_all_tests, name='get_all_tests'),
+    path('admin/results', views.get_all_results, name='admin_results'),
 ]
 

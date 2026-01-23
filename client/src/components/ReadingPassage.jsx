@@ -15,7 +15,7 @@ const ReadingPassage = ({ content, highlights = [], onHighlight }) => {
   return (
     <div className="bg-white border rounded-lg p-6 max-h-96 overflow-y-auto">
       <div
-        className="text-gray-800 leading-relaxed select-text"
+        className="text-gray-800 leading-relaxed"
         onMouseUp={handleMouseUp}
       >
         {content}

@@ -53,6 +53,9 @@ const FileViewer = ({ fileUrl, fileType, className = '' }) => {
             }
             setLoading(false);
           }
+        } else if (fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg') {
+          // For Images
+          setLoading(false);
         } else if (fileType === 'docx' || fileType === 'doc') {
           // For DOCX, we'll need to convert or use a viewer
           // For now, show a message that DOCX viewing needs implementation
@@ -134,7 +137,7 @@ const FileViewer = ({ fileUrl, fileType, className = '' }) => {
   if (fileType === 'pdf') {
     // Use multiple fallback methods for PDF viewing
     const pdfUrl = `${fileUrl}#toolbar=0&navpanes=0&scrollbar=1&zoom=page-width`;
-    
+
     return (
       <div className={`w-full ${className}`}>
         <div className="mb-2 flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
@@ -163,7 +166,7 @@ const FileViewer = ({ fileUrl, fileType, className = '' }) => {
           ref={iframeRef}
           src={pdfUrl}
           className="w-full border border-gray-300 dark:border-gray-600 rounded-lg bg-white"
-          style={{ 
+          style={{
             minHeight: '800px',
             height: 'calc(100vh - 200px)',
             maxHeight: '1200px'
@@ -179,14 +182,14 @@ const FileViewer = ({ fileUrl, fileType, className = '' }) => {
             data={pdfUrl}
             type="application/pdf"
             className="w-full border border-gray-300 dark:border-gray-600 rounded-lg bg-white"
-            style={{ 
+            style={{
               minHeight: '800px',
               height: 'calc(100vh - 200px)',
               maxHeight: '1200px'
             }}
           >
             <p className="p-4 text-center text-gray-600 dark:text-gray-400">
-              Your browser does not support PDF viewing. 
+              Your browser does not support PDF viewing.
               <a href={fileUrl} download className="text-primary-600 dark:text-primary-400 underline ml-1">
                 Download the PDF
               </a>
@@ -195,6 +198,19 @@ const FileViewer = ({ fileUrl, fileType, className = '' }) => {
         )}
       </div>
     );
+  }
+
+  if (fileType === 'png' || fileType === 'jpg' || fileType === 'jpeg') {
+    return (
+      <div className={`w-full flex justify-center ${className}`}>
+        <img
+          src={fileUrl}
+          alt="Task Reference"
+          className="max-w-full h-auto rounded-lg shadow-sm border border-gray-200 dark:border-gray-700"
+          style={{ maxHeight: '800px' }}
+        />
+      </div>
+    )
   }
 
   // For text content or HTML

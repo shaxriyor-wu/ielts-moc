@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-const Sidebar = ({ items, onLogout, title = 'IELTS Platform' }) => {
+const Sidebar = ({ items, onLogout, title = 'CD IELTS EMPIRE' }) => {
   const location = useLocation();
 
   return (
@@ -16,11 +16,10 @@ const Sidebar = ({ items, onLogout, title = 'IELTS Platform' }) => {
             <Link
               key={item.path}
               to={item.path}
-              className={`block px-4 py-3 rounded-lg mb-1 transition-colors relative ${
-                isActive 
-                  ? 'bg-primary-600 text-white' 
+              className={`block px-4 py-3 rounded-lg mb-1 transition-colors relative ${isActive
+                  ? 'bg-primary-600 text-white'
                   : 'hover:bg-gray-800 text-gray-300'
-              }`}
+                }`}
             >
               {isActive && (
                 <motion.div

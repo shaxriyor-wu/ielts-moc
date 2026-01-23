@@ -141,3 +141,134 @@ def current_user(request):
     """Get current authenticated user."""
     return Response(UserSerializer(request.user).data)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_students(request):
+    """List all students for admin dashboard."""
+    # Check if user is admin
+    from accounts.models import CustomUser
+    from student_portal.models import StudentTest
+    from django.db.models import Count, Max, Q
+    
+    # Reload user to ensure we have role
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if db_user.role != 'admin':
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    # Get filters
+    search_query = request.GET.get('search', '').lower()
+    
+    students_query = CustomUser.objects.filter(role='student')
+    
+    # Filter by search query
+    if search_query:
+        students_query = students_query.filter(
+            Q(username__icontains=search_query) | 
+            Q(first_name__icontains=search_query) | 
+            Q(last_name__icontains=search_query)
+        )
+        
+    students = students_query.annotate(
+        totalAttempts=Count('test_attempts'),
+        completedAttempts=Count('test_attempts', filter=Q(test_attempts__status__in=['submitted', 'graded'])),
+        lastAttempt=Max('test_attempts__start_time')
+    ).order_by('-date_joined')
+    
+    data = []
+    for s in students:
+        data.append({
+            'id': s.id,
+            'name': s.get_full_name() or s.username,
+            'username': s.username,
+            'email': s.email,
+            'status': 'active' if s.is_active else 'inactive',
+            'testCode': 'N/A', # Placeholder, normally stored in profile
+            'createdAt': s.date_joined,
+            'totalAttempts': s.totalAttempts,
+            'completedAttempts': s.completedAttempts,
+            'lastAttempt': s.lastAttempt
+        })
+        
+    return Response(data)
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_user(request):
+    """Create a new user (admin only)."""
+    if request.user.role != 'admin':
+        return Response({'error': 'Admin access required'}, status=status.HTTP_403_FORBIDDEN)
+        
+    data = request.data
+    from accounts.models import CustomUser
+    
+    try:
+        username = data.get('username')
+        if CustomUser.objects.filter(username=username).exists():
+            return Response({'error': 'Username already taken'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        user = CustomUser.objects.create_user(
+            username=username,
+            password=data.get('password'),
+            first_name=data.get('fullName', '').split(' ')[0],
+            last_name=' '.join(data.get('fullName', '').split(' ')[1:]) if ' ' in data.get('fullName', '') else '',
+            role='student' 
+        )
+        
+        return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def update_user(request, pk):
+    """Update user (admin only)."""
+    if request.user.role != 'admin':
+        return Response({'error': 'Admin access required'}, status=status.HTTP_403_FORBIDDEN)
+        
+    from accounts.models import CustomUser
+    try:
+        user = CustomUser.objects.get(pk=pk)
+        data = request.data
+        
+        if 'username' in data and data['username'] != user.username:
+            if CustomUser.objects.filter(username=data['username']).exists():
+                return Response({'error': 'Username already taken'}, status=status.HTTP_400_BAD_REQUEST)
+            user.username = data['username']
+            
+        if 'fullName' in data:
+            parts = data['fullName'].split(' ', 1)
+            user.first_name = parts[0]
+            user.last_name = parts[1] if len(parts) > 1 else ''
+            
+        if 'password' in data and data['password']:
+            user.set_password(data['password'])
+            
+        if 'status' in data:
+            user.is_active = (data['status'] == 'active')
+            
+        user.save()
+        return Response(UserSerializer(user).data)
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_user(request, pk):
+    """Delete user (admin only)."""
+    if request.user.role != 'admin':
+        return Response({'error': 'Admin access required'}, status=status.HTTP_403_FORBIDDEN)
+        
+    from accounts.models import CustomUser
+    try:
+        user = CustomUser.objects.get(pk=pk)
+        user.delete()
+        return Response({'message': 'User deleted successfully'})
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+

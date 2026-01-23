@@ -7,7 +7,7 @@ class TestFileSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = TestFile
-        fields = ('id', 'variant', 'file_type', 'task_number', 'file', 'audio_file', 'created_at')
+        fields = ('id', 'variant', 'file_type', 'task_number', 'file', 'audio_file', 'questions_data', 'created_at')
         read_only_fields = ('id', 'created_at')
 
 

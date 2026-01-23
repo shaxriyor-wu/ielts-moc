@@ -61,12 +61,13 @@ const Login = () => {
         status: error.response?.status,
         config: error.config
       });
-      const errorMessage = error.response?.data?.error || 
-                          (error.response?.data?.login ? error.response.data.login[0] : null) ||
-                          (error.response?.data?.password ? error.response.data.password[0] : null) ||
-                          error.response?.data?.errors?.[0]?.msg || 
-                          error.message || 
-                          'Login failed. Please check your credentials.';
+      const errorMessage = error.response?.data?.error ||
+        (error.response?.data?.non_field_errors ? error.response.data.non_field_errors[0] : null) ||
+        (error.response?.data?.login ? error.response.data.login[0] : null) ||
+        (error.response?.data?.password ? error.response.data.password[0] : null) ||
+        error.response?.data?.errors?.[0]?.msg ||
+        error.message ||
+        'Login failed. Please check your credentials.';
       showToast(errorMessage, 'error');
     } finally {
       setLoading(false);
@@ -86,21 +87,21 @@ const Login = () => {
         login: registerData.login,
         password: registerData.password,
       });
-      
+
       const { user, role, accessToken, refreshToken } = response.data;
-      
+
       login(
         { ...user, role },
         accessToken,
         refreshToken
       );
-      
+
       showToast('Registration successful', 'success');
       navigate('/student/dashboard');
     } catch (error) {
       // Handle different error response formats
       let errorMessage = 'Registration failed';
-      
+
       if (error.response?.data) {
         const errorData = error.response.data;
         if (errorData.error) {
@@ -121,14 +122,14 @@ const Login = () => {
             }
           }
         } else if (errorData.non_field_errors) {
-          errorMessage = Array.isArray(errorData.non_field_errors) 
-            ? errorData.non_field_errors[0] 
+          errorMessage = Array.isArray(errorData.non_field_errors)
+            ? errorData.non_field_errors[0]
             : errorData.non_field_errors;
         }
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       showToast(errorMessage, 'error');
       console.error('Registration error:', {
         message: errorMessage,
@@ -149,10 +150,10 @@ const Login = () => {
       >
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            IELTS Exam Platform
+            CD IELTS EMPIRE
           </h1>
           <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Login to your account</p>
-          
+
           {/* Auto Login Buttons */}
           <div className="mt-4 grid grid-cols-2 gap-2">
             <button

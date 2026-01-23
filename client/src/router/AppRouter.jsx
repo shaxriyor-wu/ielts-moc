@@ -15,12 +15,14 @@ import GenerateKey from '../pages/admin/GenerateKey';
 import AdminStudents from '../pages/admin/AdminStudents';
 import AdminResults from '../pages/admin/AdminResults';
 import AdminSettings from '../pages/admin/AdminSettings';
+import UserManagement from '../pages/admin/UserManagement';
 
 import ExamAccess from '../pages/student/ExamAccess';
 import ExamPage from '../pages/student/ExamPage';
 import ReadingSection from '../pages/student/ReadingSection';
 import ListeningSection from '../pages/student/ListeningSection';
 import WritingSection from '../pages/student/WritingSection';
+import SpeakingSection from '../pages/student/SpeakingSection';
 import ReadingAnswerSheet from '../pages/student/ReadingAnswerSheet';
 import ListeningAnswerSheet from '../pages/student/ListeningAnswerSheet';
 import AnswerSheet from '../pages/student/AnswerSheet';
@@ -93,6 +95,7 @@ const AppRouter = () => {
         }
       >
         <Route path="dashboard" element={<AdminDashboard />} />
+        <Route path="users" element={<UserManagement />} />
         <Route path="tests" element={<AdminTests />} />
         <Route path="tests/create" element={<CreateTest />} />
         <Route path="tests/:id" element={<TestDetail />} />
@@ -124,6 +127,7 @@ const AppRouter = () => {
         <Route path="listening" element={<ListeningSection />} />
         <Route path="reading" element={<ReadingSection />} />
         <Route path="writing" element={<WritingSection />} />
+        <Route path="speaking" element={<SpeakingSection />} />
         <Route path="results" element={<Results />} />
       </Route>
       <Route
@@ -134,12 +138,13 @@ const AppRouter = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Navigate to="reading" replace />} />
+        <Route index element={<Navigate to="listening" replace />} />
         <Route path="reading" element={<ReadingSection />} />
         <Route path="reading-answer-sheet" element={<ReadingAnswerSheet />} />
         <Route path="listening" element={<ListeningSection />} />
         <Route path="listening-answer-sheet" element={<ListeningAnswerSheet />} />
         <Route path="writing" element={<WritingSection />} />
+        <Route path="speaking" element={<SpeakingSection />} />
         <Route path="answer-sheet" element={<AnswerSheet />} />
         <Route path="finish" element={<Finish />} />
       </Route>

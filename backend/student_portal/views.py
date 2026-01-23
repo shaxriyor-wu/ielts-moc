@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
+from django.db import transaction
 from datetime import timedelta
 from .models import StudentTest, TestResponse, TestResult, TestQueue
 from exams.models import Variant
@@ -149,9 +150,11 @@ def enter_test_code(request):
         queue_entry.started_at = None
         queue_entry.left_at = None
         queue_entry.timeout_at = None
+        queue_entry.joined_at = timezone.now()
         queue_entry.save(
             update_fields=[
                 'status',
+                'joined_at',
                 'assigned_variant',
                 'assigned_at',
                 'preparation_started_at',
@@ -313,11 +316,25 @@ def start_test(request):
     queue_entry.save(update_fields=['status', 'started_at'])
     
     # Get or create StudentTest
-    student_test, _ = StudentTest.objects.get_or_create(
+    student_test = StudentTest.objects.filter(
         student=request.user,
-        variant=queue_entry.assigned_variant,
-        defaults={'status': 'in_progress'}
-    )
+        variant=queue_entry.assigned_variant
+    ).first()
+
+    if student_test:
+        # User is re-entering after leaving or restarting
+        # RESET all progress as per strict requirements
+        student_test.responses.all().delete()
+        student_test.status = 'in_progress'
+        student_test.start_time = timezone.now()
+        student_test.submission_time = None
+        student_test.save()
+    else:
+        student_test = StudentTest.objects.create(
+            student=request.user,
+            variant=queue_entry.assigned_variant,
+            status='in_progress'
+        )
     
     payload = serialize_queue_entry(
         queue_entry,
@@ -385,6 +402,29 @@ def get_current_test(request):
     ).first()
     
     if not student_test:
+        # Auto-recovery: If no in-progress test but queue is started, recover/create it
+        queue_entry = TestQueue.objects.filter(
+            student=request.user,
+            status='started'
+        ).order_by('-started_at').first()
+        
+        if queue_entry and queue_entry.assigned_variant:
+            student_test = StudentTest.objects.filter(
+                student=request.user,
+                variant=queue_entry.assigned_variant
+            ).first()
+            
+            if student_test:
+                student_test.status = 'in_progress'
+                student_test.save()
+            else:
+                student_test = StudentTest.objects.create(
+                    student=request.user,
+                    variant=queue_entry.assigned_variant,
+                    status='in_progress'
+                )
+
+    if not student_test:
         return Response(
             {'error': 'No active test found.'},
             status=status.HTTP_404_NOT_FOUND
@@ -425,13 +465,19 @@ def get_current_test(request):
         'listening': {
             'file_url': build_media_url(listening_file.file if listening_file and listening_file.file else None),
             'audio_url': build_media_url(listening_file.audio_file if listening_file and listening_file.audio_file else None),
+            'questions_data': listening_file.questions_data if listening_file else None,
+            'duration_minutes': listening_file.duration_minutes if listening_file else None,
         },
         'reading': {
             'file_url': build_media_url(reading_file.file if reading_file and reading_file.file else None),
+            'questions_data': reading_file.questions_data if reading_file else None,
+            'duration_minutes': reading_file.duration_minutes if reading_file else None,
         },
         'writing': {
             'task1_url': build_media_url(writing_files.filter(task_number=1).first().file if writing_files.filter(task_number=1).first() else None),
             'task2_url': build_media_url(writing_files.filter(task_number=2).first().file if writing_files.filter(task_number=2).first() else None),
+            'task1_data': writing_files.filter(task_number=1).first().questions_data if writing_files.filter(task_number=1).first() else None,
+            'task2_data': writing_files.filter(task_number=2).first().questions_data if writing_files.filter(task_number=2).first() else None,
         }
     }
     
@@ -494,13 +540,14 @@ def save_reading_answers(request):
     
     answers = request.data.get('answers', {})
     
-    for question_num, answer in answers.items():
-        TestResponse.objects.update_or_create(
-            student_test=student_test,
-            section='reading',
-            question_number=int(question_num),
-            defaults={'answer': str(answer)}
-        )
+    with transaction.atomic():
+        for question_num, answer in answers.items():
+            TestResponse.objects.update_or_create(
+                student_test=student_test,
+                section='reading',
+                question_number=int(question_num),
+                defaults={'answer': str(answer)}
+            )
     
     return Response({'message': 'Reading answers saved successfully.'})
 
@@ -528,13 +575,14 @@ def save_listening_answers(request):
     
     answers = request.data.get('answers', {})
     
-    for question_num, answer in answers.items():
-        TestResponse.objects.update_or_create(
-            student_test=student_test,
-            section='listening',
-            question_number=int(question_num),
-            defaults={'answer': str(answer)}
-        )
+    with transaction.atomic():
+        for question_num, answer in answers.items():
+            TestResponse.objects.update_or_create(
+                student_test=student_test,
+                section='listening',
+                question_number=int(question_num),
+                defaults={'answer': str(answer)}
+            )
     
     return Response({'message': 'Listening answers saved successfully.'})
 
@@ -601,6 +649,23 @@ def save_writing_task(request):
             {'error': 'task_number must be 1 or 2.'},
             status=status.HTTP_400_BAD_REQUEST
         )
+        
+    if not student_test:
+        # Check if it was recently submitted (race condition or retry)
+        student_test = StudentTest.objects.filter(
+            student=request.user,
+            status__in=['submitted', 'graded']
+        ).order_by('-submission_time').first()
+        
+        if student_test:
+            # If already submitted, we can't save new content, but we should return 200 
+            # to avoid client-side errors during "submit & save" chain
+            return Response({'message': f'Test already submitted. Writing Task {task_number} not updated.'})
+            
+        return Response(
+            {'error': 'No active test found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
     
     TestResponse.objects.update_or_create(
         student_test=student_test,
@@ -650,6 +715,36 @@ def submit_test(request):
     ).first()
     
     if not student_test:
+        # Check if already submitted
+        student_test = StudentTest.objects.filter(
+            student=request.user,
+            status__in=['submitted', 'graded']
+        ).order_by('-submission_time').first()
+        
+        if student_test:
+            # Already submitted, return the result if available or just success
+            # If graded, return result
+            data = {
+                'message': 'Test already submitted.',
+                'student_test': StudentTestSerializer(student_test).data,
+            }
+            
+            if hasattr(student_test, 'result'):
+                test_result = student_test.result
+                data['result'] = {
+                    'listening_score': float(test_result.listening_score) if test_result.listening_score else None,
+                    'reading_score': float(test_result.reading_score) if test_result.reading_score else None,
+                    'writing_score': float(test_result.writing_score) if test_result.writing_score else None,
+                    'writing_task1_score': float(test_result.writing_task1_score) if test_result.writing_task1_score else None,
+                    'writing_task2_score': float(test_result.writing_task2_score) if test_result.writing_task2_score else None,
+                    'overall_score': float(test_result.overall_score) if test_result.overall_score else None,
+                    'listening_breakdown': test_result.listening_breakdown,
+                    'reading_breakdown': test_result.reading_breakdown,
+                    'writing_breakdown': test_result.writing_breakdown,
+                }
+            
+            return Response(data)
+
         return Response(
             {'error': 'No active test found.'},
             status=status.HTTP_404_NOT_FOUND
@@ -826,4 +921,38 @@ def get_all_tests(request):
     from exams.serializers import VariantListSerializer
     serializer = VariantListSerializer(variants, many=True)
     return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_all_results(request):
+    """List all student test results for admin."""
+    # Check if user is admin
+    from accounts.models import CustomUser
+    
+    # Reload user to ensure we have role
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if db_user.role != 'admin':
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    attempts = StudentTest.objects.all().select_related('student', 'variant').order_by('-start_time')
+    data = []
+    
+    for attempt in attempts:
+        data.append({
+            'id': attempt.id,
+            'studentId': attempt.student_id,
+            'studentName': attempt.student.get_full_name() or attempt.student.username,
+            'testTitle': attempt.variant.name,
+            'testKey': attempt.variant.code,
+            'isSubmitted': attempt.status in ['submitted', 'graded'],
+            'startedAt': attempt.start_time,
+            'submittedAt': attempt.submission_time,
+            'status': attempt.status
+        })
+        
+    return Response(data)
 

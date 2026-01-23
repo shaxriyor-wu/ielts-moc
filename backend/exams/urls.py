@@ -10,5 +10,6 @@ urlpatterns = [
     path('admin/tests/upload', views.upload_test_file, name='upload_test_file'),
     path('admin/tests/answers', views.create_answers, name='create_answers'),
     path('admin/stats', views.get_stats, name='admin_stats'),
+    path('admin/test-keys', views.get_test_keys, name='admin_test_keys'),
 ]
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Stop any running servers
 echo "Stopping any running servers..."
 pkill -f "python manage.py runserver" 2>/dev/null
@@ -11,7 +13,7 @@ sleep 1
 
 echo ""
 echo "Starting Django backend..."
-cd "$(dirname "$0")/backend"
+cd "$ROOT_DIR/backend"
 source venv/bin/activate
 python manage.py runserver > /tmp/django.log 2>&1 &
 BACKEND_PID=$!
@@ -19,7 +21,7 @@ BACKEND_PID=$!
 sleep 3
 
 echo "Starting React frontend..."
-cd "$(dirname "$0")/client"
+cd "$ROOT_DIR/client"
 npm run dev > /tmp/vite.log 2>&1 &
 FRONTEND_PID=$!
 

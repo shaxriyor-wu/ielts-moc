@@ -9,12 +9,13 @@ import { showToast } from '../../components/Toast';
 import { BookOpen, CheckCircle, Clock, TrendingUp, Play, User } from 'lucide-react';
 import EnterTestModal from './EnterTestModal';
 import WaitingRoom from './WaitingRoom';
+import { useExam } from '../../context/ExamContext';
 
 // Helper function to convert raw score (X/40) to IELTS band score
 const convertToBandScore = (rawScore, totalQuestions = 40) => {
   if (!rawScore && rawScore !== 0) return null;
   const percentage = (rawScore / totalQuestions) * 100;
-  
+
   // IELTS band score conversion (approximate)
   if (percentage >= 95) return 9.0;
   if (percentage >= 90) return 8.5;
@@ -39,6 +40,7 @@ const StudentDashboard = () => {
   const [showEnterTestModal, setShowEnterTestModal] = useState(false);
   const [showWaitingRoom, setShowWaitingRoom] = useState(false);
   const [queueStatus, setQueueStatus] = useState(null);
+  const { clearExam } = useExam();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,10 +69,16 @@ const StudentDashboard = () => {
       const payload = response.data;
       const status = payload.status;
 
-      if (['waiting', 'assigned', 'preparation', 'started'].includes(status)) {
+      if (['waiting', 'assigned', 'preparation'].includes(status)) {
         setQueueStatus(payload);
         setShowWaitingRoom(true);
         return;
+      }
+
+      if (status === 'started') {
+        setQueueStatus(payload);
+        // Do not show waiting room, just let user see dashboard with resume option
+        setShowWaitingRoom(false);
       }
 
       if (status === 'timeout') {
@@ -123,11 +131,14 @@ const StudentDashboard = () => {
         onStatusUpdate={setQueueStatus}
         onStartTest={(startData) => {
           setShowWaitingRoom(false);
+          const testCode = queueStatus?.test_code;
           setQueueStatus(null);
+          clearExam(); // Reset frontend state for a fresh attempt
           if (startData?.message) {
             showToast(startData.message, 'success');
           }
-          navigate('/student/listening', { replace: true });
+          // Redirect to secure exam route
+          navigate(`/exam/${testCode}`, { replace: true });
         }}
       />
     );
@@ -135,6 +146,8 @@ const StudentDashboard = () => {
 
   return (
     <div className="space-y-6">
+
+
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
@@ -190,7 +203,7 @@ const StudentDashboard = () => {
             {attempts.map((attempt) => {
               const result = attempt.result;
               const variant = attempt.variant;
-              
+
               return (
                 <div
                   key={attempt.id}

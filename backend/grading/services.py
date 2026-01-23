@@ -50,21 +50,40 @@ def grade_reading_listening(student_test: StudentTest) -> dict:
             question_number=answer.question_number
         ).first()
         
+        # Always increment total for the section if a correct answer exists (part of the test)
+        results[section]['total'] += 1
+        
         if student_response:
-            results[section]['total'] += 1
-            # Normalize answers for comparison (case-insensitive, strip whitespace)
-            student_answer = str(student_response.answer).strip().upper()
-            correct_answer = str(answer.correct_answer).strip().upper()
             
-            is_correct = student_answer == correct_answer
+            # Prepare student answer
+            student_answer = str(student_response.answer).strip()
+            
+            # Prepare correct answers (main + alternatives)
+            correct_options = [str(answer.correct_answer).strip()]
+            if answer.alternative_answers:
+                if isinstance(answer.alternative_answers, list):
+                    correct_options.extend([str(a).strip() for a in answer.alternative_answers])
+            
+            # Check if answer is correct (supports case-insensitive matching)
+            is_correct = False
+            if answer.case_sensitive:
+                # Case-sensitive matching
+                is_correct = student_answer in correct_options
+            else:
+                # Case-insensitive matching
+                student_answer_normalized = student_answer.upper()
+                correct_options_normalized = [opt.upper() for opt in correct_options]
+                is_correct = student_answer_normalized in correct_options_normalized
+            
             if is_correct:
                 results[section]['correct'] += 1
             
             # Track individual question results
             results[section]['question_results'][answer.question_number] = {
                 'correct': is_correct,
-                'student_answer': student_answer,
-                'correct_answer': correct_answer,
+                'student_answer': student_response.answer,  # Original answer
+                'correct_answer': answer.correct_answer,
+                'alternative_answers': answer.alternative_answers
             }
     
     # Calculate IELTS band scores using official conversion tables
@@ -77,6 +96,7 @@ def grade_reading_listening(student_test: StudentTest) -> dict:
             'total': results['listening']['total'],
             'raw_score': raw_score,
             'band_score': band_score,
+            'question_results': results['listening']['question_results'],
         }
     
     if results['reading']['total'] > 0:
@@ -88,6 +108,7 @@ def grade_reading_listening(student_test: StudentTest) -> dict:
             'total': results['reading']['total'],
             'raw_score': raw_score,
             'band_score': band_score,
+            'question_results': results['reading']['question_results'],
         }
     
     return results
@@ -128,17 +149,23 @@ def grade_writing(student_test: StudentTest) -> dict:
     
     # Grade Task 1
     if task1_response:
+        print(f"DEBUG: Found Task 1 response: {task1_response.answer[:50]}...")
         task1_result = grade_writing_task_ai(1, task1_response.answer, task1_prompt)
         result['task1_score'] = task1_result['task_score']
         result['task1_breakdown'] = task1_result['breakdown']
         result['task1_feedback'] = task1_result.get('feedback', '')
+        result['task1_detailed_feedback'] = task1_result.get('detailed_feedback', '')
+    else:
+        print("DEBUG: No Task 1 response found in DB")
     
     # Grade Task 2
     if task2_response:
+        print(f"DEBUG: Found Task 2 response: {task2_response.answer[:50]}...")
         task2_result = grade_writing_task_ai(2, task2_response.answer, task2_prompt)
         result['task2_score'] = task2_result['task_score']
         result['task2_breakdown'] = task2_result['breakdown']
         result['task2_feedback'] = task2_result.get('feedback', '')
+        result['task2_detailed_feedback'] = task2_result.get('detailed_feedback', '')
     
     # Calculate overall writing score
     scores = []
@@ -192,6 +219,8 @@ def grade_test(student_test: StudentTest) -> TestResult:
                 'task2': writing_results.get('task2_breakdown'),
                 'task1_feedback': writing_results.get('task1_feedback'),
                 'task2_feedback': writing_results.get('task2_feedback'),
+                'task1_detailed_feedback': writing_results.get('task1_detailed_feedback'),
+                'task2_detailed_feedback': writing_results.get('task2_detailed_feedback'),
             },
             'graded_by': None,  # Automated grading
         }
@@ -211,6 +240,8 @@ def grade_test(student_test: StudentTest) -> TestResult:
             'task2': writing_results.get('task2_breakdown'),
             'task1_feedback': writing_results.get('task1_feedback'),
             'task2_feedback': writing_results.get('task2_feedback'),
+            'task1_detailed_feedback': writing_results.get('task1_detailed_feedback'),
+            'task2_detailed_feedback': writing_results.get('task2_detailed_feedback'),
         }
         result.save()
     

@@ -362,3 +362,34 @@ def stop_mock(request, variant_id):
         'variant': VariantSerializer(variant).data
     })
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_test_keys(request):
+    """List all variants as test keys with usage stats."""
+    if not check_is_admin(request.user):
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    from student_portal.models import StudentTest
+    from django.db.models import Count
+    
+    variants = Variant.objects.annotate(
+        used_count=Count('student_tests')
+    )
+    
+    data = []
+    for v in variants:
+        data.append({
+            'id': v.id,
+            'key': v.code,
+            'testTitle': v.name,
+            'isActive': v.is_active,
+            'usedBy': v.used_count,
+            'createdAt': v.created_at
+        })
+        
+    return Response(data)
+

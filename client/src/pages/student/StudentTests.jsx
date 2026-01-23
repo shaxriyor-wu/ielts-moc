@@ -28,32 +28,32 @@ const StudentTests = () => {
     }
   };
 
-  const handleJoinTest = async (testKey) => {
+  const handleJoinTest = async (testCode) => {
     try {
-      const response = await studentApi.joinTest(testKey);
+      const response = await studentApi.enterTestCode(testCode);
       if (response.data.status === 'waiting') {
         showToast('Test boshlanishini kutib turing...', 'info');
-        checkTestStatus(testKey);
+        checkTestStatus();
       } else {
-        navigate(`/exam/${testKey}`);
+        navigate(`/exam/${testCode}`);
       }
     } catch (error) {
       showToast(error.response?.data?.error || 'Failed to join test', 'error');
     }
   };
 
-  const checkTestStatus = async (testKey) => {
+  const checkTestStatus = async () => {
     const maxAttempts = 30;
     let attempts = 0;
-    
+
     const interval = setInterval(async () => {
       attempts++;
       try {
-        const response = await studentApi.checkTestStatus(testKey);
-        if (response.data.isActive) {
+        const response = await studentApi.checkQueueStatus();
+        if (response.data.status === 'preparation' || response.data.status === 'started') {
           clearInterval(interval);
           showToast('Test boshlandi!', 'success');
-          navigate(`/exam/${testKey}`);
+          navigate(`/exam/${response.data.variant_code || ''}`);
         } else if (attempts >= maxAttempts) {
           clearInterval(interval);
           showToast('Test hali boshlanmadi', 'warning');
@@ -95,7 +95,7 @@ const StudentTests = () => {
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
                       <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1 line-clamp-2">
-                        {test.title}
+                        {test.name}
                       </h3>
                       {test.description && (
                         <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
@@ -108,10 +108,10 @@ const StudentTests = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <Clock className="w-4 h-4" />
-                      <span>{test.duration || 180} minutes</span>
+                      <span>{test.duration_minutes || 180} minutes</span>
                     </div>
                     <div className="flex items-center gap-2">
-                      {test.isActive ? (
+                      {test.is_active ? (
                         <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400">
                           Active
                         </span>
@@ -126,11 +126,11 @@ const StudentTests = () => {
 
                 <Button
                   className="w-full"
-                  onClick={() => handleJoinTest(test.testKey)}
-                  disabled={!test.testKey}
+                  onClick={() => handleJoinTest(test.code)}
+                  disabled={!test.code}
                 >
                   <Play className="w-4 h-4 mr-2" />
-                  {test.isActive ? 'Start Test' : 'Join Test'}
+                  {test.is_active ? 'Start Test' : 'Join Test'}
                 </Button>
               </Card>
             </motion.div>

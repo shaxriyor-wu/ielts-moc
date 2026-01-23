@@ -28,11 +28,8 @@ const ExamAccess = () => {
         response.data.refreshToken
       );
       showToast('Access granted', 'success');
-      if (response.data.attempt) {
-        navigate('/student/dashboard');
-      } else {
-        navigate(`/exam/${testKey.toUpperCase().trim()}`);
-      }
+      // Always navigate to the secure exam route
+      navigate(`/exam/${testKey.toUpperCase().trim()}`);
     } catch (error) {
       showToast(error.response?.data?.error || 'Invalid test key or name', 'error');
     } finally {

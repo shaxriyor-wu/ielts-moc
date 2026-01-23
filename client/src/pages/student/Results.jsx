@@ -4,15 +4,21 @@ import { studentApi } from '../../api/studentApi';
 import Card from '../../components/Card';
 import Loader from '../../components/Loader';
 import { showToast } from '../../components/Toast';
-import { CheckCircle, XCircle, Award, TrendingUp } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { CheckCircle, XCircle, Award, TrendingUp, Eye, EyeOff, ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../components/Button';
+import ReactMarkdown from 'react-markdown';
 
 const Results = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [results, setResults] = useState(null);
   const [testData, setTestData] = useState(null);
+  const [expandedListening, setExpandedListening] = useState(false);
+  const [expandedReading, setExpandedReading] = useState(false);
+  const [expandedWriting, setExpandedWriting] = useState(false);
+  const [showTask1DetailedFeedback, setShowTask1DetailedFeedback] = useState(false);
+  const [showTask2DetailedFeedback, setShowTask2DetailedFeedback] = useState(false);
 
   useEffect(() => {
     loadResults();
@@ -23,7 +29,7 @@ const Results = () => {
       // Get the latest test result
       const attemptsResponse = await studentApi.getAttempts();
       const attempts = attemptsResponse.data || [];
-      
+
       if (attempts.length > 0) {
         const latestAttempt = attempts[0];
         setResults(latestAttempt.result);
@@ -146,11 +152,10 @@ const Results = () => {
                     {Object.entries(listeningBreakdown.question_results).map(([qNum, result]) => (
                       <div
                         key={qNum}
-                        className={`p-1 rounded text-center ${
-                          result.correct
-                            ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                            : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-                        }`}
+                        className={`p-1 rounded text-center ${result.correct
+                          ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
+                          : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+                          }`}
                         title={`Q${qNum}: ${result.correct ? 'Correct' : 'Incorrect'} (Your: ${result.student_answer || 'N/A'}, Correct: ${result.correct_answer})`}
                       >
                         {qNum}
@@ -191,11 +196,10 @@ const Results = () => {
                     {Object.entries(readingBreakdown.question_results).map(([qNum, result]) => (
                       <div
                         key={qNum}
-                        className={`p-1 rounded text-center ${
-                          result.correct
-                            ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                            : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-                        }`}
+                        className={`p-1 rounded text-center ${result.correct
+                          ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
+                          : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
+                          }`}
                         title={`Q${qNum}: ${result.correct ? 'Correct' : 'Incorrect'} (Your: ${result.student_answer || 'N/A'}, Correct: ${result.correct_answer})`}
                       >
                         {qNum}
@@ -278,35 +282,131 @@ const Results = () => {
                   </div>
                 </div>
               )}
+            </Card>
+          </motion.div>
+        </div>
+
+        {/* Detailed Writing Feedback Section */}
+        {(writingBreakdown.task1_detailed_feedback || writingBreakdown.task2_detailed_feedback) && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mb-8 space-y-4"
+          >
+            {/* Task 1 Detailed Feedback */}
+            {writingBreakdown.task1_detailed_feedback && (
+              <Card>
+                <button
+                  onClick={() => setShowTask1DetailedFeedback(!showTask1DetailedFeedback)}
+                  className="w-full flex items-center justify-between text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Task 1 - Detailed Examiner Feedback
+                    </h3>
+                  </div>
+                  {showTask1DetailedFeedback ? (
+                    <ChevronUp className="w-5 h-5 text-gray-500" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gray-500" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {showTask1DetailedFeedback && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div className="prose prose-sm dark:prose-invert max-w-none">
+                          <ReactMarkdown>{writingBreakdown.task1_detailed_feedback}</ReactMarkdown>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Card>
+            )}
+
+            {/* Task 2 Detailed Feedback */}
+            {writingBreakdown.task2_detailed_feedback && (
+              <Card>
+                <button
+                  onClick={() => setShowTask2DetailedFeedback(!showTask2DetailedFeedback)}
+                  className="w-full flex items-center justify-between text-left"
+                >
+                  <div className="flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                      Task 2 - Detailed Examiner Feedback
+                    </h3>
+                  </div>
+                  {showTask2DetailedFeedback ? (
+                    <ChevronUp className="w-5 h-5 text-gray-500" />
+                  ) : (
+                    <ChevronDown className="w-5 h-5 text-gray-500" />
+                  )}
+                </button>
+                <AnimatePresence>
+                  {showTask2DetailedFeedback && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <div className="prose prose-sm dark:prose-invert max-w-none">
+                          <ReactMarkdown>{writingBreakdown.task2_detailed_feedback}</ReactMarkdown>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </Card>
+            )}
+          </motion.div>
+        )}
+
+        {/* Short feedback fallback (when no detailed feedback) */}
+        {!writingBreakdown.task1_detailed_feedback && writingBreakdown.task1_feedback && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mb-8"
+          >
+            <Card>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+                Writing Feedback
+              </h3>
               {writingBreakdown.task1_feedback && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Task 1 Feedback:
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
-                    {writingBreakdown.task1_feedback}
-                  </p>
+                <div className="mb-4">
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Task 1:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{writingBreakdown.task1_feedback}</p>
                 </div>
               )}
               {writingBreakdown.task2_feedback && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Task 2 Feedback:
-                  </p>
-                  <p className="text-xs text-gray-600 dark:text-gray-400">
-                    {writingBreakdown.task2_feedback}
-                  </p>
+                <div>
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Task 2:</p>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">{writingBreakdown.task2_feedback}</p>
                 </div>
               )}
             </Card>
           </motion.div>
-        </div>
+        )}
 
         {/* Actions */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: 0.6 }}
           className="flex justify-center gap-4"
         >
           <Button onClick={() => navigate('/student/dashboard')}>
@@ -319,4 +419,5 @@ const Results = () => {
 };
 
 export default Results;
+
 

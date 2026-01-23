@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { studentApi } from '../../api/studentApi';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
+import NameCollectionModal from '../../components/NameCollectionModal';
+import { useExam } from '../../context/ExamContext';
 import {
   Activity,
   AlertTriangle,
@@ -21,6 +23,11 @@ const PREPARATION_DURATION = 60;
 const WAITING_LIMIT_MINUTES = 10;
 
 const STATUS_STEPS = [
+  {
+    key: 'name_collection',
+    title: 'Enter Your Name',
+    description: 'Please provide your first and last name to proceed.',
+  },
   {
     key: 'waiting',
     title: 'In Queue',
@@ -44,6 +51,11 @@ const STATUS_STEPS = [
 ];
 
 const STATUS_STYLES = {
+  name_collection: {
+    badge: 'bg-indigo-100 text-indigo-900 dark:bg-indigo-900/30 dark:text-indigo-200',
+    accent: 'bg-indigo-500',
+    icon: UsersRound,
+  },
   waiting: {
     badge: 'bg-yellow-100 text-yellow-900 dark:bg-yellow-900/30 dark:text-yellow-200',
     accent: 'bg-yellow-500',
@@ -85,6 +97,12 @@ const formatDateTime = (isoString) => {
 
 const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
   const navigate = useNavigate();
+  const { setStudentName } = useExam();
+
+  // Check if name has been collected
+  const [nameCollected, setNameCollected] = useState(false);
+  const [showNameModal, setShowNameModal] = useState(true);
+
   const [status, setStatus] = useState(queueStatus?.status || 'waiting');
   const [preparationTime, setPreparationTime] = useState(
     queueStatus?.preparation_time_remaining ?? PREPARATION_DURATION
@@ -109,8 +127,20 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
   const autoStartAt = queueStatus?.auto_start_at;
   const timeoutDeadline = queueStatus?.timeout_deadline;
   const canStart = queueStatus?.can_start;
-  const statusMeta = STATUS_STYLES[status] || STATUS_STYLES.waiting;
+
+  // Show name_collection status if name not yet collected
+  const displayStatus = !nameCollected ? 'name_collection' : status;
+  const statusMeta = STATUS_STYLES[displayStatus] || STATUS_STYLES.waiting;
   const StatusIcon = statusMeta.icon || Clock;
+
+  // Handle name submission
+  const handleNameSubmit = useCallback(async (nameData) => {
+    // Store name in context
+    setStudentName(nameData);
+    setNameCollected(true);
+    setShowNameModal(false);
+    showToast(`Welcome, ${nameData.firstName}! Preparing your test...`, 'success');
+  }, [setStudentName]);
 
   const handleStartTest = useCallback(
     async (manual = false) => {
@@ -134,6 +164,9 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
   );
 
   useEffect(() => {
+    // Only check status if name has been collected
+    if (!nameCollected) return;
+
     const checkStatus = async () => {
       try {
         const response = await studentApi.checkQueueStatus();
@@ -144,7 +177,7 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
         if (newStatus === 'timeout') {
           showToast(
             response.data.message ||
-              'Test did not start within 10 minutes. You have been removed from the queue.',
+            'Test did not start within 10 minutes. You have been removed from the queue.',
             'error'
           );
           navigate('/student/dashboard', { replace: true });
@@ -163,7 +196,7 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
     checkStatus();
 
     return () => clearInterval(interval);
-  }, [handleStartTest, navigate, onStatusUpdate]);
+  }, [nameCollected, handleStartTest, navigate, onStatusUpdate]);
 
   useEffect(() => {
     if (!joinedAt || ['started', 'left', 'timeout'].includes(status)) {
@@ -184,6 +217,7 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
   }, [joinedAt, status]);
 
   useEffect(() => {
+    if (!nameCollected) return; // Don't start countdown until name collected
     if (status !== 'preparation') return;
     if (preparationTime <= 0) {
       handleStartTest(false);
@@ -195,7 +229,7 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [status, preparationTime, handleStartTest]);
+  }, [nameCollected, status, preparationTime, handleStartTest]);
 
   const handleLeave = async () => {
     try {
@@ -214,19 +248,26 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
   );
 
   const currentStepIndex = useMemo(() => {
-    const idx = STATUS_STEPS.findIndex((step) => step.key === status);
+    const idx = STATUS_STEPS.findIndex((step) => step.key === displayStatus);
     return idx === -1 ? 0 : idx;
-  }, [status]);
+  }, [displayStatus]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4">
+      {/* Name Collection Modal - shown first */}
+      <NameCollectionModal
+        isOpen={showNameModal && !nameCollected}
+        onSubmit={handleNameSubmit}
+        testCode={queueStatus?.test_code}
+      />
+
       <Card className="max-w-3xl w-full relative overflow-hidden">
         <div className="absolute inset-0 pointer-events-none opacity-10 dark:opacity-20">
           <div className={`absolute -right-16 -top-16 w-64 h-64 rounded-full ${statusMeta.accent}`} />
         </div>
 
         <div className="relative space-y-8 p-6 md:p-10">
-          {(status === 'waiting' || status === 'assigned' || status === 'preparation') && (
+          {nameCollected && (status === 'waiting' || status === 'assigned' || status === 'preparation') && (
             <div className="absolute top-6 right-6 flex gap-3">
               <Button
                 onClick={async () => {
@@ -266,95 +307,101 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${statusMeta.badge}`}
             >
               <StatusIcon className="w-4 h-4" />
-              {queueStatus?.status_label || status.toUpperCase()}
+              {!nameCollected ? 'ENTER YOUR NAME' : (queueStatus?.status_label || status.toUpperCase())}
             </div>
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              {queueStatus?.status_label || 'Waiting Room'}
+              {!nameCollected ? 'Welcome to the Test' : (queueStatus?.status_label || 'Waiting Room')}
             </h2>
             <p className="text-gray-600 dark:text-gray-300">
-              {queueStatus?.status_description || 'Please stay ready. Your test will begin shortly.'}
+              {!nameCollected
+                ? 'Please enter your full name to proceed to the test.'
+                : (queueStatus?.status_description || 'Please stay ready. Your test will begin shortly.')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <InfoTile
-              label="Test Code"
-              value={queueStatus?.test_code || '--'}
-              icon={Activity}
-            />
-            <InfoTile
-              label="Assigned Variant"
-              value={queueStatus?.assigned_variant_name || 'Pending'}
-              icon={UsersRound}
-            />
-            <InfoTile
-              label="Joined Queue"
-              value={joinedAt ? formatDateTime(joinedAt) : '--'}
-              icon={Clock}
-            />
-            <InfoTile
-              label="Auto Start"
-              value={autoStartAt ? formatDateTime(autoStartAt) : 'Waiting'}
-              icon={TimerReset}
-            />
-          </div>
-
-          {(status === 'waiting' || status === 'assigned') && (
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
-                <span>Waiting time</span>
-                <span>
-                  {waitingTime} / {WAITING_LIMIT_MINUTES} minutes
-                </span>
-              </div>
-              <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                <div
-                  className={`h-full ${statusMeta.accent}`}
-                  style={{ width: `${waitingProgress}%` }}
+          {nameCollected && (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <InfoTile
+                  label="Test Code"
+                  value={queueStatus?.test_code || '--'}
+                  icon={Activity}
+                />
+                <InfoTile
+                  label="Assigned Variant"
+                  value={queueStatus?.assigned_variant_name || 'Pending'}
+                  icon={UsersRound}
+                />
+                <InfoTile
+                  label="Joined Queue"
+                  value={joinedAt ? formatDateTime(joinedAt) : '--'}
+                  icon={Clock}
+                />
+                <InfoTile
+                  label="Auto Start"
+                  value={autoStartAt ? formatDateTime(autoStartAt) : 'Waiting'}
+                  icon={TimerReset}
                 />
               </div>
-              {timeoutDeadline && (
-                <p className="text-xs text-gray-500">
-                  You will be removed at {formatDateTime(timeoutDeadline)} if the test does not start.
-                </p>
+
+              {(status === 'waiting' || status === 'assigned') && (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400">
+                    <span>Waiting time</span>
+                    <span>
+                      {waitingTime} / {WAITING_LIMIT_MINUTES} minutes
+                    </span>
+                  </div>
+                  <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                    <div
+                      className={`h-full ${statusMeta.accent}`}
+                      style={{ width: `${waitingProgress}%` }}
+                    />
+                  </div>
+                  {timeoutDeadline && (
+                    <p className="text-xs text-gray-500">
+                      You will be removed at {formatDateTime(timeoutDeadline)} if the test does not start.
+                    </p>
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
-          {status === 'preparation' && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-center gap-4">
-                <div className="w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
-                  <Clock className="w-10 h-10 text-primary-600 dark:text-primary-400" />
-                </div>
-                <div>
-                  <p className="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">
-                    Preparation Timer
+              {status === 'preparation' && (
+                <div className="space-y-4">
+                  <div className="flex items-center justify-center gap-4">
+                    <div className="w-20 h-20 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+                      <Clock className="w-10 h-10 text-primary-600 dark:text-primary-400" />
+                    </div>
+                    <div>
+                      <p className="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        Preparation Timer
+                      </p>
+                      <p className="text-4xl font-mono font-bold text-primary-600 dark:text-primary-400">
+                        {formatDuration(preparationTime)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
+                    <div
+                      className="h-full bg-primary-500"
+                      style={{ width: `${preparationProgress}%` }}
+                    />
+                  </div>
+                  <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+                    The test will start automatically when the timer reaches 0.
                   </p>
-                  <p className="text-4xl font-mono font-bold text-primary-600 dark:text-primary-400">
-                    {formatDuration(preparationTime)}
-                  </p>
+                  <Button
+                    className="w-full flex items-center justify-center gap-2"
+                    onClick={() => handleStartTest(true)}
+                    disabled={!canStart || isStarting}
+                    loading={isStarting}
+                  >
+                    <Play className="w-4 h-4" />
+                    Start Test Now
+                  </Button>
                 </div>
-              </div>
-              <div className="h-2 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                <div
-                  className="h-full bg-primary-500"
-                  style={{ width: `${preparationProgress}%` }}
-                />
-              </div>
-              <p className="text-center text-sm text-gray-600 dark:text-gray-400">
-                The test will start automatically when the timer reaches 0.
-              </p>
-              <Button
-                className="w-full flex items-center justify-center gap-2"
-                onClick={() => handleStartTest(true)}
-                disabled={!canStart || isStarting}
-                loading={isStarting}
-              >
-                <Play className="w-4 h-4" />
-                Start Test Now
-              </Button>
-            </div>
+              )}
+            </>
           )}
 
           <div className="space-y-4">
@@ -364,24 +411,22 @@ const WaitingRoom = ({ queueStatus, onStatusUpdate, onStartTest }) => {
             <div className="space-y-3">
               {STATUS_STEPS.map((step, index) => {
                 const isCompleted = index < currentStepIndex;
-                const isActive = step.key === status;
+                const isActive = step.key === displayStatus;
                 return (
                   <div
                     key={step.key}
-                    className={`flex items-start gap-3 rounded-lg border p-3 ${
-                      isActive
+                    className={`flex items-start gap-3 rounded-lg border p-3 ${isActive
                         ? 'border-primary-300 dark:border-primary-700 bg-primary-50/50 dark:bg-primary-900/10'
                         : 'border-gray-200 dark:border-gray-700'
-                    }`}
+                      }`}
                   >
                     <div
-                      className={`mt-1 w-2 h-2 rounded-full ${
-                        isCompleted
+                      className={`mt-1 w-2 h-2 rounded-full ${isCompleted
                           ? 'bg-green-500'
                           : isActive
-                          ? statusMeta.accent
-                          : 'bg-gray-300 dark:bg-gray-600'
-                      }`}
+                            ? statusMeta.accent
+                            : 'bg-gray-300 dark:bg-gray-600'
+                        }`}
                     />
                     <div>
                       <p className="font-semibold text-gray-900 dark:text-white">{step.title}</p>
@@ -411,4 +456,3 @@ const InfoTile = ({ label, value, icon: Icon }) => (
 );
 
 export default WaitingRoom;
-
