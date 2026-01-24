@@ -6,8 +6,8 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.db import transaction
 from datetime import timedelta
-from .models import StudentTest, TestResponse, TestResult, TestQueue
-from exams.models import Variant
+from .models import StudentTest, TestResponse, TestResult, TestQueue, SpeakingResponse
+from exams.models import Variant, TestFile
 from .serializers import (
     StudentTestSerializer, TestResponseSerializer, TestResultSerializer
 )
@@ -772,10 +772,12 @@ def submit_test(request):
                 'writing_score': float(test_result.writing_score) if test_result.writing_score else None,
                 'writing_task1_score': float(test_result.writing_task1_score) if test_result.writing_task1_score else None,
                 'writing_task2_score': float(test_result.writing_task2_score) if test_result.writing_task2_score else None,
+                'speaking_score': float(test_result.speaking_score) if test_result.speaking_score else None,
                 'overall_score': float(test_result.overall_score) if test_result.overall_score else None,
                 'listening_breakdown': test_result.listening_breakdown,
                 'reading_breakdown': test_result.reading_breakdown,
                 'writing_breakdown': test_result.writing_breakdown,
+                'speaking_breakdown': test_result.speaking_breakdown,
             }
         })
     except Exception as e:
@@ -785,6 +787,278 @@ def submit_test(request):
             'student_test': StudentTestSerializer(student_test).data,
             'grading_error': str(e)
         })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_speaking_questions(request):
+    """Get speaking questions for current test variant."""
+    if not request.user.is_student():
+        return Response(
+            {'error': 'Student access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Allow both in_progress and graded status (speaking can be done after other sections are graded)
+    student_test = StudentTest.objects.filter(
+        student=request.user,
+        status__in=['in_progress', 'graded']
+    ).order_by('-start_time').first()
+
+    if not student_test:
+        return Response(
+            {'error': 'No active test found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    variant = student_test.variant
+    speaking_file = TestFile.objects.filter(variant=variant, file_type='speaking').first()
+
+    if not speaking_file or not speaking_file.questions_data:
+        return Response(
+            {'error': 'Speaking questions not found for this variant.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    return Response({
+        'questions_data': speaking_file.questions_data,
+        'student_test_id': student_test.id
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def upload_speaking_audio(request):
+    """Upload audio for a speaking part/question."""
+    if not request.user.is_student():
+        return Response(
+            {'error': 'Student access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Allow both in_progress and graded status (speaking can be recorded after other sections are graded)
+    student_test = StudentTest.objects.filter(
+        student=request.user,
+        status__in=['in_progress', 'graded']
+    ).order_by('-start_time').first()
+
+    if not student_test:
+        return Response(
+            {'error': 'No active test found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    part_number = request.data.get('part_number')
+    question_number = request.data.get('question_number')
+    audio_file = request.FILES.get('audio_file')
+
+    # Validate part_number - accept both int and string
+    try:
+        part_number = int(part_number) if part_number else None
+    except (ValueError, TypeError):
+        part_number = None
+
+    if part_number not in [1, 2, 3]:
+        return Response(
+            {'error': 'Invalid part_number. Must be 1, 2, or 3.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    if not audio_file:
+        return Response(
+            {'error': 'No audio file provided.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    # Convert question_number to integer if provided
+    question_number = int(question_number) if question_number else None
+
+    # Save speaking response
+    speaking_response, created = SpeakingResponse.objects.update_or_create(
+        student_test=student_test,
+        part_number=part_number,
+        question_number=question_number,
+        defaults={
+            'audio_file': audio_file,
+            'transcription_status': 'pending'
+        }
+    )
+
+    return Response({
+        'message': 'Audio uploaded successfully.',
+        'speaking_response_id': speaking_response.id,
+        'created': created
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def transcribe_and_grade_speaking(request):
+    """Transcribe all audio and grade speaking section."""
+    if not request.user.is_student():
+        return Response(
+            {'error': 'Student access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Allow both in_progress and graded status (speaking grading can happen after other sections)
+    student_test = StudentTest.objects.filter(
+        student=request.user,
+        status__in=['in_progress', 'graded']
+    ).order_by('-start_time').first()
+
+    if not student_test:
+        return Response(
+            {'error': 'No active test found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Get all speaking responses for this student_test
+    speaking_responses = SpeakingResponse.objects.filter(
+        student_test=student_test
+    ).order_by('part_number', 'question_number')
+
+    if not speaking_responses.exists():
+        return Response(
+            {'error': 'No speaking responses found.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Import grading services
+    from grading.speech_to_text import transcribe_audio_whisper
+    from grading.ai_speaking_grading import grade_speaking_part_ai, calculate_speaking_overall_score
+
+    # Get speaking questions data
+    variant = student_test.variant
+    speaking_file = TestFile.objects.filter(variant=variant, file_type='speaking').first()
+
+    if not speaking_file or not speaking_file.questions_data:
+        return Response(
+            {'error': 'Speaking questions not found for this variant.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    questions_data = speaking_file.questions_data
+    transcription_errors = []
+    grading_results = {}
+
+    # Step 1: Transcribe all audio files
+    for response in speaking_responses:
+        response.transcription_status = 'processing'
+        response.save()
+
+        audio_path = response.audio_file.path
+        transcription_result = transcribe_audio_whisper(audio_path)
+
+        if transcription_result['success']:
+            response.transcribed_text = transcription_result['text']
+            response.transcription_status = 'completed'
+            response.transcription_metadata = {
+                'language': transcription_result['language'],
+                'duration': transcription_result['duration']
+            }
+            response.save()
+        else:
+            response.transcription_status = 'failed'
+            response.save()
+            transcription_errors.append({
+                'part': response.part_number,
+                'question': response.question_number,
+                'error': transcription_result['error']
+            })
+
+    # Step 2: Grade each part
+    # Group responses by part
+    responses_by_part = {}
+    for response in speaking_responses:
+        if response.transcription_status == 'completed':
+            if response.part_number not in responses_by_part:
+                responses_by_part[response.part_number] = []
+            responses_by_part[response.part_number].append(response)
+
+    part_scores = []
+
+    for part_num in [1, 2, 3]:
+        if part_num not in responses_by_part:
+            continue
+
+        part_responses = responses_by_part[part_num]
+
+        # Get questions for this part
+        if part_num == 1:
+            part_data = questions_data.get('part1', {})
+            topic = part_data.get('topic', 'Interview')
+            questions = part_data.get('questions', [])
+
+            # Combine all responses for part 1
+            combined_text = '\n\n'.join([
+                f"Q{i+1}: {questions[i] if i < len(questions) else 'Question'}\nA: {resp.transcribed_text}"
+                for i, resp in enumerate(part_responses)
+            ])
+
+        elif part_num == 2:
+            part_data = questions_data.get('part2', {})
+            topic = part_data.get('topic', 'Long Turn')
+            prompt = part_data.get('prompt', '')
+            points = part_data.get('points', [])
+            final = part_data.get('final', '')
+
+            questions = [f"{prompt}\n\nYou should say:\n" + "\n".join(points) + f"\n{final}"]
+            combined_text = part_responses[0].transcribed_text if part_responses else ''
+
+        elif part_num == 3:
+            part_data = questions_data.get('part3', {})
+            topics = part_data.get('topics', [])
+
+            all_questions = []
+            for topic_group in topics:
+                all_questions.extend(topic_group.get('questions', []))
+
+            topic = 'Discussion'
+            questions = all_questions
+
+            # Combine all responses for part 3
+            combined_text = '\n\n'.join([
+                f"Q{i+1}: {all_questions[i] if i < len(all_questions) else 'Question'}\nA: {resp.transcribed_text}"
+                for i, resp in enumerate(part_responses)
+            ])
+
+        # Grade this part
+        grading_result = grade_speaking_part_ai(
+            part_number=part_num,
+            topic=topic,
+            questions=questions,
+            student_response=combined_text
+        )
+
+        grading_results[f'part{part_num}'] = grading_result
+
+        if grading_result['overall_score'] is not None:
+            part_scores.append(grading_result['overall_score'])
+
+    # Step 3: Calculate overall speaking score
+    overall_speaking_score = calculate_speaking_overall_score(part_scores)
+
+    # Step 4: Save to TestResult
+    test_result, created = TestResult.objects.get_or_create(
+        student_test=student_test,
+        defaults={'graded_by': None}
+    )
+
+    test_result.speaking_score = overall_speaking_score
+    test_result.speaking_breakdown = grading_results
+    test_result.save()
+
+    # Recalculate overall score including speaking
+    test_result.calculate_overall_score()
+
+    return Response({
+        'message': 'Speaking section transcribed and graded successfully.',
+        'speaking_score': float(overall_speaking_score) if overall_speaking_score else None,
+        'breakdown': grading_results,
+        'transcription_errors': transcription_errors,
+        'overall_score': float(test_result.overall_score) if test_result.overall_score else None
+    })
 
 
 @api_view(['GET', 'PUT'])
@@ -870,10 +1144,12 @@ def get_attempts(request):
                 'writing_score': float(result.writing_score) if result.writing_score else None,
                 'writing_task1_score': float(result.writing_task1_score) if result.writing_task1_score else None,
                 'writing_task2_score': float(result.writing_task2_score) if result.writing_task2_score else None,
+                'speaking_score': float(result.speaking_score) if result.speaking_score else None,
                 'overall_score': float(result.overall_score) if result.overall_score else None,
                 'listening_breakdown': result.listening_breakdown,
                 'reading_breakdown': result.reading_breakdown,
                 'writing_breakdown': result.writing_breakdown,
+                'speaking_breakdown': result.speaking_breakdown,
             }
         except TestResult.DoesNotExist:
             attempt_dict['result'] = None

@@ -46,12 +46,13 @@ class Variant(models.Model):
 
 
 class TestFile(models.Model):
-    """Model for storing Reading, Listening, and Writing test files."""
-    
+    """Model for storing Reading, Listening, Writing, and Speaking test files."""
+
     FILE_TYPE_CHOICES = [
         ('reading', 'Reading'),
         ('listening', 'Listening'),
         ('writing', 'Writing'),
+        ('speaking', 'Speaking'),
     ]
     
     variant = models.ForeignKey(

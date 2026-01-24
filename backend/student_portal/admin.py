@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import StudentTest, TestResponse, TestResult, TestQueue
+from .models import StudentTest, TestResponse, TestResult, TestQueue, SpeakingResponse
 
 
 @admin.register(StudentTest)
@@ -18,7 +18,7 @@ class TestResponseAdmin(admin.ModelAdmin):
 
 @admin.register(TestResult)
 class TestResultAdmin(admin.ModelAdmin):
-    list_display = ('student_test', 'listening_score', 'reading_score', 'writing_score', 'overall_score', 'graded_at')
+    list_display = ('student_test', 'listening_score', 'reading_score', 'writing_score', 'speaking_score', 'overall_score', 'graded_at')
     list_filter = ('graded_at',)
     search_fields = ('student_test__student__username', 'student_test__variant__name')
 

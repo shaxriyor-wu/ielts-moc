@@ -233,6 +233,12 @@ const Results = () => {
                               {result.writing_score?.toFixed(1) || '-'}
                             </p>
                           </div>
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Speaking</p>
+                            <p className={`text-lg font-bold ${getScoreColor(result.speaking_score)}`}>
+                              {result.speaking_score?.toFixed(1) || '-'}
+                            </p>
+                          </div>
                         </div>
                         {isExpanded ? (
                           <ChevronUp className="w-5 h-5 text-gray-400" />
@@ -382,6 +388,135 @@ const Results = () => {
                                           {showDetailedFeedback[`${attempt.id}-task2`] && (
                                             <div className="prose dark:prose-invert max-w-none text-sm">
                                               <ReactMarkdown>{result.writing_breakdown.task2.feedback}</ReactMarkdown>
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Speaking Section */}
+                          {result.speaking_breakdown && (
+                            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                              <div
+                                className="flex items-center justify-between cursor-pointer"
+                                onClick={() => toggleSection(attempt.id, 'speaking')}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                                    Speaking Details
+                                  </h4>
+                                  <span className={`text-sm font-medium ${getScoreColor(result.speaking_score)}`}>
+                                    Score: {result.speaking_score?.toFixed(1)}
+                                  </span>
+                                </div>
+                                {expandedSections[`${attempt.id}-speaking`] ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
+                              {expandedSections[`${attempt.id}-speaking`] && (
+                                <div className="mt-4 space-y-4">
+                                  {/* Part 1 */}
+                                  {result.speaking_breakdown.part1 && (
+                                    <div className="border-l-4 border-blue-500 pl-4">
+                                      <h5 className="font-medium text-gray-900 dark:text-white mb-2">Part 1: Interview</h5>
+                                      <p className="text-sm mb-2">
+                                        <strong>Score:</strong> {result.speaking_breakdown.part1.overall_score?.toFixed(1)}
+                                      </p>
+                                      {result.speaking_breakdown.part1.breakdown && (
+                                        <div className="text-sm space-y-1 mb-2">
+                                          <p><strong>Fluency & Coherence:</strong> {result.speaking_breakdown.part1.breakdown.fluency_coherence?.toFixed(1)}</p>
+                                          <p><strong>Lexical Resource:</strong> {result.speaking_breakdown.part1.breakdown.lexical_resource?.toFixed(1)}</p>
+                                          <p><strong>Grammatical Range:</strong> {result.speaking_breakdown.part1.breakdown.grammatical_range?.toFixed(1)}</p>
+                                          <p><strong>Pronunciation:</strong> {result.speaking_breakdown.part1.breakdown.pronunciation?.toFixed(1)}</p>
+                                        </div>
+                                      )}
+                                      {result.speaking_breakdown.part1.detailed_feedback && (
+                                        <div>
+                                          <button
+                                            onClick={() => toggleDetailedFeedback(attempt.id, 'speaking_part1')}
+                                            className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 mb-2"
+                                          >
+                                            <Eye className="w-4 h-4" />
+                                            {showDetailedFeedback[`${attempt.id}-speaking_part1`] ? 'Hide' : 'Show'} Detailed Feedback
+                                          </button>
+                                          {showDetailedFeedback[`${attempt.id}-speaking_part1`] && (
+                                            <div className="prose dark:prose-invert max-w-none text-sm whitespace-pre-wrap">
+                                              {result.speaking_breakdown.part1.detailed_feedback}
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+
+                                  {/* Part 2 */}
+                                  {result.speaking_breakdown.part2 && (
+                                    <div className="border-l-4 border-purple-500 pl-4">
+                                      <h5 className="font-medium text-gray-900 dark:text-white mb-2">Part 2: Long Turn</h5>
+                                      <p className="text-sm mb-2">
+                                        <strong>Score:</strong> {result.speaking_breakdown.part2.overall_score?.toFixed(1)}
+                                      </p>
+                                      {result.speaking_breakdown.part2.breakdown && (
+                                        <div className="text-sm space-y-1 mb-2">
+                                          <p><strong>Fluency & Coherence:</strong> {result.speaking_breakdown.part2.breakdown.fluency_coherence?.toFixed(1)}</p>
+                                          <p><strong>Lexical Resource:</strong> {result.speaking_breakdown.part2.breakdown.lexical_resource?.toFixed(1)}</p>
+                                          <p><strong>Grammatical Range:</strong> {result.speaking_breakdown.part2.breakdown.grammatical_range?.toFixed(1)}</p>
+                                          <p><strong>Pronunciation:</strong> {result.speaking_breakdown.part2.breakdown.pronunciation?.toFixed(1)}</p>
+                                        </div>
+                                      )}
+                                      {result.speaking_breakdown.part2.detailed_feedback && (
+                                        <div>
+                                          <button
+                                            onClick={() => toggleDetailedFeedback(attempt.id, 'speaking_part2')}
+                                            className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 mb-2"
+                                          >
+                                            <Eye className="w-4 h-4" />
+                                            {showDetailedFeedback[`${attempt.id}-speaking_part2`] ? 'Hide' : 'Show'} Detailed Feedback
+                                          </button>
+                                          {showDetailedFeedback[`${attempt.id}-speaking_part2`] && (
+                                            <div className="prose dark:prose-invert max-w-none text-sm whitespace-pre-wrap">
+                                              {result.speaking_breakdown.part2.detailed_feedback}
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+
+                                  {/* Part 3 */}
+                                  {result.speaking_breakdown.part3 && (
+                                    <div className="border-l-4 border-orange-500 pl-4">
+                                      <h5 className="font-medium text-gray-900 dark:text-white mb-2">Part 3: Discussion</h5>
+                                      <p className="text-sm mb-2">
+                                        <strong>Score:</strong> {result.speaking_breakdown.part3.overall_score?.toFixed(1)}
+                                      </p>
+                                      {result.speaking_breakdown.part3.breakdown && (
+                                        <div className="text-sm space-y-1 mb-2">
+                                          <p><strong>Fluency & Coherence:</strong> {result.speaking_breakdown.part3.breakdown.fluency_coherence?.toFixed(1)}</p>
+                                          <p><strong>Lexical Resource:</strong> {result.speaking_breakdown.part3.breakdown.lexical_resource?.toFixed(1)}</p>
+                                          <p><strong>Grammatical Range:</strong> {result.speaking_breakdown.part3.breakdown.grammatical_range?.toFixed(1)}</p>
+                                          <p><strong>Pronunciation:</strong> {result.speaking_breakdown.part3.breakdown.pronunciation?.toFixed(1)}</p>
+                                        </div>
+                                      )}
+                                      {result.speaking_breakdown.part3.detailed_feedback && (
+                                        <div>
+                                          <button
+                                            onClick={() => toggleDetailedFeedback(attempt.id, 'speaking_part3')}
+                                            className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 mb-2"
+                                          >
+                                            <Eye className="w-4 h-4" />
+                                            {showDetailedFeedback[`${attempt.id}-speaking_part3`] ? 'Hide' : 'Show'} Detailed Feedback
+                                          </button>
+                                          {showDetailedFeedback[`${attempt.id}-speaking_part3`] && (
+                                            <div className="prose dark:prose-invert max-w-none text-sm whitespace-pre-wrap">
+                                              {result.speaking_breakdown.part3.detailed_feedback}
                                             </div>
                                           )}
                                         </div>

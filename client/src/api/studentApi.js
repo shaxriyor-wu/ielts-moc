@@ -19,6 +19,23 @@ export const studentApi = {
   saveWriting: (content) => api.post('/student/answers/writing', { content }, { skipErrorRedirect: true }),
   saveWritingTask: (taskNumber, content) => api.post('/student/answers/writing-task', { task_number: taskNumber, content }, { skipErrorRedirect: true }),
   saveHighlights: (highlights) => api.post('/student/highlights', { highlights }, { skipErrorRedirect: true }),
+  // Speaking section endpoints
+  getSpeakingQuestions: () => api.get('/student/speaking/questions', { skipErrorRedirect: true }),
+  uploadSpeakingAudio: (partNumber, questionNumber, audioBlob) => {
+    const formData = new FormData();
+    formData.append('part_number', partNumber);
+    if (questionNumber !== null) {
+      formData.append('question_number', questionNumber);
+    }
+    formData.append('audio_file', audioBlob, 'recording.webm');
+    return api.post('/student/speaking/upload-audio', formData, {
+      skipErrorRedirect: true,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+  },
+  transcribeAndGradeSpeaking: () => api.post('/student/speaking/transcribe-grade', {}, { skipErrorRedirect: true }),
   submitTest: () => api.post('/student/submit'),
   getProfile: () => api.get('/student/profile'),
   updateProfile: (data) => api.put('/student/profile', data),

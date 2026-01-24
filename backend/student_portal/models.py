@@ -102,11 +102,12 @@ class TestQueue(models.Model):
 
 class TestResponse(models.Model):
     """Model for storing student answers for each section."""
-    
+
     SECTION_CHOICES = [
         ('reading', 'Reading'),
         ('listening', 'Listening'),
         ('writing', 'Writing'),
+        ('speaking', 'Speaking'),
     ]
     
     student_test = models.ForeignKey(
@@ -212,7 +213,19 @@ class TestResult(models.Model):
         blank=True,
         help_text='Detailed writing score breakdown (AI evaluation)'
     )
-    
+    speaking_score = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        help_text='Speaking score (0-9)'
+    )
+    speaking_breakdown = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='Detailed speaking score breakdown (AI evaluation)'
+    )
+
     # Grading Information
     graded_at = models.DateTimeField(auto_now_add=True)
     graded_by = models.ForeignKey(
@@ -240,7 +253,9 @@ class TestResult(models.Model):
             scores.append(float(self.reading_score))
         if self.writing_score is not None:
             scores.append(float(self.writing_score))
-        
+        if self.speaking_score is not None:
+            scores.append(float(self.speaking_score))
+
         if scores:
             # Calculate average and round to nearest 0.5
             avg = sum(scores) / len(scores)
@@ -248,3 +263,59 @@ class TestResult(models.Model):
             self.save()
             return self.overall_score
         return None
+
+
+class SpeakingResponse(models.Model):
+    """Model for storing student speaking responses with audio recordings."""
+
+    TRANSCRIPTION_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+
+    student_test = models.ForeignKey(
+        StudentTest,
+        on_delete=models.CASCADE,
+        related_name='speaking_responses'
+    )
+    part_number = models.PositiveIntegerField(
+        help_text='Speaking part number (1, 2, or 3)'
+    )
+    question_number = models.PositiveIntegerField(
+        null=True,
+        blank=True,
+        help_text='Question number within the part (for Part 1 and 3, null for Part 2)'
+    )
+    audio_file = models.FileField(
+        upload_to='speaking_audio/%Y/%m/%d/',
+        help_text='Student audio recording'
+    )
+    transcribed_text = models.TextField(
+        null=True,
+        blank=True,
+        help_text='Transcribed text from audio'
+    )
+    transcription_status = models.CharField(
+        max_length=20,
+        choices=TRANSCRIPTION_STATUS_CHOICES,
+        default='pending',
+        help_text='Status of transcription process'
+    )
+    transcription_metadata = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='Additional transcription data (language, duration, etc.)'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'speaking_response'
+        unique_together = ['student_test', 'part_number', 'question_number']
+        ordering = ['part_number', 'question_number']
+
+    def __str__(self):
+        if self.question_number:
+            return f"{self.student_test} - Part {self.part_number} Q{self.question_number}"
+        return f"{self.student_test} - Part {self.part_number}"
