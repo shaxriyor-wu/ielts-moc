@@ -48,7 +48,12 @@ export class Admin {
     const db = loadDb();
     const admin = db.admins.find(a => a.id === id);
     if (admin) {
-      Object.assign(admin, data);
+      const ALLOWED_FIELDS = ['name', 'email', 'login', 'isActive'];
+      const safeData = {};
+      ALLOWED_FIELDS.forEach(field => {
+        if (data[field] !== undefined) safeData[field] = data[field];
+      });
+      Object.assign(admin, safeData);
       admin.updatedAt = new Date().toISOString();
       saveDb(db);
       return admin;
@@ -100,12 +105,20 @@ export class Admin {
       const key = db.testKeys.find(k => k.key === a.testKey);
       return key && key.adminId === id;
     });
-    
+
+    // Count unique students (registered users)
+    const students = db.students || [];
+
     return {
       totalTests: tests.length,
       totalKeys: testKeys.length,
       totalAttempts: attempts.length,
-      activeTests: tests.filter(t => t.isActive).length
+      activeTests: tests.filter(t => t.isActive).length,
+      // New stats
+      total_students: students.length,
+      total_variants: tests.length,
+      total_mock_tests_taken: attempts.filter(a => a.isSubmitted).length,
+      total_test_participants: attempts.length // All attempts (including in-progress)
     };
   }
 }

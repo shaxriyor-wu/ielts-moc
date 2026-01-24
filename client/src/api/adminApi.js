@@ -52,4 +52,6 @@ export const adminApi = {
   generateTestKey: (variantId) => api.post(`/admin/tests/${variantId}/generate-code`),
   // Results
   getResults: () => api.get('/admin/results'),
+  // Online users
+  getOnlineUsers: () => api.get('/admin/online-users'),
 };

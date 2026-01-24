@@ -54,10 +54,11 @@ export class Attempt {
     const db = loadDb();
     const attempt = db.attempts.find(a => a.id === id);
     if (attempt) {
-      if (data.answers) {
+      // Only allow updating specific fields
+      if (data.answers && typeof data.answers === 'object') {
         attempt.answers = { ...attempt.answers, ...data.answers };
       }
-      if (data.highlights) {
+      if (data.highlights && Array.isArray(data.highlights)) {
         attempt.highlights = data.highlights;
       }
       attempt.lastSaved = new Date().toISOString();

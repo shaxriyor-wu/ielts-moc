@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import rateLimit from 'express-rate-limit';
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
 import studentRoutes from './routes/student.js';
@@ -23,6 +24,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Rate limiting for authentication endpoints
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // 5 attempts per windowMs
+  message: { error: 'Too many login attempts. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/student/login', authLimiter);
+app.use('/api/admin/login', authLimiter);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
@@ -70,5 +84,16 @@ app.listen(PORT, async () => {
   logger.info(`Server running on port ${PORT}`);
   console.log(`🚀 Server running on port ${PORT}`);
   await initializeDatabase();
+
+  // Queue cleanup cron - runs every 5 minutes
+  const { Queue } = await import('./models/Queue.js');
+  setInterval(async () => {
+    try {
+      await Queue.cleanupOldEntries();
+      logger.info('Queue cleanup completed');
+    } catch (error) {
+      logger.error('Queue cleanup error:', error);
+    }
+  }, 5 * 60 * 1000);
 });
 

@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Topbar from '../components/Topbar';
 import { useAuth } from '../context/AuthContext';
-import { Home, BookOpen, Key, Users, BarChart3, Settings, UserCog } from 'lucide-react';
+import { Home, BarChart3, Settings, UserCog } from 'lucide-react';
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
@@ -16,9 +16,6 @@ const AdminLayout = () => {
   const sidebarItems = [
     { path: '/admin/dashboard', label: 'Dashboard', icon: <Home className="w-5 h-5" /> },
     { path: '/admin/users', label: 'User Management', icon: <UserCog className="w-5 h-5" /> },
-    { path: '/admin/tests', label: 'Tests', icon: <BookOpen className="w-5 h-5" /> },
-    { path: '/admin/generate-key', label: 'Generate Key', icon: <Key className="w-5 h-5" /> },
-    { path: '/admin/students', label: 'Students', icon: <Users className="w-5 h-5" /> },
     { path: '/admin/results', label: 'Results', icon: <BarChart3 className="w-5 h-5" /> },
     { path: '/admin/settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
   ];

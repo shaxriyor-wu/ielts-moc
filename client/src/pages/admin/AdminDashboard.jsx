@@ -5,7 +5,7 @@ import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
 import { showToast } from '../../components/Toast';
-import { Users, BookOpen, PlayCircle, Key, Plus, Edit, Trash2, Play, Square } from 'lucide-react';
+import { Users, BookOpen, PlayCircle, Plus, Edit, Trash2, Play, Square, UserCheck, Key } from 'lucide-react';
 import AddVariantForm from './AddVariantForm';
 
 const AdminDashboard = () => {
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
   return (
     <div className="space-y-6">
       {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <div className="flex items-center justify-between">
             <div>
@@ -135,6 +135,20 @@ const AdminDashboard = () => {
             </div>
           </div>
         </Card>
+
+        <Card>
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Test Participants</p>
+              <p className="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-1">
+                {stats?.total_test_participants || 0}
+              </p>
+            </div>
+            <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+              <UserCheck className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+            </div>
+          </div>
+        </Card>
       </div>
 
       {/* IELTS MOCK SECTION */}
@@ -173,46 +187,6 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-
-        {/* Action Buttons */}
-        <div className="flex flex-wrap gap-3 mb-6">
-          {variants.length > 0 && (
-            <div className="relative group">
-              <Button
-                onClick={() => {
-                  if (variants.length === 1) {
-                    handleGenerateCode(variants[0].id);
-                  } else {
-                    const variantOptions = variants
-                      .map((v) => `${v.id}: ${v.name}`)
-                      .join('\n');
-                    const variantId = prompt(
-                      `Select Variant ID to generate code:\n\n${variantOptions}`
-                    );
-                    if (variantId) {
-                      handleGenerateCode(parseInt(variantId));
-                    }
-                  }
-                }}
-                className="flex items-center gap-2"
-              >
-                <Key className="w-4 h-4" />
-                Generate Code
-              </Button>
-            </div>
-          )}
-          <Button
-            variant="secondary"
-            onClick={() => {
-              setSelectedVariant(null);
-              setShowAddVariant(true);
-            }}
-            className="flex items-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            Add Variant
-          </Button>
-        </div>
 
         {/* Variant List */}
         <div className="mt-6">

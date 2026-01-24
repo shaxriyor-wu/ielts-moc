@@ -20,14 +20,10 @@ export class TestKeyModel {
 
   static async create(data) {
     const db = loadDb();
-    
-    let key;
-    let exists = true;
-    while (exists) {
-      key = generateTestKey();
-      exists = db.testKeys.some(k => k.key === key);
-    }
-    
+
+    // Use UUID to generate unique key (collision virtually impossible)
+    const key = uuidv4().replace(/-/g, '').substring(0, 8).toUpperCase();
+
     const testKey = {
       id: uuidv4(),
       key,
@@ -38,7 +34,7 @@ export class TestKeyModel {
       usedBy: null,
       usedAt: null
     };
-    
+
     db.testKeys.push(testKey);
     saveDb(db);
     return testKey;

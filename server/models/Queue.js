@@ -50,7 +50,12 @@ export class Queue {
     const db = loadDb();
     const entry = db.queue?.find(q => q.id === id);
     if (entry) {
-      Object.assign(entry, data);
+      const ALLOWED_FIELDS = ['status', 'assignedAt', 'preparationStartedAt', 'startedAt', 'leftAt', 'timeoutAt'];
+      const safeData = {};
+      ALLOWED_FIELDS.forEach(field => {
+        if (data[field] !== undefined) safeData[field] = data[field];
+      });
+      Object.assign(entry, safeData);
       entry.updatedAt = new Date().toISOString();
       saveDb(db);
       return entry;
@@ -60,8 +65,9 @@ export class Queue {
 
   static async remove(id) {
     const db = loadDb();
-    const index = db.queue?.findIndex(q => q.id === id);
-    if (index !== -1) {
+    if (!db.queue) return false;
+    const index = db.queue.findIndex(q => q.id === id);
+    if (index !== -1 && index !== undefined) {
       db.queue.splice(index, 1);
       saveDb(db);
       return true;

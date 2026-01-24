@@ -1,19 +1,62 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 
 const ExamContext = createContext(null);
 
 export const ExamProvider = ({ children }) => {
-  // All state is initialized with default values - NO localStorage
+  // Load initial state from sessionStorage if available
+  const loadInitialState = () => {
+    try {
+      const savedState = sessionStorage.getItem('examState');
+      if (savedState) {
+        const parsed = JSON.parse(savedState);
+        return {
+          answers: parsed.answers || { reading: {}, listening: {}, writing: {} },
+          highlights: parsed.highlights || [],
+          listeningHighlights: parsed.listeningHighlights || [],
+          timeRemaining: parsed.timeRemaining || 3600,
+          currentSection: parsed.currentSection || 'listening',
+          currentQuestion: parsed.currentQuestion || 0,
+          markedQuestions: new Set(parsed.markedQuestions || [])
+        };
+      }
+    } catch (error) {
+      console.error('Failed to load exam state:', error);
+    }
+    return null;
+  };
+
+  const initialState = loadInitialState();
+
   const [examData, setExamData] = useState(null);
-  const [currentSection, setCurrentSection] = useState('listening');
-  const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState({ reading: {}, listening: {}, writing: {} });
-  const [highlights, setHighlights] = useState([]);
-  const [listeningHighlights, setListeningHighlights] = useState([]);
-  const [markedQuestions, setMarkedQuestions] = useState(new Set());
-  const [timeRemaining, setTimeRemaining] = useState(3600); // Default 1 hour
+  const [currentSection, setCurrentSection] = useState(initialState?.currentSection || 'listening');
+  const [currentQuestion, setCurrentQuestion] = useState(initialState?.currentQuestion || 0);
+  const [answers, setAnswers] = useState(initialState?.answers || { reading: {}, listening: {}, writing: {} });
+  const [highlights, setHighlights] = useState(initialState?.highlights || []);
+  const [listeningHighlights, setListeningHighlights] = useState(initialState?.listeningHighlights || []);
+  const [markedQuestions, setMarkedQuestions] = useState(initialState?.markedQuestions || new Set());
+  const [timeRemaining, setTimeRemaining] = useState(initialState?.timeRemaining || 3600);
   const [studentName, setStudentName] = useState({ firstName: '', lastName: '' });
   const [audioResetKey, setAudioResetKey] = useState(0);
+
+  // Save state to sessionStorage whenever it changes
+  useEffect(() => {
+    if (examData) {
+      try {
+        const stateToSave = {
+          answers,
+          highlights,
+          listeningHighlights,
+          timeRemaining,
+          currentSection,
+          currentQuestion,
+          markedQuestions: Array.from(markedQuestions)
+        };
+        sessionStorage.setItem('examState', JSON.stringify(stateToSave));
+      } catch (error) {
+        console.error('Failed to save exam state:', error);
+      }
+    }
+  }, [answers, highlights, listeningHighlights, timeRemaining, currentSection, currentQuestion, markedQuestions, examData]);
 
   const updateAnswer = useCallback((section, questionId, value) => {
     setAnswers(prev => {
@@ -97,6 +140,12 @@ export const ExamProvider = ({ children }) => {
     setStudentName({ firstName: '', lastName: '' });
     // Increment audio reset key to force audio component remount
     setAudioResetKey(prev => prev + 1);
+    // Clear sessionStorage
+    try {
+      sessionStorage.removeItem('examState');
+    } catch (error) {
+      console.error('Failed to clear exam state:', error);
+    }
   }, []);
 
   // Reset for re-entering a test (same as clearExam but can be called explicitly)

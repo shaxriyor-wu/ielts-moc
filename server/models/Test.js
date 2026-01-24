@@ -53,7 +53,12 @@ export class Test {
     const db = loadDb();
     const test = db.tests.find(t => t.id === id);
     if (test) {
-      Object.assign(test, data);
+      const ALLOWED_FIELDS = ['title', 'description', 'type', 'reading', 'listening', 'writing', 'answerKey', 'duration', 'isActive'];
+      const safeData = {};
+      ALLOWED_FIELDS.forEach(field => {
+        if (data[field] !== undefined) safeData[field] = data[field];
+      });
+      Object.assign(test, safeData);
       test.updatedAt = new Date().toISOString();
       saveDb(db);
       return test;

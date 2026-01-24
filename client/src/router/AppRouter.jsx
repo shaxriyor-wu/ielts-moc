@@ -8,11 +8,6 @@ import Login from '../pages/Login';
 
 import AdminLogin from '../pages/admin/AdminLogin';
 import AdminDashboard from '../pages/admin/AdminDashboard';
-import AdminTests from '../pages/admin/AdminTests';
-import CreateTest from '../pages/admin/CreateTest';
-import TestDetail from '../pages/admin/TestDetail';
-import GenerateKey from '../pages/admin/GenerateKey';
-import AdminStudents from '../pages/admin/AdminStudents';
 import AdminResults from '../pages/admin/AdminResults';
 import AdminSettings from '../pages/admin/AdminSettings';
 import UserManagement from '../pages/admin/UserManagement';
@@ -96,11 +91,6 @@ const AppRouter = () => {
       >
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
-        <Route path="tests" element={<AdminTests />} />
-        <Route path="tests/create" element={<CreateTest />} />
-        <Route path="tests/:id" element={<TestDetail />} />
-        <Route path="generate-key" element={<GenerateKey />} />
-        <Route path="students" element={<AdminStudents />} />
         <Route path="results" element={<AdminResults />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>

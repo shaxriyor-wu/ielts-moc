@@ -45,7 +45,12 @@ export class MocTest {
     const db = loadDb();
     const mocTest = db.mocTests?.find(m => m.id === id);
     if (mocTest) {
-      Object.assign(mocTest, data);
+      const ALLOWED_FIELDS = ['title', 'type', 'readingFile', 'listeningFile', 'listeningAudio', 'writingTopics', 'answerKey', 'parsedContent', 'isActive'];
+      const safeData = {};
+      ALLOWED_FIELDS.forEach(field => {
+        if (data[field] !== undefined) safeData[field] = data[field];
+      });
+      Object.assign(mocTest, safeData);
       mocTest.updatedAt = new Date().toISOString();
       saveDb(db);
       return mocTest;

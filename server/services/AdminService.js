@@ -119,9 +119,12 @@ export class AdminService {
   static async getTestKeys(adminId) {
     const keys = await TestKeyModel.findByAdmin(adminId);
     const db = await import('../config/database.js').then(m => m.loadDb());
-    
+
+    // Create Map for O(1) lookup instead of O(n) find
+    const testMap = new Map(db.tests.map(t => [t.id, t]));
+
     return keys.map(k => {
-      const test = db.tests.find(t => t.id === k.testId);
+      const test = testMap.get(k.testId);
       return {
         id: k.id,
         key: k.key,
@@ -135,12 +138,19 @@ export class AdminService {
     });
   }
 
-  static async getResults(adminId) {
+  static async getResults(adminId, page = 1, limit = 50) {
     const attempts = await Attempt.findByAdmin(adminId);
     const db = await import('../config/database.js').then(m => m.loadDb());
-    
-    return attempts.map(a => {
-      const test = db.tests.find(t => t.id === a.testId);
+
+    // Create Map for O(1) lookup instead of O(n) find
+    const testMap = new Map(db.tests.map(t => [t.id, t]));
+
+    // Apply pagination
+    const startIndex = (page - 1) * limit;
+    const paginatedAttempts = attempts.slice(startIndex, startIndex + limit);
+
+    const data = paginatedAttempts.map(a => {
+      const test = testMap.get(a.testId);
       return {
         id: a.id,
         testKey: a.testKey,
@@ -150,9 +160,22 @@ export class AdminService {
         startedAt: a.startedAt,
         submittedAt: a.submittedAt,
         isSubmitted: a.isSubmitted,
-        duration: a.duration
+        duration: a.duration,
+        // Include scores from attempt
+        listeningScore: a.scores?.listening || a.listeningScore || null,
+        readingScore: a.scores?.reading || a.readingScore || null,
+        writingScore: a.scores?.writing || a.writingScore || null,
+        speakingScore: a.scores?.speaking || a.speakingScore || null
       };
     });
+
+    return {
+      data,
+      total: attempts.length,
+      page,
+      totalPages: Math.ceil(attempts.length / limit),
+      hasMore: startIndex + limit < attempts.length
+    };
   }
 
   static async getStudents(adminId) {
@@ -183,6 +206,39 @@ export class AdminService {
 
   static async getStats(adminId) {
     return await Admin.getStats(adminId);
+  }
+
+  static async getOnlineUsersCount() {
+    const db = await import('../config/database.js').then(m => m.loadDb());
+    // Count users with recent activity (within last 5 minutes)
+    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+
+    // Check students with recent last login or active sessions
+    const onlineCount = (db.students || []).filter(student => {
+      return student.lastLogin && student.lastLogin > fiveMinutesAgo;
+    }).length;
+
+    // Also count active attempts (in-progress tests)
+    const activeAttempts = (db.attempts || []).filter(attempt => {
+      return !attempt.isSubmitted && attempt.lastSaved && attempt.lastSaved > fiveMinutesAgo;
+    }).length;
+
+    return Math.max(onlineCount, activeAttempts);
+  }
+
+  static async createStudent(username, password, fullName) {
+    const { Student } = await import('../models/Student.js');
+    return await Student.create(username, password, fullName);
+  }
+
+  static async updateStudent(id, updates) {
+    const { Student } = await import('../models/Student.js');
+    return await Student.update(id, updates);
+  }
+
+  static async deleteStudent(id) {
+    const { Student } = await import('../models/Student.js');
+    return await Student.delete(id);
   }
 }
 

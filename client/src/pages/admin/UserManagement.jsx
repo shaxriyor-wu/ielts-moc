@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useUsers } from '../../context/UserContext';
+import { adminApi } from '../../api/adminApi';
 import Card from '../../components/Card';
 import Button from '../../components/Button';
 import Modal from '../../components/Modal';
@@ -7,14 +8,11 @@ import { showToast } from '../../components/Toast';
 import {
     UserPlus,
     Search,
-    Edit,
     Trash2,
-    Key,
     CheckCircle,
     XCircle,
-    Copy,
-    RefreshCw,
-    Users
+    Users,
+    Wifi
 } from 'lucide-react';
 
 const UserManagement = () => {
@@ -22,15 +20,12 @@ const UserManagement = () => {
         searchQuery,
         setSearchQuery,
         addUser,
-        updateUser,
         deleteUser,
-        toggleUserStatus,
-        regenerateTestCode,
         getFilteredUsers,
+        users,
     } = useUsers();
 
     const [showCreateModal, setShowCreateModal] = useState(false);
-    const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [formData, setFormData] = useState({
@@ -39,11 +34,12 @@ const UserManagement = () => {
         fullName: '',
     });
     const [formErrors, setFormErrors] = useState({});
+    const [onlineUsers, setOnlineUsers] = useState(0);
 
     const filteredUsers = useMemo(() => getFilteredUsers(), [getFilteredUsers]);
 
     // Form validation
-    const validateForm = (isEdit = false) => {
+    const validateForm = () => {
         const errors = {};
 
         if (!formData.username.trim()) {
@@ -52,9 +48,9 @@ const UserManagement = () => {
             errors.username = 'Username must be at least 3 characters';
         }
 
-        if (!isEdit && !formData.password.trim()) {
+        if (!formData.password.trim()) {
             errors.password = 'Password is required';
-        } else if (formData.password && formData.password.length < 4) {
+        } else if (formData.password.length < 4) {
             errors.password = 'Password must be at least 4 characters';
         }
 
@@ -84,25 +80,6 @@ const UserManagement = () => {
         }
     };
 
-    // Handle edit user
-    const handleEditUser = async () => {
-        if (!validateForm(true)) return;
-
-        try {
-            await updateUser(selectedUser.id, {
-                username: formData.username,
-                fullName: formData.fullName,
-                ...(formData.password && { password: formData.password }),
-            });
-            showToast('User updated successfully!', 'success');
-            setShowEditModal(false);
-            resetForm();
-        } catch (error) {
-            const msg = error.response?.data?.error || 'Failed to update user';
-            showToast(msg, 'error');
-        }
-    };
-
     // Handle delete user
     const handleDeleteUser = async () => {
         try {
@@ -115,35 +92,28 @@ const UserManagement = () => {
         }
     };
 
-    // Open edit modal
-    const openEditModal = (user) => {
-        setSelectedUser(user);
-        setFormData({
-            username: user.username,
-            password: '',
-            fullName: user.fullName || '',
-        });
-        setFormErrors({});
-        setShowEditModal(true);
-    };
-
     // Open delete modal
     const openDeleteModal = (user) => {
         setSelectedUser(user);
         setShowDeleteModal(true);
     };
 
-    // Copy to clipboard
-    const copyToClipboard = (text, label) => {
-        navigator.clipboard.writeText(text);
-        showToast(`${label} copied to clipboard!`, 'success');
-    };
+    // Fetch online users count (simulated real-time with polling)
+    useEffect(() => {
+        const fetchOnlineUsers = async () => {
+            try {
+                const response = await adminApi.getOnlineUsers?.();
+                setOnlineUsers(response?.data?.count || 0);
+            } catch {
+                // If endpoint doesn't exist yet, use 0
+                setOnlineUsers(0);
+            }
+        };
 
-    // Handle regenerate code
-    const handleRegenerateCode = (userId, username) => {
-        const newCode = regenerateTestCode(userId);
-        showToast(`New code for ${username}: ${newCode}`, 'success');
-    };
+        fetchOnlineUsers();
+        const interval = setInterval(fetchOnlineUsers, 30000); // Poll every 30 seconds
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="space-y-6">
@@ -177,7 +147,7 @@ const UserManagement = () => {
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                         <input
                             type="text"
-                            placeholder="Search by username, name, or test code..."
+                            placeholder="Search by username or name..."
                             value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                             className="w-full pl-10 pr-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -185,24 +155,24 @@ const UserManagement = () => {
                     </div>
                 </div>
                 <Card className="flex items-center gap-3 p-4">
-                    <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                        <CheckCircle className="w-5 h-5 text-green-600 dark:text-green-400" />
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
+                        <Users className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Active</p>
-                        <p className="text-xl font-bold text-green-600 dark:text-green-400">
-                            {filteredUsers.filter(u => u.status === 'active').length}
+                        <p className="text-sm text-gray-600 dark:text-gray-400">All Users</p>
+                        <p className="text-xl font-bold text-blue-600 dark:text-blue-400">
+                            {users.length}
                         </p>
                     </div>
                 </Card>
                 <Card className="flex items-center gap-3 p-4">
-                    <div className="w-10 h-10 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
-                        <XCircle className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                    <div className="w-10 h-10 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
+                        <Wifi className="w-5 h-5 text-green-600 dark:text-green-400" />
                     </div>
                     <div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">Inactive</p>
-                        <p className="text-xl font-bold text-gray-600 dark:text-gray-400">
-                            {filteredUsers.filter(u => u.status === 'inactive').length}
+                        <p className="text-sm text-gray-600 dark:text-gray-400">Online Users</p>
+                        <p className="text-xl font-bold text-green-600 dark:text-green-400">
+                            {onlineUsers}
                         </p>
                     </div>
                 </Card>
@@ -243,9 +213,6 @@ const UserManagement = () => {
                                         User
                                     </th>
                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
-                                        Test Code
-                                    </th>
-                                    <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
                                         Status
                                     </th>
                                     <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wider">
@@ -272,32 +239,10 @@ const UserManagement = () => {
                                             </div>
                                         </td>
                                         <td className="px-4 py-4">
-                                            <div className="flex items-center gap-2">
-                                                <code className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded font-mono text-sm font-bold text-primary-600 dark:text-primary-400">
-                                                    {user.testCode}
-                                                </code>
-                                                <button
-                                                    onClick={() => copyToClipboard(user.testCode, 'Test code')}
-                                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors"
-                                                    title="Copy code"
-                                                >
-                                                    <Copy className="w-4 h-4 text-gray-500" />
-                                                </button>
-                                                <button
-                                                    onClick={() => handleRegenerateCode(user.id, user.username)}
-                                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition-colors"
-                                                    title="Regenerate code"
-                                                >
-                                                    <RefreshCw className="w-4 h-4 text-gray-500" />
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td className="px-4 py-4">
-                                            <button
-                                                onClick={() => toggleUserStatus(user.id)}
-                                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium transition-colors cursor-pointer ${user.status === 'active'
-                                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400 hover:bg-green-200 dark:hover:bg-green-900/50'
-                                                    : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                            <span
+                                                className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${user.status === 'active'
+                                                    ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                                                    : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
                                                     }`}
                                             >
                                                 {user.status === 'active' ? (
@@ -311,21 +256,13 @@ const UserManagement = () => {
                                                         Inactive
                                                     </>
                                                 )}
-                                            </button>
+                                            </span>
                                         </td>
                                         <td className="px-4 py-4 text-sm text-gray-600 dark:text-gray-400">
                                             {new Date(user.createdAt).toLocaleDateString()}
                                         </td>
                                         <td className="px-4 py-4">
                                             <div className="flex items-center justify-end gap-2">
-                                                <Button
-                                                    size="sm"
-                                                    variant="secondary"
-                                                    onClick={() => openEditModal(user)}
-                                                    title="Edit user"
-                                                >
-                                                    <Edit className="w-4 h-4" />
-                                                </Button>
                                                 <Button
                                                     size="sm"
                                                     variant="danger"
@@ -414,78 +351,6 @@ const UserManagement = () => {
                         <Button onClick={handleCreateUser}>
                             <UserPlus className="w-4 h-4 mr-2" />
                             Create User
-                        </Button>
-                    </div>
-                </div>
-            </Modal>
-
-            {/* Edit User Modal */}
-            <Modal
-                isOpen={showEditModal}
-                onClose={() => {
-                    setShowEditModal(false);
-                    resetForm();
-                }}
-                title="Edit User"
-            >
-                <div className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Username <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.username}
-                            onChange={(e) => setFormData(prev => ({ ...prev, username: e.target.value }))}
-                            className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent ${formErrors.username ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                                }`}
-                        />
-                        {formErrors.username && (
-                            <p className="mt-1 text-sm text-red-500">{formErrors.username}</p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            New Password <span className="text-gray-400">(leave blank to keep current)</span>
-                        </label>
-                        <input
-                            type="password"
-                            value={formData.password}
-                            onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                            className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent ${formErrors.password ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'
-                                }`}
-                            placeholder="Enter new password"
-                        />
-                        {formErrors.password && (
-                            <p className="mt-1 text-sm text-red-500">{formErrors.password}</p>
-                        )}
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Full Name <span className="text-gray-400">(optional)</span>
-                        </label>
-                        <input
-                            type="text"
-                            value={formData.fullName}
-                            onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        />
-                    </div>
-
-                    <div className="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <Button
-                            variant="secondary"
-                            onClick={() => {
-                                setShowEditModal(false);
-                                resetForm();
-                            }}
-                        >
-                            Cancel
-                        </Button>
-                        <Button onClick={handleEditUser}>
-                            Save Changes
                         </Button>
                     </div>
                 </div>

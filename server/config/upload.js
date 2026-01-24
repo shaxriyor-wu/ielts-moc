@@ -36,8 +36,31 @@ const storage = multer.diskStorage({
   }
 });
 
+const ALLOWED_MIME_TYPES = {
+  reading: ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+  listening: ['audio/mpeg', 'audio/wav', 'audio/mp3', 'audio/ogg', 'application/pdf', 'application/msword'],
+  writing: ['application/pdf', 'application/msword', 'image/jpeg', 'image/png']
+};
+
 const fileFilter = (req, file, cb) => {
-  cb(null, true);
+  const fieldName = file.fieldname;
+  let sectionType = '';
+
+  if (fieldName === 'readingFile') {
+    sectionType = 'reading';
+  } else if (fieldName === 'listeningFile' || fieldName === 'listeningAudio') {
+    sectionType = 'listening';
+  } else if (fieldName === 'writingFile') {
+    sectionType = 'writing';
+  }
+
+  const allowedTypes = ALLOWED_MIME_TYPES[sectionType] || [];
+
+  if (allowedTypes.length === 0 || allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(new Error(`Invalid file type: ${file.mimetype}. Allowed types: ${allowedTypes.join(', ')}`), false);
+  }
 };
 
 export const upload = multer({

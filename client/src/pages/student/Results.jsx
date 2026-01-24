@@ -4,7 +4,7 @@ import { studentApi } from '../../api/studentApi';
 import Card from '../../components/Card';
 import Loader from '../../components/Loader';
 import { showToast } from '../../components/Toast';
-import { CheckCircle, XCircle, Award, TrendingUp, Eye, EyeOff, ChevronDown, ChevronUp, FileText } from 'lucide-react';
+import { Award, Calendar, ChevronDown, ChevronUp, Eye, TrendingUp, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Button from '../../components/Button';
 import ReactMarkdown from 'react-markdown';
@@ -12,13 +12,10 @@ import ReactMarkdown from 'react-markdown';
 const Results = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
-  const [results, setResults] = useState(null);
-  const [testData, setTestData] = useState(null);
-  const [expandedListening, setExpandedListening] = useState(false);
-  const [expandedReading, setExpandedReading] = useState(false);
-  const [expandedWriting, setExpandedWriting] = useState(false);
-  const [showTask1DetailedFeedback, setShowTask1DetailedFeedback] = useState(false);
-  const [showTask2DetailedFeedback, setShowTask2DetailedFeedback] = useState(false);
+  const [attempts, setAttempts] = useState([]);
+  const [expandedAttemptId, setExpandedAttemptId] = useState(null);
+  const [expandedSections, setExpandedSections] = useState({});
+  const [showDetailedFeedback, setShowDetailedFeedback] = useState({});
 
   useEffect(() => {
     loadResults();
@@ -26,26 +23,62 @@ const Results = () => {
 
   const loadResults = async () => {
     try {
-      // Get the latest test result
       const attemptsResponse = await studentApi.getAttempts();
-      const attempts = attemptsResponse.data || [];
+      const attemptsData = attemptsResponse.data || [];
+      setAttempts(attemptsData);
 
-      if (attempts.length > 0) {
-        const latestAttempt = attempts[0];
-        setResults(latestAttempt.result);
-        setTestData(latestAttempt);
-      } else {
-        // Try to get from submit response if just submitted
-        const testResponse = await studentApi.getTest();
-        if (testResponse.data && testResponse.data.result) {
-          setResults(testResponse.data.result);
-        }
+      // Auto-expand the first attempt
+      if (attemptsData.length > 0) {
+        setExpandedAttemptId(attemptsData[0].id);
       }
     } catch (error) {
       showToast('Failed to load results', 'error');
     } finally {
       setLoading(false);
     }
+  };
+
+  const toggleAttempt = (attemptId) => {
+    setExpandedAttemptId(expandedAttemptId === attemptId ? null : attemptId);
+  };
+
+  const toggleSection = (attemptId, section) => {
+    const key = `${attemptId}-${section}`;
+    setExpandedSections(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const toggleDetailedFeedback = (attemptId, task) => {
+    const key = `${attemptId}-${task}`;
+    setShowDetailedFeedback(prev => ({
+      ...prev,
+      [key]: !prev[key]
+    }));
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const getScoreColor = (score) => {
+    if (score >= 7) return 'text-green-600 dark:text-green-400';
+    if (score >= 5.5) return 'text-yellow-600 dark:text-yellow-400';
+    return 'text-red-600 dark:text-red-400';
+  };
+
+  const getScoreBgColor = (score) => {
+    if (score >= 7) return 'bg-green-100 dark:bg-green-900/20';
+    if (score >= 5.5) return 'bg-yellow-100 dark:bg-yellow-900/20';
+    return 'bg-red-100 dark:bg-red-900/20';
   };
 
   if (loading) {
@@ -56,368 +89,321 @@ const Results = () => {
     );
   }
 
-  if (!results) {
+  if (attempts.length === 0) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <Card className="max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+            <BookOpen className="w-8 h-8 text-gray-400" />
+          </div>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-            Results Not Available
+            No Test Results Yet
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Your test results are being processed. Please check back later.
+            You haven't taken any mock tests yet. Start your first test to see your results here.
           </p>
-          <Button onClick={() => navigate('/student/dashboard')}>
-            Return to Dashboard
+          <Button onClick={() => navigate('/student/tests')}>
+            Browse Available Tests
           </Button>
         </Card>
       </div>
     );
   }
 
-  const listeningScore = results.listening_score || 0;
-  const readingScore = results.reading_score || 0;
-  const writingScore = results.writing_score || 0;
-  const overallScore = results.overall_score || 0;
-
-  const listeningBreakdown = results.listening_breakdown || {};
-  const readingBreakdown = results.reading_breakdown || {};
-  const writingBreakdown = results.writing_breakdown || {};
-
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-8"
-        >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full mb-4">
-            <Award className="w-8 h-8 text-green-600 dark:text-green-400" />
+        <div className="mb-8">
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-lg flex items-center justify-center">
+              <Award className="w-6 h-6 text-primary-600 dark:text-primary-400" />
+            </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+                My Test Results
+              </h1>
+              <p className="text-gray-600 dark:text-gray-400 mt-1">
+                View all your mock test attempts and detailed feedback
+              </p>
+            </div>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Test Results
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            {testData?.variant_name || 'IELTS Mock Test'}
-          </p>
-        </motion.div>
+        </div>
 
-        {/* Overall Score */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8"
-        >
-          <Card className="bg-gradient-to-r from-primary-500 to-primary-600 text-white">
+        {/* Statistics Summary */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card>
             <div className="text-center">
-              <p className="text-sm font-medium mb-2 opacity-90">Overall Band Score</p>
-              <p className="text-6xl font-bold mb-2">{overallScore.toFixed(1)}</p>
-              <p className="text-sm opacity-90">
-                Listening: {listeningScore.toFixed(1)} | Reading: {readingScore.toFixed(1)} | Writing: {writingScore.toFixed(1)}
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Tests</p>
+              <p className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                {attempts.length}
               </p>
             </div>
           </Card>
-        </motion.div>
-
-        {/* Section Scores */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          {/* Listening Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <Card>
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Listening
-                </h3>
-                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                  {listeningScore.toFixed(1)}
-                </div>
-                {listeningBreakdown.correct !== undefined && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {listeningBreakdown.correct} / {listeningBreakdown.total} correct
-                  </p>
-                )}
-              </div>
-              {listeningBreakdown.question_results && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Question Breakdown:
-                  </p>
-                  <div className="grid grid-cols-5 gap-1 text-xs">
-                    {Object.entries(listeningBreakdown.question_results).map(([qNum, result]) => (
-                      <div
-                        key={qNum}
-                        className={`p-1 rounded text-center ${result.correct
-                          ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                          : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-                          }`}
-                        title={`Q${qNum}: ${result.correct ? 'Correct' : 'Incorrect'} (Your: ${result.student_answer || 'N/A'}, Correct: ${result.correct_answer})`}
-                      >
-                        {qNum}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </Card>
-          </motion.div>
-
-          {/* Reading Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <Card>
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Reading
-                </h3>
-                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                  {readingScore.toFixed(1)}
-                </div>
-                {readingBreakdown.correct !== undefined && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {readingBreakdown.correct} / {readingBreakdown.total} correct
-                  </p>
-                )}
-              </div>
-              {readingBreakdown.question_results && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Question Breakdown:
-                  </p>
-                  <div className="grid grid-cols-5 gap-1 text-xs">
-                    {Object.entries(readingBreakdown.question_results).map(([qNum, result]) => (
-                      <div
-                        key={qNum}
-                        className={`p-1 rounded text-center ${result.correct
-                          ? 'bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300'
-                          : 'bg-red-100 dark:bg-red-900/20 text-red-800 dark:text-red-300'
-                          }`}
-                        title={`Q${qNum}: ${result.correct ? 'Correct' : 'Incorrect'} (Your: ${result.student_answer || 'N/A'}, Correct: ${result.correct_answer})`}
-                      >
-                        {qNum}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </Card>
-          </motion.div>
-
-          {/* Writing Section */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <Card>
-              <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                  Writing
-                </h3>
-                <div className="text-4xl font-bold text-primary-600 dark:text-primary-400 mb-2">
-                  {writingScore.toFixed(1)}
-                </div>
-                {writingBreakdown.task1 && writingBreakdown.task2 && (
-                  <div className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                    <p>Task 1: {results.writing_task1_score?.toFixed(1) || 'N/A'}</p>
-                    <p>Task 2: {results.writing_task2_score?.toFixed(1) || 'N/A'}</p>
-                  </div>
-                )}
-              </div>
-              {writingBreakdown.task1 && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Task 1 Breakdown:
-                  </p>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span>Task Achievement:</span>
-                      <span className="font-semibold">{writingBreakdown.task1.task_achievement?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Coherence & Cohesion:</span>
-                      <span className="font-semibold">{writingBreakdown.task1.coherence_cohesion?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Lexical Resource:</span>
-                      <span className="font-semibold">{writingBreakdown.task1.lexical_resource?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Grammar:</span>
-                      <span className="font-semibold">{writingBreakdown.task1.grammatical_range?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {writingBreakdown.task2 && (
-                <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                  <p className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-2">
-                    Task 2 Breakdown:
-                  </p>
-                  <div className="space-y-1 text-xs">
-                    <div className="flex justify-between">
-                      <span>Task Response:</span>
-                      <span className="font-semibold">{writingBreakdown.task2.task_achievement?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Coherence & Cohesion:</span>
-                      <span className="font-semibold">{writingBreakdown.task2.coherence_cohesion?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Lexical Resource:</span>
-                      <span className="font-semibold">{writingBreakdown.task2.lexical_resource?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Grammar:</span>
-                      <span className="font-semibold">{writingBreakdown.task2.grammatical_range?.toFixed(1) || 'N/A'}</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </Card>
-          </motion.div>
+          <Card>
+            <div className="text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Avg Overall</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                {(attempts.reduce((sum, a) => sum + (a.result?.overall_score || 0), 0) / attempts.length).toFixed(1)}
+              </p>
+            </div>
+          </Card>
+          <Card>
+            <div className="text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Best Score</p>
+              <p className="text-3xl font-bold text-green-600 dark:text-green-400">
+                {Math.max(...attempts.map(a => a.result?.overall_score || 0)).toFixed(1)}
+              </p>
+            </div>
+          </Card>
+          <Card>
+            <div className="text-center">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Latest Score</p>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
+                {attempts[0]?.result?.overall_score?.toFixed(1) || 'N/A'}
+              </p>
+            </div>
+          </Card>
         </div>
 
-        {/* Detailed Writing Feedback Section */}
-        {(writingBreakdown.task1_detailed_feedback || writingBreakdown.task2_detailed_feedback) && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mb-8 space-y-4"
-          >
-            {/* Task 1 Detailed Feedback */}
-            {writingBreakdown.task1_detailed_feedback && (
-              <Card>
-                <button
-                  onClick={() => setShowTask1DetailedFeedback(!showTask1DetailedFeedback)}
-                  className="w-full flex items-center justify-between text-left"
-                >
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Task 1 - Detailed Examiner Feedback
-                    </h3>
-                  </div>
-                  {showTask1DetailedFeedback ? (
-                    <ChevronUp className="w-5 h-5 text-gray-500" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-500" />
-                  )}
-                </button>
-                <AnimatePresence>
-                  {showTask1DetailedFeedback && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <ReactMarkdown>{writingBreakdown.task1_detailed_feedback}</ReactMarkdown>
+        {/* Test Attempts List */}
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            All Attempts ({attempts.length})
+          </h2>
+
+          {attempts.map((attempt, index) => {
+            const result = attempt.result || {};
+            const isExpanded = expandedAttemptId === attempt.id;
+
+            return (
+              <motion.div
+                key={attempt.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="hover:shadow-lg transition-shadow">
+                  {/* Attempt Header */}
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => toggleAttempt(attempt.id)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <div className={`w-16 h-16 ${getScoreBgColor(result.overall_score)} rounded-lg flex items-center justify-center`}>
+                          <span className={`text-2xl font-bold ${getScoreColor(result.overall_score)}`}>
+                            {result.overall_score?.toFixed(1) || 'N/A'}
+                          </span>
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                              {attempt.test_name || `Test Attempt ${attempts.length - index}`}
+                            </h3>
+                            {index === 0 && (
+                              <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 text-xs font-medium rounded">
+                                Latest
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            <Calendar className="w-4 h-4" />
+                            <span>{formatDate(attempt.completed_at || attempt.created_at)}</span>
+                          </div>
                         </div>
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Card>
-            )}
-
-            {/* Task 2 Detailed Feedback */}
-            {writingBreakdown.task2_detailed_feedback && (
-              <Card>
-                <button
-                  onClick={() => setShowTask2DetailedFeedback(!showTask2DetailedFeedback)}
-                  className="w-full flex items-center justify-between text-left"
-                >
-                  <div className="flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-primary-600 dark:text-primary-400" />
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Task 2 - Detailed Examiner Feedback
-                    </h3>
-                  </div>
-                  {showTask2DetailedFeedback ? (
-                    <ChevronUp className="w-5 h-5 text-gray-500" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-500" />
-                  )}
-                </button>
-                <AnimatePresence>
-                  {showTask2DetailedFeedback && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-                        <div className="prose prose-sm dark:prose-invert max-w-none">
-                          <ReactMarkdown>{writingBreakdown.task2_detailed_feedback}</ReactMarkdown>
+                      <div className="flex items-center gap-4">
+                        <div className="hidden md:flex gap-3">
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Listening</p>
+                            <p className={`text-lg font-bold ${getScoreColor(result.listening_score)}`}>
+                              {result.listening_score?.toFixed(1) || '-'}
+                            </p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Reading</p>
+                            <p className={`text-lg font-bold ${getScoreColor(result.reading_score)}`}>
+                              {result.reading_score?.toFixed(1) || '-'}
+                            </p>
+                          </div>
+                          <div className="text-center">
+                            <p className="text-xs text-gray-500 dark:text-gray-400">Writing</p>
+                            <p className={`text-lg font-bold ${getScoreColor(result.writing_score)}`}>
+                              {result.writing_score?.toFixed(1) || '-'}
+                            </p>
+                          </div>
                         </div>
+                        {isExpanded ? (
+                          <ChevronUp className="w-5 h-5 text-gray-400" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-gray-400" />
+                        )}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </Card>
-            )}
-          </motion.div>
-        )}
+                    </div>
+                  </div>
 
-        {/* Short feedback fallback (when no detailed feedback) */}
-        {!writingBreakdown.task1_detailed_feedback && writingBreakdown.task1_feedback && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5 }}
-            className="mb-8"
-          >
-            <Card>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
-                Writing Feedback
-              </h3>
-              {writingBreakdown.task1_feedback && (
-                <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Task 1:</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{writingBreakdown.task1_feedback}</p>
-                </div>
-              )}
-              {writingBreakdown.task2_feedback && (
-                <div>
-                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Task 2:</p>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">{writingBreakdown.task2_feedback}</p>
-                </div>
-              )}
-            </Card>
-          </motion.div>
-        )}
+                  {/* Expanded Details */}
+                  <AnimatePresence>
+                    {isExpanded && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 space-y-4">
+                          {/* Listening Section */}
+                          {result.listening_breakdown && (
+                            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                              <div
+                                className="flex items-center justify-between cursor-pointer"
+                                onClick={() => toggleSection(attempt.id, 'listening')}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                                    Listening Details
+                                  </h4>
+                                  <span className={`text-sm font-medium ${getScoreColor(result.listening_score)}`}>
+                                    Score: {result.listening_score?.toFixed(1)}
+                                  </span>
+                                </div>
+                                {expandedSections[`${attempt.id}-listening`] ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
+                              {expandedSections[`${attempt.id}-listening`] && (
+                                <div className="mt-4 space-y-2 text-sm">
+                                  <p><strong>Correct:</strong> {result.listening_breakdown.correct_answers} / {result.listening_breakdown.total_questions}</p>
+                                  <p><strong>Accuracy:</strong> {((result.listening_breakdown.correct_answers / result.listening_breakdown.total_questions) * 100).toFixed(1)}%</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
 
-        {/* Actions */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="flex justify-center gap-4"
-        >
-          <Button onClick={() => navigate('/student/dashboard')}>
-            View All Results
-          </Button>
-        </motion.div>
+                          {/* Reading Section */}
+                          {result.reading_breakdown && (
+                            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                              <div
+                                className="flex items-center justify-between cursor-pointer"
+                                onClick={() => toggleSection(attempt.id, 'reading')}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                                    Reading Details
+                                  </h4>
+                                  <span className={`text-sm font-medium ${getScoreColor(result.reading_score)}`}>
+                                    Score: {result.reading_score?.toFixed(1)}
+                                  </span>
+                                </div>
+                                {expandedSections[`${attempt.id}-reading`] ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
+                              {expandedSections[`${attempt.id}-reading`] && (
+                                <div className="mt-4 space-y-2 text-sm">
+                                  <p><strong>Correct:</strong> {result.reading_breakdown.correct_answers} / {result.reading_breakdown.total_questions}</p>
+                                  <p><strong>Accuracy:</strong> {((result.reading_breakdown.correct_answers / result.reading_breakdown.total_questions) * 100).toFixed(1)}%</p>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Writing Section */}
+                          {result.writing_breakdown && (
+                            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                              <div
+                                className="flex items-center justify-between cursor-pointer"
+                                onClick={() => toggleSection(attempt.id, 'writing')}
+                              >
+                                <div className="flex items-center gap-2">
+                                  <h4 className="font-semibold text-gray-900 dark:text-white">
+                                    Writing Details
+                                  </h4>
+                                  <span className={`text-sm font-medium ${getScoreColor(result.writing_score)}`}>
+                                    Score: {result.writing_score?.toFixed(1)}
+                                  </span>
+                                </div>
+                                {expandedSections[`${attempt.id}-writing`] ? (
+                                  <ChevronUp className="w-4 h-4" />
+                                ) : (
+                                  <ChevronDown className="w-4 h-4" />
+                                )}
+                              </div>
+                              {expandedSections[`${attempt.id}-writing`] && (
+                                <div className="mt-4 space-y-4">
+                                  {/* Task 1 */}
+                                  {result.writing_breakdown.task1 && (
+                                    <div className="border-l-4 border-blue-500 pl-4">
+                                      <h5 className="font-medium text-gray-900 dark:text-white mb-2">Task 1</h5>
+                                      <p className="text-sm mb-2">
+                                        <strong>Score:</strong> {result.writing_breakdown.task1.score?.toFixed(1)}
+                                      </p>
+                                      {result.writing_breakdown.task1.feedback && (
+                                        <div>
+                                          <button
+                                            onClick={() => toggleDetailedFeedback(attempt.id, 'task1')}
+                                            className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 mb-2"
+                                          >
+                                            <Eye className="w-4 h-4" />
+                                            {showDetailedFeedback[`${attempt.id}-task1`] ? 'Hide' : 'Show'} Feedback
+                                          </button>
+                                          {showDetailedFeedback[`${attempt.id}-task1`] && (
+                                            <div className="prose dark:prose-invert max-w-none text-sm">
+                                              <ReactMarkdown>{result.writing_breakdown.task1.feedback}</ReactMarkdown>
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+
+                                  {/* Task 2 */}
+                                  {result.writing_breakdown.task2 && (
+                                    <div className="border-l-4 border-purple-500 pl-4">
+                                      <h5 className="font-medium text-gray-900 dark:text-white mb-2">Task 2</h5>
+                                      <p className="text-sm mb-2">
+                                        <strong>Score:</strong> {result.writing_breakdown.task2.score?.toFixed(1)}
+                                      </p>
+                                      {result.writing_breakdown.task2.feedback && (
+                                        <div>
+                                          <button
+                                            onClick={() => toggleDetailedFeedback(attempt.id, 'task2')}
+                                            className="text-sm text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1 mb-2"
+                                          >
+                                            <Eye className="w-4 h-4" />
+                                            {showDetailedFeedback[`${attempt.id}-task2`] ? 'Hide' : 'Show'} Feedback
+                                          </button>
+                                          {showDetailedFeedback[`${attempt.id}-task2`] && (
+                                            <div className="prose dark:prose-invert max-w-none text-sm">
+                                              <ReactMarkdown>{result.writing_breakdown.task2.feedback}</ReactMarkdown>
+                                            </div>
+                                          )}
+                                        </div>
+                                      )}
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </Card>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 };
 
 export default Results;
-
-

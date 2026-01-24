@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { adminApi } from '../../api/adminApi';
 import Card from '../../components/Card';
@@ -17,8 +17,11 @@ const STEPS = [
 ];
 
 const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
+  // If editing, only allow basic info (step 1)
+  const isEditing = !!variant;
   const [currentStep, setCurrentStep] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [audioPreviewUrl, setAudioPreviewUrl] = useState(null);
   const [formData, setFormData] = useState({
     name: variant?.name || '',
     duration_minutes: variant?.duration_minutes || 180,
@@ -40,6 +43,20 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
       task2File: null,
     },
   });
+
+  // Cleanup audio preview URL to prevent memory leak
+  useEffect(() => {
+    if (formData.listening.audioFile) {
+      const url = URL.createObjectURL(formData.listening.audioFile);
+      setAudioPreviewUrl(url);
+      return () => {
+        URL.revokeObjectURL(url);
+        setAudioPreviewUrl(null);
+      };
+    } else {
+      setAudioPreviewUrl(null);
+    }
+  }, [formData.listening.audioFile]);
 
   const validateStep = () => {
     if (currentStep === 1) {
@@ -124,23 +141,27 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
     try {
       let variantId = variant?.id;
 
-      // Step 1: Create or update variant
-      if (variantId) {
+      // If editing, only update basic info (name)
+      if (isEditing) {
         await adminApi.updateVariant(variantId, {
           name: formData.name,
           duration_minutes: formData.duration_minutes,
         });
-      } else {
-        const variantRes = await adminApi.createVariant({
-          name: formData.name,
-          duration_minutes: formData.duration_minutes,
-        });
-        variantId = variantRes.data.id;
+        showToast('Variant updated successfully!', 'success');
+        onSuccess();
+        return;
       }
+
+      // Step 1: Create variant
+      const variantRes = await adminApi.createVariant({
+        name: formData.name,
+        duration_minutes: formData.duration_minutes,
+      });
+      variantId = variantRes.data.id;
 
       // Step 2: Upload Reading file and answers
       await adminApi.uploadTestFile(variantId, 'reading', formData.reading.file);
-      
+
       if (formData.reading.answerMode === 'text') {
         const readingAnswers = parseAnswers(formData.reading.answersText);
         const answers = readingAnswers.map((answer, index) => ({
@@ -188,7 +209,8 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
     }
   };
 
-  const progress = (currentStep / STEPS.length) * 100;
+  const stepsToShow = isEditing ? [STEPS[0]] : STEPS;
+  const progress = isEditing ? 100 : (currentStep / STEPS.length) * 100;
 
   const formatFileSize = (bytes) => {
     if (bytes === 0) return '0 Bytes';
@@ -202,9 +224,9 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
     <div className="space-y-6">
       {/* Progress Indicator */}
       <div className="mb-6">
-        <Progress value={progress} showLabel />
+        {!isEditing && <Progress value={progress} showLabel />}
         <div className="flex justify-between mt-4">
-          {STEPS.map((step) => (
+          {stepsToShow.map((step) => (
             <div
               key={step.id}
               className={`flex-1 text-center ${
@@ -228,6 +250,11 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
             </div>
           ))}
         </div>
+        {isEditing && (
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2 text-center">
+            Only the variant name can be edited. Test content cannot be modified.
+          </p>
+        )}
       </div>
 
       {/* Step Content */}
@@ -427,7 +454,7 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
                   });
                 }}
               />
-              {formData.listening.audioFile && (
+              {formData.listening.audioFile && audioPreviewUrl && (
                 <div className="mt-2">
                   <p className="text-sm text-gray-600 dark:text-gray-400">
                     Selected: {formData.listening.audioFile.name} (
@@ -435,7 +462,7 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
                   </p>
                   <audio
                     controls
-                    src={URL.createObjectURL(formData.listening.audioFile)}
+                    src={audioPreviewUrl}
                     className="w-full mt-2"
                   />
                 </div>
@@ -594,7 +621,7 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
       {/* Navigation Buttons */}
       <div className="flex justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
         <div>
-          {currentStep > 1 && (
+          {!isEditing && currentStep > 1 && (
             <Button variant="secondary" onClick={prevStep}>
               <ChevronLeft className="w-4 h-4" /> Previous
             </Button>
@@ -604,13 +631,17 @@ const AddVariantForm = ({ variant, onSuccess, onCancel }) => {
           <Button variant="secondary" onClick={onCancel}>
             Cancel
           </Button>
-          {currentStep < STEPS.length ? (
+          {isEditing ? (
+            <Button onClick={handleSubmit} loading={loading}>
+              Update Name
+            </Button>
+          ) : currentStep < STEPS.length ? (
             <Button onClick={nextStep}>
               Next <ChevronRight className="w-4 h-4" />
             </Button>
           ) : (
             <Button onClick={handleSubmit} loading={loading}>
-              {variant ? 'Update' : 'Create'} Test
+              Create Test
             </Button>
           )}
         </div>

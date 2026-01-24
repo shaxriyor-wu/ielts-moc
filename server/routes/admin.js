@@ -21,7 +21,11 @@ router.post('/test-keys', authenticate, requireAdmin, AdminController.generateTe
 router.get('/test-keys', authenticate, requireAdmin, AdminController.getTestKeys);
 router.get('/results', authenticate, requireAdmin, AdminController.getResults);
 router.get('/students', authenticate, requireAdmin, AdminController.getStudents);
+router.post('/users', authenticate, requireAdmin, AdminController.createUser);
+router.put('/users/:id', authenticate, requireAdmin, AdminController.updateUser);
+router.delete('/users/:id/delete', authenticate, requireAdmin, AdminController.deleteUser);
 router.get('/stats', authenticate, requireAdmin, AdminController.getStats);
+router.get('/online-users', authenticate, requireAdmin, AdminController.getOnlineUsers);
 
 export default router;
 

@@ -47,7 +47,12 @@ export class Student {
     const db = loadDb();
     const student = db.students.find(s => s.id === id);
     if (student) {
-      Object.assign(student, data);
+      const ALLOWED_FIELDS = ['fullName', 'email', 'login'];
+      const safeData = {};
+      ALLOWED_FIELDS.forEach(field => {
+        if (data[field] !== undefined) safeData[field] = data[field];
+      });
+      Object.assign(student, safeData);
       student.updatedAt = new Date().toISOString();
       saveDb(db);
       return student;

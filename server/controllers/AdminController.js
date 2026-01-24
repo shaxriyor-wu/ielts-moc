@@ -85,46 +85,41 @@ export class AdminController {
     }
   }
 
-  static async uploadReading(req, res, next) {
+  // Unified upload handler for all file types
+  static async uploadFile(req, res, next) {
     try {
+      const { type } = req.params; // 'reading', 'listening', 'writing'
       if (!req.file) {
         return res.status(400).json({ error: 'No file uploaded' });
       }
 
-      const fileUrl = `/uploads/reading/${req.file.filename}`;
-      res.json({ url: fileUrl, filename: req.file.filename });
+      const fileUrl = `/uploads/${type}/${req.file.filename}`;
+      res.json({
+        success: true,
+        url: fileUrl,
+        filename: req.file.filename,
+        filePath: fileUrl
+      });
     } catch (error) {
-      logger.error('Upload reading error:', error);
+      logger.error(`Upload ${req.params.type} error:`, error);
       res.status(500).json({ error: error.message });
     }
+  }
+
+  // Backward compatibility - keep old methods but delegate to uploadFile
+  static async uploadReading(req, res, next) {
+    req.params.type = 'reading';
+    return AdminController.uploadFile(req, res, next);
   }
 
   static async uploadListening(req, res, next) {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-      }
-
-      const fileUrl = `/uploads/listening/${req.file.filename}`;
-      res.json({ url: fileUrl, filename: req.file.filename });
-    } catch (error) {
-      logger.error('Upload listening error:', error);
-      res.status(500).json({ error: error.message });
-    }
+    req.params.type = 'listening';
+    return AdminController.uploadFile(req, res, next);
   }
 
   static async uploadWriting(req, res, next) {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
-      }
-
-      const fileUrl = `/uploads/writing/${req.file.filename}`;
-      res.json({ url: fileUrl, filename: req.file.filename });
-    } catch (error) {
-      logger.error('Upload writing error:', error);
-      res.status(500).json({ error: error.message });
-    }
+    req.params.type = 'writing';
+    return AdminController.uploadFile(req, res, next);
   }
 
   static async generateTestKey(req, res, next) {
@@ -150,7 +145,9 @@ export class AdminController {
 
   static async getResults(req, res, next) {
     try {
-      const results = await AdminService.getResults(req.user.id);
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 50;
+      const results = await AdminService.getResults(req.user.id, page, limit);
       res.json(results);
     } catch (error) {
       logger.error('Get results error:', error);
@@ -174,6 +171,50 @@ export class AdminController {
       res.json(stats);
     } catch (error) {
       logger.error('Get stats error:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async getOnlineUsers(req, res, next) {
+    try {
+      const count = await AdminService.getOnlineUsersCount();
+      res.json({ count });
+    } catch (error) {
+      logger.error('Get online users error:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async createUser(req, res, next) {
+    try {
+      const { username, password, fullName } = req.body;
+      const newUser = await AdminService.createStudent(username, password, fullName);
+      res.status(201).json(newUser);
+    } catch (error) {
+      logger.error('Create user error:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async updateUser(req, res, next) {
+    try {
+      const { id } = req.params;
+      const updates = req.body;
+      const updatedUser = await AdminService.updateStudent(id, updates);
+      res.json(updatedUser);
+    } catch (error) {
+      logger.error('Update user error:', error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+
+  static async deleteUser(req, res, next) {
+    try {
+      const { id } = req.params;
+      await AdminService.deleteStudent(id);
+      res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+      logger.error('Delete user error:', error);
       res.status(500).json({ error: error.message });
     }
   }
