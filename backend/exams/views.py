@@ -5,10 +5,15 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from accounts.models import CustomUser
-from .models import Variant, TestFile, Answer
+from .models import Variant, TestFile, Answer, MockTest, StudentTestSession
 from .serializers import (
     VariantSerializer, VariantListSerializer, VariantCreateSerializer,
-    TestFileSerializer, AnswerSerializer
+    TestFileSerializer, AnswerSerializer, MockTestSerializer,
+    MockTestCreateSerializer, StudentTestSessionSerializer
+)
+from .utils import (
+    count_available_variants, generate_test_id, generate_test_variants,
+    check_minimum_variants, get_variant_content
 )
 
 
@@ -372,14 +377,14 @@ def get_test_keys(request):
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
         )
-    
+
     from student_portal.models import StudentTest
     from django.db.models import Count
-    
+
     variants = Variant.objects.annotate(
         used_count=Count('student_tests')
     )
-    
+
     data = []
     for v in variants:
         data.append({
@@ -390,6 +395,163 @@ def get_test_keys(request):
             'usedBy': v.used_count,
             'createdAt': v.created_at
         })
-        
+
     return Response(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_available_variants_count(request):
+    """Get count of available variants for each section/passage/part."""
+    if not check_is_admin(request.user):
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    counts = count_available_variants()
+
+    # Check if minimum variants exist
+    has_minimum, missing = check_minimum_variants()
+
+    return Response({
+        'counts': counts,
+        'has_minimum': has_minimum,
+        'missing_sections': missing
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_mock_test(request):
+    """Create a new mock test with selected variant strategy."""
+    if not check_is_admin(request.user):
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Check if minimum variants exist
+    has_minimum, missing = check_minimum_variants()
+    if not has_minimum:
+        return Response(
+            {
+                'error': 'Not enough variants to create test.',
+                'missing_sections': missing
+            },
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    serializer = MockTestCreateSerializer(data=request.data)
+    if not serializer.is_valid():
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    variant_strategy = serializer.validated_data['variant_strategy']
+    duration_minutes = serializer.validated_data.get('duration_minutes', 180)
+
+    # Generate test ID
+    test_id = generate_test_id()
+
+    # If strategy is 'same', pre-generate variants
+    selected_variants = None
+    if variant_strategy == 'same':
+        selected_variants = generate_test_variants()
+
+    # Create mock test
+    mock_test = MockTest.objects.create(
+        test_id=test_id,
+        variant_strategy=variant_strategy,
+        selected_variants=selected_variants,
+        duration_minutes=duration_minutes,
+        created_by=request.user,
+        is_active=True
+    )
+
+    return Response(
+        MockTestSerializer(mock_test).data,
+        status=status.HTTP_201_CREATED
+    )
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_mock_test_list(request):
+    """Get list of all mock tests."""
+    if not check_is_admin(request.user):
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    from django.db.models import Count
+
+    mock_tests = MockTest.objects.annotate(
+        participants_count=Count('student_sessions')
+    ).order_by('-created_at')
+
+    data = []
+    for test in mock_tests:
+        data.append({
+            'id': test.id,
+            'test_id': test.test_id,
+            'variant_strategy': test.variant_strategy,
+            'duration_minutes': test.duration_minutes,
+            'is_active': test.is_active,
+            'created_at': test.created_at,
+            'participants_count': test.participants_count
+        })
+
+    return Response(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_student_test_content(request, test_id):
+    """Get test content for a student who joined with test_id."""
+    try:
+        mock_test = MockTest.objects.get(test_id=test_id, is_active=True)
+    except MockTest.DoesNotExist:
+        return Response(
+            {'error': 'Test not found or inactive.'},
+            status=status.HTTP_404_NOT_FOUND
+        )
+
+    # Check if student already has a session
+    session, created = StudentTestSession.objects.get_or_create(
+        mock_test=mock_test,
+        student=request.user,
+        defaults={'status': 'waiting'}
+    )
+
+    # If new session, assign variants
+    if created:
+        if mock_test.variant_strategy == 'same':
+            # Use pre-selected variants
+            session.assigned_variants = mock_test.selected_variants
+        else:
+            # Generate unique variants for this student
+            session.assigned_variants = generate_test_variants()
+        session.save()
+
+    # Load full content for assigned variants
+    full_content = {
+        'listening': {},
+        'reading': {},
+        'writing': {},
+        'speaking': {}
+    }
+
+    for section_type, sections in session.assigned_variants.items():
+        for section_name, filename in sections.items():
+            if filename:
+                content = get_variant_content(section_type, section_name, filename)
+                full_content[section_type][section_name] = content
+
+    return Response({
+        'test_id': test_id,
+        'variant_strategy': mock_test.variant_strategy,
+        'duration_minutes': mock_test.duration_minutes,
+        'session': StudentTestSessionSerializer(session).data,
+        'content': full_content
+    })
 

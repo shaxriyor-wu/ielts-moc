@@ -54,4 +54,8 @@ export const adminApi = {
   getResults: () => api.get('/admin/results'),
   // Online users
   getOnlineUsers: () => api.get('/admin/online-users'),
+  // New Mock Test endpoints (JSON-based variants)
+  getAvailableVariants: () => api.get('/admin/mock-tests/available-variants'),
+  createMockTest: (data) => api.post('/admin/mock-tests/create', data),
+  getMockTestList: () => api.get('/admin/mock-tests/list'),
 };

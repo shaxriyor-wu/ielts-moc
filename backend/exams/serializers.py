@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Variant, TestFile, Answer
+from .models import Variant, TestFile, Answer, MockTest, StudentTestSession
 
 
 class TestFileSerializer(serializers.ModelSerializer):
@@ -45,8 +45,45 @@ class VariantListSerializer(serializers.ModelSerializer):
 
 class VariantCreateSerializer(serializers.ModelSerializer):
     """Serializer for creating variants."""
-    
+
     class Meta:
         model = Variant
         fields = ('name', 'duration_minutes', 'is_active')
+
+
+class MockTestSerializer(serializers.ModelSerializer):
+    """Serializer for MockTest model."""
+    created_by_email = serializers.EmailField(source='created_by.email', read_only=True)
+
+    class Meta:
+        model = MockTest
+        fields = (
+            'id', 'test_id', 'variant_strategy', 'selected_variants',
+            'duration_minutes', 'created_by', 'created_by_email',
+            'created_at', 'is_active'
+        )
+        read_only_fields = ('id', 'test_id', 'created_at')
+
+
+class MockTestCreateSerializer(serializers.ModelSerializer):
+    """Serializer for creating MockTest."""
+
+    class Meta:
+        model = MockTest
+        fields = ('variant_strategy', 'duration_minutes')
+
+
+class StudentTestSessionSerializer(serializers.ModelSerializer):
+    """Serializer for StudentTestSession model."""
+    student_email = serializers.EmailField(source='student.email', read_only=True)
+    test_id = serializers.CharField(source='mock_test.test_id', read_only=True)
+
+    class Meta:
+        model = StudentTestSession
+        fields = (
+            'id', 'mock_test', 'test_id', 'student', 'student_email',
+            'assigned_variants', 'status', 'started_at', 'completed_at',
+            'current_section'
+        )
+        read_only_fields = ('id', 'started_at', 'completed_at')
 
