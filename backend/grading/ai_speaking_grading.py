@@ -191,50 +191,10 @@ def grade_speaking_part_ai(
     )
 
     try:
-        # Try Claude (Anthropic) first - best for detailed evaluation
-        if anthropic_api_key:
-            try:
-                import anthropic
-                client = anthropic.Anthropic(api_key=anthropic_api_key)
+        response_text = None
 
-                message = client.messages.create(
-                    model="claude-3-5-sonnet-20241022",
-                    max_tokens=2048,
-                    messages=[
-                        {"role": "user", "content": prompt}
-                    ]
-                )
-
-                response_text = message.content[0].text
-                logger.info(f"Successfully graded speaking Part {part_number} using Claude")
-
-            except ImportError:
-                logger.warning("Anthropic library not installed, trying alternatives")
-                response_text = None
-            except Exception as e:
-                logger.error(f"Claude API error: {str(e)}")
-                response_text = None
-
-        # Try Google Gemini (free tier available)
-        elif google_api_key:
-            try:
-                import google.generativeai as genai
-                genai.configure(api_key=google_api_key)
-                model = genai.GenerativeModel('gemini-1.5-flash')
-
-                response = model.generate_content(prompt)
-                response_text = response.text
-                logger.info(f"Successfully graded speaking Part {part_number} using Gemini")
-
-            except ImportError:
-                logger.warning("Google GenerativeAI library not installed, trying alternatives")
-                response_text = None
-            except Exception as e:
-                logger.error(f"Gemini API error: {str(e)}")
-                response_text = None
-
-        # Try OpenAI GPT-4
-        elif openai_api_key:
+        # Try OpenAI first (most reliable)
+        if openai_api_key and not response_text:
             try:
                 import openai
                 client = openai.OpenAI(api_key=openai_api_key)
@@ -253,13 +213,11 @@ def grade_speaking_part_ai(
 
             except ImportError:
                 logger.warning("OpenAI library not installed, trying alternatives")
-                response_text = None
             except Exception as e:
                 logger.error(f"OpenAI API error: {str(e)}")
-                response_text = None
 
-        # Try Groq (free tier available)
-        elif groq_api_key:
+        # Try Groq (free tier, fast)
+        if groq_api_key and not response_text:
             try:
                 import groq
                 client = groq.Groq(api_key=groq_api_key)
@@ -278,13 +236,48 @@ def grade_speaking_part_ai(
 
             except ImportError:
                 logger.warning("Groq library not installed")
-                response_text = None
             except Exception as e:
                 logger.error(f"Groq API error: {str(e)}")
-                response_text = None
 
-        else:
-            response_text = None
+        # Try Google Gemini
+        if google_api_key and not response_text:
+            try:
+                import google.genai as genai
+                client = genai.Client(api_key=google_api_key)
+
+                response = client.models.generate_content(
+                    model='gemini-2.0-flash-exp',
+                    contents=prompt
+                )
+                response_text = response.text
+                logger.info(f"Successfully graded speaking Part {part_number} using Gemini")
+
+            except ImportError:
+                logger.warning("Google GenAI library not installed, trying alternatives")
+            except Exception as e:
+                logger.error(f"Gemini API error: {str(e)}")
+
+        # Try Claude (Anthropic) - best quality
+        if anthropic_api_key and not response_text:
+            try:
+                import anthropic
+                client = anthropic.Anthropic(api_key=anthropic_api_key)
+
+                message = client.messages.create(
+                    model="claude-3-5-sonnet-20241022",
+                    max_tokens=2048,
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ]
+                )
+
+                response_text = message.content[0].text
+                logger.info(f"Successfully graded speaking Part {part_number} using Claude")
+
+            except ImportError:
+                logger.warning("Anthropic library not installed")
+            except Exception as e:
+                logger.error(f"Claude API error: {str(e)}")
 
         if not response_text:
             raise Exception("All AI services failed or are not configured properly")
