@@ -26,7 +26,7 @@ export class Attempt {
 
   static async create(data) {
     const db = loadDb();
-    
+
     const attempt = {
       id: uuidv4(),
       testKey: data.testKey,
@@ -42,9 +42,10 @@ export class Attempt {
       startedAt: new Date().toISOString(),
       submittedAt: null,
       isSubmitted: false,
-      duration: 0
+      duration: 0,
+      result: null // Store test results (overall_score, section scores, breakdowns, feedback)
     };
-    
+
     db.attempts.push(attempt);
     saveDb(db);
     return attempt;
@@ -86,6 +87,18 @@ export class Attempt {
   static async findByTest(testId) {
     const db = loadDb();
     return db.attempts.filter(a => a.testId === testId);
+  }
+
+  static async updateResult(id, result) {
+    const db = loadDb();
+    const attempt = db.attempts.find(a => a.id === id);
+    if (attempt) {
+      attempt.result = result;
+      attempt.lastUpdated = new Date().toISOString();
+      saveDb(db);
+      return attempt;
+    }
+    return null;
   }
 }
 

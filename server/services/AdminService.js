@@ -240,5 +240,25 @@ export class AdminService {
     const { Student } = await import('../models/Student.js');
     return await Student.delete(id);
   }
+
+  static async saveAttemptResult(attemptId, result, adminId) {
+    // Verify admin has access to this attempt
+    const attempt = await Attempt.findById(attemptId);
+    if (!attempt) {
+      throw new Error('Attempt not found');
+    }
+
+    // Verify the attempt belongs to a test created by this admin
+    const test = await Test.findById(attempt.testId);
+    if (!test || test.createdBy !== adminId) {
+      throw new Error('Access denied - attempt belongs to another admin\'s test');
+    }
+
+    // Save the result to the attempt
+    const updatedAttempt = await Attempt.updateResult(attemptId, result);
+
+    logger.info(`Admin ${adminId} saved result for attempt ${attemptId}`);
+    return updatedAttempt;
+  }
 }
 

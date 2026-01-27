@@ -17,6 +17,7 @@ urlpatterns = [
     path('admin/mock-tests/available-variants', views.get_available_variants_count, name='available_variants_count'),
     path('admin/mock-tests/create', views.create_mock_test, name='create_mock_test'),
     path('admin/mock-tests/list', views.get_mock_test_list, name='mock_test_list'),
+    path('admin/mock-tests/variant-preview/<str:section_type>/<str:section_name>/<str:filename>', views.get_variant_preview, name='variant_preview'),
 
     # Student endpoints
     path('student/test/<str:test_id>', views.get_student_test_content, name='student_test_content'),

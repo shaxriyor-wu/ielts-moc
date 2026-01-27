@@ -20,6 +20,7 @@ router.post('/upload/writing', authenticate, requireAdmin, upload.single('file')
 router.post('/test-keys', authenticate, requireAdmin, AdminController.generateTestKey);
 router.get('/test-keys', authenticate, requireAdmin, AdminController.getTestKeys);
 router.get('/results', authenticate, requireAdmin, AdminController.getResults);
+router.post('/attempts/:attemptId/result', authenticate, requireAdmin, AdminController.saveAttemptResult);
 router.get('/students', authenticate, requireAdmin, AdminController.getStudents);
 router.post('/users', authenticate, requireAdmin, AdminController.createUser);
 router.put('/users/:id', authenticate, requireAdmin, AdminController.updateUser);

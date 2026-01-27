@@ -193,14 +193,16 @@ const StudentDashboard = () => {
         </Card>
       </div>
 
-      {/* Previous Test Results */}
-      {attempts.length > 0 && (
+      {/* Previous Test Results - Only show the latest result */}
+      {attempts.length > 0 && attempts[0].result && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
             Previous Test Results
           </h2>
           <div className="space-y-4">
-            {attempts.map((attempt) => {
+            {(() => {
+              // Only show the first (latest) attempt with result
+              const attempt = attempts[0];
               const result = attempt.result;
               const variant = attempt.variant;
 
@@ -212,7 +214,7 @@ const StudentDashboard = () => {
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {variant?.name || 'Test'}
+                        {variant?.name || attempt.test_name || 'Test'}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
                         {new Date(attempt.start_time).toLocaleDateString()}
@@ -234,7 +236,7 @@ const StudentDashboard = () => {
                         <div>
                           <p className="text-xs text-gray-600 dark:text-gray-400">Listening</p>
                           <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {result.listening_breakdown.correct || 0}/40 = Band {result.listening_score?.toFixed(1) || '-'}
+                            {result.listening_breakdown.correct_answers || result.listening_breakdown.correct || 0}/40 = Band {result.listening_score?.toFixed(1) || '-'}
                           </p>
                         </div>
                       )}
@@ -242,23 +244,23 @@ const StudentDashboard = () => {
                         <div>
                           <p className="text-xs text-gray-600 dark:text-gray-400">Reading</p>
                           <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                            {result.reading_breakdown.correct || 0}/40 = Band {result.reading_score?.toFixed(1) || '-'}
+                            {result.reading_breakdown.correct_answers || result.reading_breakdown.correct || 0}/40 = Band {result.reading_score?.toFixed(1) || '-'}
                           </p>
                         </div>
                       )}
-                      {result.writing_task1_score && (
+                      {result.writing_breakdown?.task1?.score && (
                         <div>
                           <p className="text-xs text-gray-600 dark:text-gray-400">Writing Task 1</p>
                           <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                            Band {result.writing_task1_score.toFixed(1)}
+                            Band {result.writing_breakdown.task1.score.toFixed(1)}
                           </p>
                         </div>
                       )}
-                      {result.writing_task2_score && (
+                      {result.writing_breakdown?.task2?.score && (
                         <div>
                           <p className="text-xs text-gray-600 dark:text-gray-400">Writing Task 2</p>
                           <p className="text-lg font-semibold text-gray-900 dark:text-white">
-                            Band {result.writing_task2_score.toFixed(1)}
+                            Band {result.writing_breakdown.task2.score.toFixed(1)}
                           </p>
                         </div>
                       )}
@@ -267,6 +269,14 @@ const StudentDashboard = () => {
                           <p className="text-xs text-gray-600 dark:text-gray-400">Overall Writing</p>
                           <p className="text-lg font-semibold text-gray-900 dark:text-white">
                             Band {result.writing_score.toFixed(1)}
+                          </p>
+                        </div>
+                      )}
+                      {result.speaking_score && (
+                        <div>
+                          <p className="text-xs text-gray-600 dark:text-gray-400">Speaking</p>
+                          <p className="text-lg font-semibold text-gray-900 dark:text-white">
+                            Band {result.speaking_score.toFixed(1)}
                           </p>
                         </div>
                       )}
@@ -280,7 +290,7 @@ const StudentDashboard = () => {
                   )}
                 </div>
               );
-            })}
+            })()}
           </div>
         </Card>
       )}

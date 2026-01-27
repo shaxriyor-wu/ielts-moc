@@ -90,16 +90,31 @@ export class StudentService {
   static async getAttempts(studentId) {
     const db = await import('../config/database.js').then(m => m.loadDb());
     const attempts = db.attempts.filter(a => a.studentId === studentId);
-    return attempts.map(a => ({
-      id: a.id,
-      testKey: a.testKey,
-      testId: a.testId,
-      testTitle: db.tests.find(t => t.id === a.testId)?.title || 'Unknown',
-      startedAt: a.startedAt,
-      submittedAt: a.submittedAt,
-      isSubmitted: a.isSubmitted,
-      score: a.score || null
-    }));
+
+    // Sort by submission time (most recent first)
+    const sortedAttempts = attempts.sort((a, b) => {
+      const dateA = new Date(a.submittedAt || a.startedAt);
+      const dateB = new Date(b.submittedAt || b.startedAt);
+      return dateB - dateA;
+    });
+
+    return sortedAttempts.map(a => {
+      const test = db.tests.find(t => t.id === a.testId);
+      const variant = db.mocTests?.find(m => m.id === a.assignedMocId);
+
+      return {
+        id: a.id,
+        testKey: a.testKey,
+        testId: a.testId,
+        test_name: variant?.name || test?.title || 'Unknown Test',
+        start_time: a.startedAt,
+        completed_at: a.submittedAt,
+        created_at: a.startedAt,
+        status: a.isSubmitted ? 'submitted' : 'in_progress',
+        variant: variant ? { name: variant.name, id: variant.id } : null,
+        result: a.result // Full result object with scores and breakdowns
+      };
+    });
   }
 
   static async getTests(studentId) {

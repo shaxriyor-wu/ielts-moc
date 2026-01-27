@@ -218,5 +218,26 @@ export class AdminController {
       res.status(500).json({ error: error.message });
     }
   }
+
+  static async saveAttemptResult(req, res, next) {
+    try {
+      const { attemptId } = req.params;
+      const { result } = req.body;
+
+      if (!result) {
+        return res.status(400).json({ error: 'Result data is required' });
+      }
+
+      const updatedAttempt = await AdminService.saveAttemptResult(attemptId, result, req.user.id);
+      res.json({
+        success: true,
+        message: 'Test result saved successfully',
+        attempt: updatedAttempt
+      });
+    } catch (error) {
+      logger.error('Save attempt result error:', error);
+      res.status(400).json({ error: error.message });
+    }
+  }
 }
 

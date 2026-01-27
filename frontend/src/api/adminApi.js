@@ -58,4 +58,6 @@ export const adminApi = {
   getAvailableVariants: () => api.get('/admin/mock-tests/available-variants'),
   createMockTest: (data) => api.post('/admin/mock-tests/create', data),
   getMockTestList: () => api.get('/admin/mock-tests/list'),
+  getVariantPreview: (sectionType, sectionName, filename) =>
+    api.get(`/admin/mock-tests/variant-preview/${sectionType}/${sectionName}/${filename}`),
 };

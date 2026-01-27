@@ -555,3 +555,41 @@ def get_student_test_content(request, test_id):
         'content': full_content
     })
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_variant_preview(request, section_type, section_name, filename):
+    """Get preview of a specific variant file."""
+    if not check_is_admin(request.user):
+        return Response(
+            {'error': 'Admin access required.'},
+            status=status.HTTP_403_FORBIDDEN
+        )
+
+    # Validate section_type
+    valid_section_types = ['listening', 'reading', 'writing', 'speaking']
+    if section_type not in valid_section_types:
+        return Response(
+            {'error': f'Invalid section_type. Must be one of: {", ".join(valid_section_types)}'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        content = get_variant_content(section_type, section_name, filename)
+        if content is None:
+            return Response(
+                {'error': 'Variant file not found or could not be read.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(content)
+
+    except Exception as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.error(f"Error loading variant preview: {str(e)}")
+        return Response(
+            {'error': f'Failed to load variant: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
