@@ -26,14 +26,8 @@ class Command(BaseCommand):
                 self.style.SUCCESS(f'Successfully created admin user: admin/admin123')
             )
         else:
-            # Update password if user exists
-            admin_user.set_password('admin123')
-            admin_user.role = 'admin'
-            admin_user.is_staff = True
-            admin_user.is_superuser = True
-            admin_user.save()
             self.stdout.write(
-                self.style.WARNING(f'Admin user already exists. Password reset to: admin123')
+                self.style.WARNING('Admin user already exists, skipping.')
             )
 
         # Create student user
@@ -51,12 +45,8 @@ class Command(BaseCommand):
                 self.style.SUCCESS(f'Successfully created student user: student/student123')
             )
         else:
-            # Update password if user exists
-            student_user.set_password('student123')
-            student_user.role = 'student'
-            student_user.save()
             self.stdout.write(
-                self.style.WARNING(f'Student user already exists. Password reset to: student123')
+                self.style.WARNING('Student user already exists, skipping.')
             )
 
         self.stdout.write(

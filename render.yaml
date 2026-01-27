@@ -7,7 +7,7 @@ services:
     plan: free
     buildCommand: |
       # Install Node.js dependencies and build React frontend
-      cd client && npm install && npm run build && cd ..
+      cd frontend && npm install && npm run build && cd ..
       # Install Python dependencies
       pip install -r backend/requirements.txt
       # Collect static files (including React build)

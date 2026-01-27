@@ -22,8 +22,14 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-change-this-in-production'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',')
-# Add Render host if available
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+
+# Add Railway host if available
+RAILWAY_PUBLIC_DOMAIN = os.getenv('RAILWAY_PUBLIC_DOMAIN')
+if RAILWAY_PUBLIC_DOMAIN:
+    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
+
+# Render host support (backwards compat)
 if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
     ALLOWED_HOSTS.append(os.getenv('RENDER_EXTERNAL_HOSTNAME'))
 
@@ -85,7 +91,7 @@ WSGI_APPLICATION = 'ielts_moc.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Use DATABASE_URL from Render if available, otherwise use environment variables or SQLite
+# Use DATABASE_URL if available (Railway/Render auto-provides), otherwise fallback
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
     DATABASES = {
@@ -153,24 +159,28 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # React frontend build directory
-FRONTEND_BUILD_DIR = BASE_DIR.parent / 'client' / 'dist'
+FRONTEND_BUILD_DIR = BASE_DIR.parent / 'frontend' / 'dist'
 
 # Additional static files directories (React build)
-STATICFILES_DIRS = [
-    FRONTEND_BUILD_DIR,  # React build output
-]
+STATICFILES_DIRS = []
+if FRONTEND_BUILD_DIR.exists():
+    STATICFILES_DIRS.append(FRONTEND_BUILD_DIR)
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path(os.getenv('MEDIA_VOLUME_PATH', BASE_DIR / 'media'))
 
-# Ensure media directory exists
-import os
+# Ensure media directories exist
 os.makedirs(MEDIA_ROOT, exist_ok=True)
-os.makedirs(MEDIA_ROOT / 'test_files', exist_ok=True)
-os.makedirs(MEDIA_ROOT / 'audio_files', exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'test_files'), exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'audio_files'), exist_ok=True)
+os.makedirs(os.path.join(MEDIA_ROOT, 'speaking_audio'), exist_ok=True)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -220,13 +230,19 @@ if cors_origins_env:
     additional_origins = [origin.strip() for origin in cors_origins_env.split(',') if origin.strip()]
     CORS_ALLOWED_ORIGINS.extend(additional_origins)
 
-# Add Render frontend URL if available (for separate frontend service)
+# Add frontend URL if available (for separate frontend service)
 if os.getenv('FRONTEND_URL'):
     frontend_url = os.getenv('FRONTEND_URL').strip()
     if frontend_url and frontend_url not in CORS_ALLOWED_ORIGINS:
         CORS_ALLOWED_ORIGINS.append(frontend_url)
 
-# Add Render service URL to CORS (for same-origin requests)
+# Add Railway service URL to CORS
+if RAILWAY_PUBLIC_DOMAIN:
+    railway_url = f"https://{RAILWAY_PUBLIC_DOMAIN}"
+    if railway_url not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(railway_url)
+
+# Add Render service URL to CORS (backwards compat)
 if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
     render_url = f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"
     if render_url not in CORS_ALLOWED_ORIGINS:
@@ -245,4 +261,29 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+
+# CSRF Trusted Origins (required for Django 4+ with HTTPS)
+CSRF_TRUSTED_ORIGINS = []
+csrf_origins_env = os.getenv('CSRF_TRUSTED_ORIGINS', '')
+if csrf_origins_env:
+    CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_origins_env.split(',') if origin.strip()]
+
+if RAILWAY_PUBLIC_DOMAIN:
+    railway_origin = f"https://{RAILWAY_PUBLIC_DOMAIN}"
+    if railway_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(railway_origin)
+
+if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
+    render_origin = f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"
+    if render_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(render_origin)
+
+# Production security settings
+if not DEBUG:
+    SECURE_SSL_REDIRECT = os.getenv('SECURE_SSL_REDIRECT', 'True') == 'True'
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
 

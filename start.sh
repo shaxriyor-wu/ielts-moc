@@ -21,7 +21,7 @@ BACKEND_PID=$!
 sleep 3
 
 echo "Starting React frontend..."
-cd "$ROOT_DIR/client"
+cd "$ROOT_DIR/frontend"
 npm run dev > /tmp/vite.log 2>&1 &
 FRONTEND_PID=$!
 

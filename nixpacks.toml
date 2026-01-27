@@ -1,0 +1,19 @@
+[phases.setup]
+nixPkgs = ["python311", "nodejs_18", "npm"]
+
+[phases.install]
+cmds = [
+    "cd frontend && npm ci",
+    "pip install -r backend/requirements.txt"
+]
+
+[phases.build]
+cmds = [
+    "cd frontend && npm run build",
+    "cd backend && python manage.py collectstatic --noinput",
+    "cd backend && python manage.py migrate --noinput",
+    "cd backend && python manage.py init_users"
+]
+
+[start]
+cmd = "cd backend && gunicorn ielts_moc.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"

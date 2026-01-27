@@ -88,7 +88,7 @@ def react_app_view(request):
     # Other possible locations for React build
     fallback_paths = [
         os.path.join(settings.BASE_DIR, 'staticfiles', 'index.html'),  # Default collectstatic output
-        os.path.join(settings.BASE_DIR.parent, 'client', 'dist', 'index.html'),  # Original build location
+        os.path.join(settings.BASE_DIR.parent, 'frontend', 'dist', 'index.html'),  # Original build location
     ]
 
     # Build ordered list (preferred first)
