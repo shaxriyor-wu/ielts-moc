@@ -5,7 +5,7 @@ import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import Modal from '../../components/Modal';
 import { showToast } from '../../components/Toast';
-import { FileText, Headphones, BookOpen, PenTool, Mic, Eye, Plus, Trash2 } from 'lucide-react';
+import { FileText, Headphones, BookOpen, PenTool, Mic, Eye, Trash2 } from 'lucide-react';
 import VariantPreviewModal from './VariantPreviewModal';
 
 const Variants = () => {
@@ -55,29 +55,18 @@ const Variants = () => {
 
           return (
             <Card key={sectionNum} className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
-                    <Headphones className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Section {sectionNum}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {count} variant{count !== 1 ? 's' : ''} available
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                  <Headphones className="w-5 h-5 text-blue-600 dark:text-blue-400" />
                 </div>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => {/* TODO: Add variant */}}
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Variant
-                </Button>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Section {sectionNum}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {count} variant{count !== 1 ? 's' : ''} available
+                  </p>
+                </div>
               </div>
 
               {files.length > 0 ? (
@@ -139,29 +128,18 @@ const Variants = () => {
 
           return (
             <Card key={passageNum} className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                    <BookOpen className="w-5 h-5 text-green-600 dark:text-green-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Passage {passageNum}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {count} variant{count !== 1 ? 's' : ''} available
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-green-100 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-green-600 dark:text-green-400" />
                 </div>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => {/* TODO: Add variant */}}
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Variant
-                </Button>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Passage {passageNum}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {count} variant{count !== 1 ? 's' : ''} available
+                  </p>
+                </div>
               </div>
 
               {files.length > 0 ? (
@@ -223,29 +201,18 @@ const Variants = () => {
 
           return (
             <Card key={taskNum} className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
-                    <PenTool className="w-5 h-5 text-purple-600 dark:text-purple-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Task {taskNum}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {count} variant{count !== 1 ? 's' : ''} available
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-purple-100 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                  <PenTool className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                 </div>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => {/* TODO: Add variant */}}
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Variant
-                </Button>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Task {taskNum}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {count} variant{count !== 1 ? 's' : ''} available
+                  </p>
+                </div>
               </div>
 
               {files.length > 0 ? (
@@ -307,29 +274,18 @@ const Variants = () => {
 
           return (
             <Card key={partNum} className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                    <Mic className="w-5 h-5 text-orange-600 dark:text-orange-400" />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                      Part {partNum}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
-                      {count} variant{count !== 1 ? 's' : ''} available
-                    </p>
-                  </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                  <Mic className="w-5 h-5 text-orange-600 dark:text-orange-400" />
                 </div>
-                <Button
-                  size="sm"
-                  variant="primary"
-                  onClick={() => {/* TODO: Add variant */}}
-                  className="flex items-center gap-2"
-                >
-                  <Plus className="w-4 h-4" />
-                  Add Variant
-                </Button>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                    Part {partNum}
+                  </h3>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {count} variant{count !== 1 ? 's' : ''} available
+                  </p>
+                </div>
               </div>
 
               {files.length > 0 ? (
