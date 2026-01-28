@@ -90,19 +90,45 @@ export const useAntiCheat = (isActive = true) => {
         };
     }, [isActive]);
 
-    // 5. Fullscreen Logic
+    // 5. Fullscreen Logic with auto-restore
     useEffect(() => {
         if (!isActive) return;
 
+        let isIntentionalExit = false;
+        let restoreTimeout = null;
+
         const handleFullscreenChange = () => {
-            setIsFullScreen(!!document.fullscreenElement);
+            const isCurrentlyFullscreen = !!document.fullscreenElement;
+            setIsFullScreen(isCurrentlyFullscreen);
+
+            // If fullscreen was exited unintentionally (during navigation), try to restore it
+            if (!isCurrentlyFullscreen && !isIntentionalExit) {
+                // Small delay to allow navigation to complete
+                restoreTimeout = setTimeout(async () => {
+                    try {
+                        if (!document.fullscreenElement) {
+                            await document.documentElement.requestFullscreen();
+                        }
+                    } catch (err) {
+                        console.log('Auto-restore fullscreen failed:', err);
+                    }
+                }, 100);
+            }
+        };
+
+        // Listen for intentional exit signals
+        const markIntentionalExit = () => {
+            isIntentionalExit = true;
         };
 
         document.addEventListener('fullscreenchange', handleFullscreenChange);
+        window.addEventListener('exitFullscreenIntentional', markIntentionalExit);
         setIsFullScreen(!!document.fullscreenElement);
 
         return () => {
             document.removeEventListener('fullscreenchange', handleFullscreenChange);
+            window.removeEventListener('exitFullscreenIntentional', markIntentionalExit);
+            if (restoreTimeout) clearTimeout(restoreTimeout);
         };
     }, [isActive]);
 

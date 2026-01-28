@@ -165,6 +165,12 @@ const SpeakingSection = () => {
             try {
                 const response = await studentApi.transcribeAndGradeSpeaking();
                 showToast('Speaking section completed successfully!', 'success');
+                // Signal intentional exit before leaving fullscreen
+                window.dispatchEvent(new Event('exitFullscreenIntentional'));
+                // Exit fullscreen when test is complete
+                if (document.fullscreenElement) {
+                    await document.exitFullscreen().catch(() => {});
+                }
                 navigate('/student/results');
             } catch (error) {
                 showToast('Failed to process speaking section', 'error');
