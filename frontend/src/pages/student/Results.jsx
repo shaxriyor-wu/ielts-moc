@@ -209,7 +209,7 @@ const Results = () => {
                           </div>
                           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mt-1">
                             <Calendar className="w-4 h-4" />
-                            <span>{formatDate(attempt.completed_at || attempt.created_at)}</span>
+                            <span>{formatDate(attempt.submission_time || attempt.start_time)}</span>
                           </div>
                         </div>
                       </div>
