@@ -3,11 +3,13 @@ import { adminApi } from '../../api/adminApi';
 import Card from '../../components/Card';
 import Loader from '../../components/Loader';
 import { showToast } from '../../components/Toast';
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, Search, Calendar, Filter } from 'lucide-react';
 
 const AdminResults = () => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [dateFilter, setDateFilter] = useState('all'); // all, today, 3days, 10days
 
   useEffect(() => {
     loadResults();
@@ -32,6 +34,11 @@ const AdminResults = () => {
 
   // Calculate overall band score from L/R/W/S scores
   const calculateOverall = (result) => {
+    // Use backend calculated overall score if available
+    if (result.overallScore !== null && result.overallScore !== undefined) {
+      return result.overallScore.toFixed(1);
+    }
+
     const scores = [
       result.listeningScore,
       result.readingScore,
@@ -47,6 +54,44 @@ const AdminResults = () => {
     return (Math.round(avg * 2) / 2).toFixed(1);
   };
 
+  // Filter results based on search and date
+  const getFilteredResults = () => {
+    let filtered = [...results];
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(result =>
+        result.studentName.toLowerCase().includes(query) ||
+        result.testTitle.toLowerCase().includes(query) ||
+        result.testKey.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply date filter
+    if (dateFilter !== 'all') {
+      const now = new Date();
+      const filterDate = new Date();
+
+      if (dateFilter === 'today') {
+        filterDate.setHours(0, 0, 0, 0);
+      } else if (dateFilter === '3days') {
+        filterDate.setDate(now.getDate() - 3);
+      } else if (dateFilter === '10days') {
+        filterDate.setDate(now.getDate() - 10);
+      }
+
+      filtered = filtered.filter(result => {
+        const submittedDate = result.submittedAt ? new Date(result.submittedAt) : new Date(result.startedAt);
+        return submittedDate >= filterDate;
+      });
+    }
+
+    return filtered;
+  };
+
+  const filteredResults = getFilteredResults();
+
   if (loading) return <Loader fullScreen />;
 
   return (
@@ -61,15 +106,60 @@ const AdminResults = () => {
         </p>
       </div>
 
+      {/* Filters Section */}
       <Card>
-        {results.length === 0 ? (
+        <div className="flex flex-col md:flex-row gap-4">
+          {/* Search Input */}
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search by student name, test title, or test key..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
+              />
+            </div>
+          </div>
+
+          {/* Date Filter */}
+          <div className="flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-gray-400" />
+            <select
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900 dark:text-white"
+            >
+              <option value="all">All Time</option>
+              <option value="today">Today</option>
+              <option value="3days">Last 3 Days</option>
+              <option value="10days">Last 10 Days</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Results count */}
+        <div className="mt-4 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <Filter className="w-4 h-4" />
+          <span>
+            Showing {filteredResults.length} of {results.length} result{results.length !== 1 ? 's' : ''}
+          </span>
+        </div>
+      </Card>
+
+      <Card>
+        {filteredResults.length === 0 ? (
           <div className="text-center py-12">
             <BarChart3 className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-              No results yet
+              {results.length === 0 ? 'No results yet' : 'No matching results'}
             </h3>
             <p className="text-gray-600 dark:text-gray-400">
-              Results will appear here when students complete their tests
+              {results.length === 0
+                ? 'Results will appear here when students complete their tests'
+                : 'Try adjusting your filters or search query'
+              }
             </p>
           </div>
         ) : (
@@ -107,7 +197,7 @@ const AdminResults = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {results.map((result) => (
+                {filteredResults.map((result) => (
                   <tr key={result.id} className="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors">
                     <td className="px-4 py-4">
                       <p className="font-semibold text-gray-900 dark:text-white">

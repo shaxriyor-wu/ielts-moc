@@ -1205,7 +1205,7 @@ def get_all_results(request):
     """List all student test results for admin."""
     # Check if user is admin
     from accounts.models import CustomUser
-    
+
     # Reload user to ensure we have role
     db_user = CustomUser.objects.get(id=request.user.id)
     if db_user.role != 'admin':
@@ -1213,11 +1213,26 @@ def get_all_results(request):
             {'error': 'Admin access required.'},
             status=status.HTTP_403_FORBIDDEN
         )
-    
+
     attempts = StudentTest.objects.all().select_related('student', 'variant').order_by('-start_time')
     data = []
-    
+
     for attempt in attempts:
+        # Get test result if exists
+        try:
+            result = attempt.result
+            listening_score = float(result.listening_score) if result.listening_score else None
+            reading_score = float(result.reading_score) if result.reading_score else None
+            writing_score = float(result.writing_score) if result.writing_score else None
+            speaking_score = float(result.speaking_score) if result.speaking_score else None
+            overall_score = float(result.overall_score) if result.overall_score else None
+        except TestResult.DoesNotExist:
+            listening_score = None
+            reading_score = None
+            writing_score = None
+            speaking_score = None
+            overall_score = None
+
         data.append({
             'id': attempt.id,
             'studentId': attempt.student_id,
@@ -1227,8 +1242,13 @@ def get_all_results(request):
             'isSubmitted': attempt.status in ['submitted', 'graded'],
             'startedAt': attempt.start_time,
             'submittedAt': attempt.submission_time,
-            'status': attempt.status
+            'status': attempt.status,
+            'listeningScore': listening_score,
+            'readingScore': reading_score,
+            'writingScore': writing_score,
+            'speakingScore': speaking_score,
+            'overallScore': overall_score
         })
-        
+
     return Response(data)
 
