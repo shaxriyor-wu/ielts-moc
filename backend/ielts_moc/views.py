@@ -13,6 +13,14 @@ _cached_html = None
 _cached_path = None
 
 
+def health_check(request):
+    """
+    Simple health check endpoint for Railway/Render deployment.
+    Returns 200 OK if the server is running.
+    """
+    return JsonResponse({'status': 'ok'})
+
+
 def root_view(request):
     """
     Root endpoint that provides API information.

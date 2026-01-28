@@ -6,9 +6,10 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
-from .views import root_view, react_app_view
+from .views import root_view, react_app_view, health_check
 
 urlpatterns = [
+    path('health/', health_check, name='health-check'),
     path('api/', root_view, name='api-root'),
     path('admin/', admin.site.urls),
     path('api/', include('accounts.urls')),
