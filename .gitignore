@@ -28,5 +28,12 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Media uploads (managed separately)
-backend/media/
+# Media uploads (user-generated content - managed separately)
+backend/media/speaking_audio/
+backend/media/test_files/
+
+# Keep base audio files in git (required for tests)
+!backend/media/
+!backend/media/audio_files/
+!backend/media/audio_files/listening.m4a
+!backend/media/README.md
