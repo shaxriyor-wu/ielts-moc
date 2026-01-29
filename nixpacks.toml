@@ -11,8 +11,13 @@ cmds = [
 cmds = [
     "cd frontend && npm run build",
     "cd backend && python manage.py collectstatic --noinput",
+    # Debug: show what's in backend/media
+    "echo '=== Checking backend/media contents ===' && ls -la backend/media/ || echo 'backend/media not found'",
+    "echo '=== Checking backend/media/audio_files ===' && ls -la backend/media/audio_files/ || echo 'audio_files not found'",
     # Copy media files to a backup location that won't be overwritten by volume mount
-    "mkdir -p /app/media_bundled && cp -r backend/media/* /app/media_bundled/ || echo 'No media files to backup'",
+    "mkdir -p /app/media_bundled/audio_files",
+    "cp -rv backend/media/* /app/media_bundled/ 2>&1 || echo 'WARNING: Failed to copy media files'",
+    "echo '=== Contents of /app/media_bundled ===' && ls -laR /app/media_bundled/ || echo 'media_bundled empty'",
     "cd backend && python manage.py ensure_db_ready || echo 'WARNING: Database initialization in build phase failed, will retry on startup'"
 ]
 
