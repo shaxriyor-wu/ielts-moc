@@ -26,59 +26,14 @@ until python -c "import django; django.setup(); from django.db import connection
 done
 echo "✓ Database connection established"
 
-# Run migrations (idempotent - safe to run multiple times)
+# Ensure database is ready (migrations + data initialization)
 echo ""
-echo "Running database migrations..."
-python manage.py migrate --noinput || {
-    echo "ERROR: Migration failed"
+echo "Ensuring database is ready..."
+python manage.py ensure_db_ready || {
+    echo "ERROR: Database initialization failed"
     exit 1
 }
-echo "✓ Migrations completed"
-
-# Check if database has users and initialize if needed
-echo ""
-echo "Checking if database is initialized..."
-USER_COUNT=$(python -c "
-import os
-import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ielts_moc.settings')
-django.setup()
-from accounts.models import CustomUser
-try:
-    print(CustomUser.objects.count())
-except Exception as e:
-    print('0')
-" 2>/dev/null || echo "0")
-
-if [ "$USER_COUNT" = "0" ]; then
-    echo "Database is empty. Loading initial data..."
-    python manage.py load_initial_data || {
-        echo "Warning: Failed to load initial data, will create default users instead"
-    }
-fi
-
-echo "Ensuring default users exist..."
-python manage.py init_users || {
-    echo "Warning: Failed to initialize users, but continuing..."
-}
-
-if [ "$USER_COUNT" = "0" ]; then
-    # Re-check user count after initialization
-    NEW_USER_COUNT=$(python -c "
-import os
-import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ielts_moc.settings')
-django.setup()
-from accounts.models import CustomUser
-try:
-    print(CustomUser.objects.count())
-except:
-    print('0')
-" 2>/dev/null || echo "0")
-    echo "✓ Database initialized with $NEW_USER_COUNT users"
-else
-    echo "✓ Database already has $USER_COUNT users"
-fi
+echo "✓ Database ready"
 
 echo ""
 echo "=========================================="
