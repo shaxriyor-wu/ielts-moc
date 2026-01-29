@@ -10,6 +10,9 @@ echo "=========================================="
 
 cd "$(dirname "$0")"
 
+# Set Django settings module for all python commands in this script
+export DJANGO_SETTINGS_MODULE="ielts_moc.settings"
+
 # Wait for database to be ready (with timeout)
 echo ""
 echo "Waiting for database connection..."
