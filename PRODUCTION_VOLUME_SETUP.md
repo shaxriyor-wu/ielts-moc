@@ -94,7 +94,27 @@ Volume to'g'ri ulanganligini tekshirish uchun:
 
 ## Media Fayllarni Ko'chirish
 
-Agar mavjud media fayllar bo'lsa, ularni volume'ga ko'chirish:
+### Avtomatik Ko'chirish (Tavsiya etiladi)
+
+Backend startup script avtomatik ravishda media fayllarni volume'ga ko'chiradi. Bu har safar backend restart qilinganda ishlaydi va faqat mavjud bo'lmagan fayllarni ko'chiradi.
+
+Agar avtomatik ko'chirish ishlamasa, quyidagi komandani qo'lda bajaring:
+
+```bash
+# Backend container'ga ulanish
+# Management command orqali media fayllarni ko'chirish
+python manage.py init_media_files
+
+# Yoki aniq source directory ko'rsatish
+python manage.py init_media_files --source /app/backend/media
+
+# Mavjud fayllarni ham qayta yozish uchun
+python manage.py init_media_files --force
+```
+
+### Qo'lda Ko'chirish
+
+Agar management command ishlamasa, quyidagi komandani ishlating:
 
 ```bash
 # Backend container'ga ulanish
@@ -102,14 +122,39 @@ Agar mavjud media fayllar bo'lsa, ularni volume'ga ko'chirish:
 cp -r /app/backend/media/* /app/media/
 ```
 
+**Muhim:** Volume'ga ko'chirishdan oldin, volume to'g'ri ulanganligini tekshiring:
+```bash
+ls -la $MEDIA_VOLUME_PATH
+```
+
 ## Troubleshooting
 
 ### "Audio file not found" xatosi
 
-1. Volume to'g'ri ulanganligini tekshiring
-2. `MEDIA_VOLUME_PATH` environment variable'ni tekshiring
-3. Media fayllar volume'da mavjudligini tekshiring
-4. Backend log'larni tekshiring:
+1. **Volume to'g'ri ulanganligini tekshiring:**
+   ```bash
+   # Backend container'ga ulanish
+   ls -la $MEDIA_VOLUME_PATH
+   ```
+
+2. **`MEDIA_VOLUME_PATH` environment variable'ni tekshiring:**
+   ```bash
+   echo $MEDIA_VOLUME_PATH
+   ```
+   Bu `/app/media` yoki mount qilgan path'ingizga mos bo'lishi kerak.
+
+3. **Media fayllar volume'da mavjudligini tekshiring:**
+   ```bash
+   ls -la $MEDIA_VOLUME_PATH/audio_files/
+   ```
+   `listening.m4a` fayli mavjud bo'lishi kerak.
+
+4. **Agar fayllar yo'q bo'lsa, avtomatik yuklashni ishga tushiring:**
+   ```bash
+   python manage.py init_media_files
+   ```
+
+5. **Backend log'larni tekshiring:**
    ```bash
    # Railway
    railway logs
@@ -117,6 +162,15 @@ cp -r /app/backend/media/* /app/media/
    # Render
    render logs
    ```
+   
+   Startup log'larda quyidagi xabarni ko'rish kerak:
+   ```
+   ✓ Media files initialized
+   ```
+
+6. **Agar hali ham muammo bo'lsa, backend'ni restart qiling:**
+   - Railway: Service'ni restart qiling
+   - Render: Service'ni restart qiling
 
 ### Rasmlar ko'rinmayapti
 
