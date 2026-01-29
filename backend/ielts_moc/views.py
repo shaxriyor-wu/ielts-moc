@@ -87,6 +87,9 @@ def react_app_view(request):
     Also performs a safe rewrite from /assets → /static/assets if needed.
     
     Uses caching to avoid repeated file reads and includes proper error handling.
+    
+    In Railway deployment with separate frontend/backend services, if frontend
+    build is not found, returns API information instead of 404.
     """
     global _cached_html, _cached_path
     
@@ -130,14 +133,56 @@ def react_app_view(request):
         elif path:
             logger.debug(f"Could not read from {path}, trying next location")
 
-    # All paths failed
-    error_msg = (
-        '<h1>Frontend build not found. Please build the React app first.</h1>'
-        '<p>Expected locations:</p><ul>'
-        + ''.join([f'<li>{p or "None"}</li>' for p in possible_paths])
-        + '</ul>'
-        '<p>Check server logs for detailed error messages.</p>'
-    )
-    logger.error(f"React app not found. Checked paths: {possible_paths}")
-    return HttpResponse(error_msg, status=404)
+    # All paths failed - In Railway with separate services, frontend is served separately
+    # Return API info instead of error to avoid confusion
+    logger.info("Frontend build not found. This is expected in Railway deployment with separate frontend/backend services.")
+    logger.info(f"Checked paths: {possible_paths}")
+    
+    # Return API information page instead of error
+    api_info_html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>IELTS MOC API</title>
+        <style>
+            body { font-family: Arial, sans-serif; max-width: 800px; margin: 50px auto; padding: 20px; }
+            h1 { color: #333; }
+            .info { background: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0; }
+            .endpoint { margin: 10px 0; padding: 10px; background: white; border-left: 3px solid #007bff; }
+            code { background: #e9ecef; padding: 2px 6px; border-radius: 3px; }
+        </style>
+    </head>
+    <body>
+        <h1>IELTS MOC API</h1>
+        <div class="info">
+            <p><strong>Status:</strong> Running</p>
+            <p><strong>Version:</strong> 1.0.0</p>
+            <p>This is the backend API service. The frontend is served separately.</p>
+        </div>
+        <h2>API Endpoints</h2>
+        <div class="endpoint">
+            <strong>Health Check:</strong> <code>GET /health/</code>
+        </div>
+        <div class="endpoint">
+            <strong>API Root:</strong> <code>GET /api/</code>
+        </div>
+        <div class="endpoint">
+            <strong>Admin:</strong> <code>/admin/</code>
+        </div>
+        <div class="endpoint">
+            <strong>Accounts:</strong> <code>/api/accounts/</code>
+        </div>
+        <div class="endpoint">
+            <strong>Exams:</strong> <code>/api/exams/</code>
+        </div>
+        <div class="endpoint">
+            <strong>Student Portal:</strong> <code>/api/student_portal/</code>
+        </div>
+        <div class="endpoint">
+            <strong>Grading:</strong> <code>/api/grading/</code>
+        </div>
+    </body>
+    </html>
+    """
+    return HttpResponse(api_info_html, content_type='text/html')
 

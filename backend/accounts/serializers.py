@@ -105,22 +105,41 @@ class LoginSerializer(serializers.Serializer):
                 except DatabaseError as e:
                     logger.error(f'Database error during login with email {login}: {str(e)}', exc_info=True)
                     raise serializers.ValidationError('Database error. Please try again later.')
+                except Exception as e:
+                    logger.error(f'Error fetching user by email {login}: {str(e)}', exc_info=True)
+                    raise serializers.ValidationError('An error occurred during authentication. Please try again.')
             else:
                 try:
                     user = authenticate(username=login, password=password)
                 except DatabaseError as e:
                     logger.error(f'Database error during login with username {login}: {str(e)}', exc_info=True)
                     raise serializers.ValidationError('Database error. Please try again later.')
+                except Exception as e:
+                    logger.error(f'Error authenticating user {login}: {str(e)}', exc_info=True)
+                    raise serializers.ValidationError('An error occurred during authentication. Please try again.')
             
             if not user:
+                # Don't log invalid credentials as errors, just return validation error
                 raise serializers.ValidationError('Invalid credentials.')
             
             # Ensure user has role attribute (refresh from DB if needed)
             try:
                 if not hasattr(user, 'role') or user.role is None:
                     user.refresh_from_db()
+                    # If still no role, set default
+                    if not hasattr(user, 'role') or user.role is None:
+                        logger.warning(f'User {user.username} has no role, setting default "student"')
+                        user.role = 'student'
+                        user.save(update_fields=['role'])
             except Exception as e:
                 logger.warning(f'Could not refresh user from DB: {str(e)}')
+                # Try to set default role if possible
+                try:
+                    if not hasattr(user, 'role') or user.role is None:
+                        user.role = 'student'
+                        user.save(update_fields=['role'])
+                except:
+                    pass
             
             if not user.is_active:
                 raise serializers.ValidationError('User account is disabled.')
