@@ -47,6 +47,10 @@ def health_check(request):
         if 'does not exist' in error_str or 'no such table' in error_str:
             status_data['database_tables'] = 'not_initialized'
             status_data['message'] = 'Database tables not found. Run migrations.'
+            status_data['fix_instructions'] = (
+                'Run: python manage.py ensure_db_ready '
+                'or check Railway deployment logs for startup script execution.'
+            )
             return JsonResponse(status_data, status=503)
         else:
             status_data['database_tables'] = 'error'
