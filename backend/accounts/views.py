@@ -4,71 +4,122 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .serializers import LoginSerializer, UserSerializer
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def unified_login(request):
     """Unified login endpoint that handles admin and student."""
-    serializer = LoginSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.validated_data['user']
-        
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'accessToken': str(refresh.access_token),
-            'refreshToken': str(refresh),
-            'user': UserSerializer(user).data
-        })
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            
+            try:
+                refresh = RefreshToken.for_user(user)
+                user_data = UserSerializer(user).data
+                
+                return Response({
+                    'accessToken': str(refresh.access_token),
+                    'refreshToken': str(refresh),
+                    'user': user_data
+                })
+            except Exception as e:
+                logger.error(f'Error generating token for user {user.username}: {str(e)}', exc_info=True)
+                return Response(
+                    {'error': 'Failed to generate authentication token. Please try again.'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        logger.error(f'Login error: {str(e)}', exc_info=True)
+        return Response(
+            {'error': 'An error occurred during login. Please try again.'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def admin_login(request):
     """Admin login endpoint."""
-    serializer = LoginSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.validated_data['user']
-        
-        # Check if user is admin
-        if not user.is_admin():
-            return Response(
-                {'error': 'Access denied. Admin role required.'},
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'accessToken': str(refresh.access_token),
-            'refreshToken': str(refresh),
-            'user': UserSerializer(user).data
-        })
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            
+            # Check if user is admin
+            if not user.is_admin():
+                return Response(
+                    {'error': 'Access denied. Admin role required.'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            
+            try:
+                refresh = RefreshToken.for_user(user)
+                user_data = UserSerializer(user).data
+                
+                return Response({
+                    'accessToken': str(refresh.access_token),
+                    'refreshToken': str(refresh),
+                    'user': user_data
+                })
+            except Exception as e:
+                logger.error(f'Error generating token for admin {user.username}: {str(e)}', exc_info=True)
+                return Response(
+                    {'error': 'Failed to generate authentication token. Please try again.'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        logger.error(f'Admin login error: {str(e)}', exc_info=True)
+        return Response(
+            {'error': 'An error occurred during login. Please try again.'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def student_login(request):
     """Student login endpoint."""
-    serializer = LoginSerializer(data=request.data)
-    if serializer.is_valid():
-        user = serializer.validated_data['user']
-        
-        # Check if user is student
-        if not user.is_student():
-            return Response(
-                {'error': 'Access denied. Student role required.'},
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        refresh = RefreshToken.for_user(user)
-        return Response({
-            'accessToken': str(refresh.access_token),
-            'refreshToken': str(refresh),
-            'user': UserSerializer(user).data
-        })
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    try:
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            
+            # Check if user is student
+            if not user.is_student():
+                return Response(
+                    {'error': 'Access denied. Student role required.'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+            
+            try:
+                refresh = RefreshToken.for_user(user)
+                user_data = UserSerializer(user).data
+                
+                return Response({
+                    'accessToken': str(refresh.access_token),
+                    'refreshToken': str(refresh),
+                    'user': user_data
+                })
+            except Exception as e:
+                logger.error(f'Error generating token for student {user.username}: {str(e)}', exc_info=True)
+                return Response(
+                    {'error': 'Failed to generate authentication token. Please try again.'},
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        logger.error(f'Student login error: {str(e)}', exc_info=True)
+        return Response(
+            {'error': 'An error occurred during login. Please try again.'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @api_view(['POST'])
