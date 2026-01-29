@@ -1,17 +1,14 @@
 """
 WSGI config for ielts_moc project.
 
-It exposes the WSGI callable as a module-level variable named ``application``.
-
+This file redirects to wsgi_init which ensures database is migrated.
 For more information on this file, see
 https://docs.djangoproject.com/en/5.0/howto/deployment/wsgi/
 """
 
-import os
+# Import from wsgi_init to ensure database migrations run
+from ielts_moc.wsgi_init import application
 
-from django.core.wsgi import get_wsgi_application
-
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ielts_moc.settings')
-
-application = get_wsgi_application()
+# Re-export for compatibility
+__all__ = ['application']
 
