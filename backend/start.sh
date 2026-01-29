@@ -66,42 +66,33 @@ mkdir -p "$DEST_DIR/audio_files"
 mkdir -p "$DEST_DIR/test_files"
 mkdir -p "$DEST_DIR/speaking_audio"
 
-# Source directory - media files bundled with the app
-# In Railway, the app is at /app/backend, so media is at /app/backend/media
-# But if volume is mounted at /app/media or /app/backend/media, the original files might be hidden
-# We backup media files to /app/media_bundled during build phase
-# Priority: bundled backup > current dir > backend path
+# Source directory - media files backed up during build phase
+# Volume mount hides original files, so we use backup from /opt/media_backup
+# (also check legacy /app/media_bundled for backward compatibility)
 SOURCE_DIR=""
 POSSIBLE_SOURCES=(
-    "/app/media_bundled"              # Backup created during build (highest priority)
-    "$(pwd)/media"                    # Current directory (backend)
-    "/app/backend/media"              # Railway default backend path
+    "/opt/media_backup"               # Primary backup (outside any volume mount)
+    "/app/media_bundled"              # Legacy backup location
 )
 
 for possible_source in "${POSSIBLE_SOURCES[@]}"; do
     if [ -d "$possible_source" ] && [ "$(ls -A "$possible_source" 2>/dev/null)" ]; then
-        # Make sure it's not the same as destination (which would be the empty volume)
-        if [ "$possible_source" != "$DEST_DIR" ]; then
-            SOURCE_DIR="$possible_source"
-            echo "Found media source at: $SOURCE_DIR"
-            break
-        fi
+        SOURCE_DIR="$possible_source"
+        echo "Found media source at: $SOURCE_DIR"
+        break
+    else
+        echo "Source not found or empty: $possible_source"
     fi
 done
 
-# If no source found but we're in Railway, the media might be in the same dir as destination
-# In this case, check if destination already has files
+# Check if destination already has the critical files
 if [ -z "$SOURCE_DIR" ]; then
     if [ -f "$DEST_DIR/audio_files/listening.m4a" ]; then
         echo "Media files already present in destination"
-        SOURCE_DIR=""
     else
         echo "WARNING: No media source directory found!"
-        echo "Checking available directories..."
-        echo "  /app contents:"
-        ls -la /app 2>/dev/null || echo "  (not accessible)"
-        echo "  /app/backend contents:"
-        ls -la /app/backend 2>/dev/null || echo "  (not accessible)"
+        echo "  /opt contents:" && ls -la /opt 2>/dev/null || echo "  (not accessible)"
+        echo "  /app contents:" && ls -la /app 2>/dev/null || echo "  (not accessible)"
     fi
 fi
 

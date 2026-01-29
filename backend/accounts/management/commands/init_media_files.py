@@ -37,14 +37,18 @@ class Command(BaseCommand):
         # Priority: bundled backup (created during build) > local paths
         if not source_dir:
             possible_sources = [
-                '/app/media_bundled',  # Backup created during Railway build (highest priority)
+                '/opt/media_backup',   # Primary backup (outside volume mounts)
+                '/app/media_bundled',  # Legacy backup location
                 os.path.join(settings.BASE_DIR, 'media'),
                 os.path.join(settings.BASE_DIR.parent, 'backend', 'media'),
-                '/app/backend/media',  # Railway default path
             ]
             
+            media_root_str = str(settings.MEDIA_ROOT)
             for src in possible_sources:
-                if os.path.exists(src) and os.path.isdir(src):
+                # Skip if source is the same as destination (volume mount)
+                if os.path.normpath(src) == os.path.normpath(media_root_str):
+                    continue
+                if os.path.exists(src) and os.path.isdir(src) and os.listdir(src):
                     source_dir = src
                     break
             
