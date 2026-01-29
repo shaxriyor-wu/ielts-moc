@@ -53,7 +53,17 @@ def media_serve(request, path):
         if not os.path.exists(full_path) or not os.path.isfile(full_path):
             import logging
             logger = logging.getLogger(__name__)
-            logger.warning(f"Media file not found: {full_path} (requested path: {path})")
+            logger.warning(
+                f"Media file not found: {full_path} (requested path: {path}, "
+                f"MEDIA_ROOT: {settings.MEDIA_ROOT})"
+            )
+            # Log directory contents for debugging
+            if os.path.exists(media_root):
+                try:
+                    dir_contents = os.listdir(media_root)
+                    logger.debug(f"MEDIA_ROOT contents: {dir_contents[:20]}")  # First 20 items
+                except Exception:
+                    pass
             raise Http404("Media file not found")
         
         # Serve the file
@@ -83,6 +93,21 @@ def media_serve(request, path):
             response['Cache-Control'] = 'public, max-age=3600'
             # Allow PDF to be embedded in iframes (same origin)
             response['X-Frame-Options'] = 'SAMEORIGIN'
+        elif path_lower.endswith(('.jpg', '.jpeg')):
+            response['Content-Type'] = 'image/jpeg'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.png'):
+            response['Content-Type'] = 'image/png'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.gif'):
+            response['Content-Type'] = 'image/gif'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.webp'):
+            response['Content-Type'] = 'image/webp'
+            response['Cache-Control'] = 'public, max-age=3600'
+        elif path_lower.endswith('.svg'):
+            response['Content-Type'] = 'image/svg+xml'
+            response['Cache-Control'] = 'public, max-age=3600'
         
         # Allow CORS for media files (needed for cross-origin requests)
         origin = request.META.get('HTTP_ORIGIN', '*')
