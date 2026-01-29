@@ -15,11 +15,18 @@ echo ""
 echo "Waiting for database connection..."
 timeout=30
 counter=0
-until python -c "import django; django.setup(); from django.db import connection; connection.ensure_connection()" 2>/dev/null; do
+until python -c "import django; django.setup(); from django.db import connection; connection.ensure_connection()" 2>&1; do
     counter=$((counter + 1))
     if [ $counter -ge $timeout ]; then
         echo "ERROR: Database connection timeout after ${timeout} seconds"
+        echo "DEBUG: DATABASE_URL=${DATABASE_URL:0:30}..."
+        echo "DEBUG: which python=$(which python)"
+        python -c "import django; django.setup(); from django.db import connection; connection.ensure_connection()" 2>&1 || true
         exit 1
+    fi
+    if [ $counter -eq 1 ] || [ $counter -eq 10 ]; then
+        echo "  DB connection error (attempt $counter):"
+        python -c "import django; django.setup(); from django.db import connection; connection.ensure_connection()" 2>&1 || true
     fi
     echo "  Waiting for database... ($counter/$timeout)"
     sleep 1
