@@ -29,10 +29,25 @@ echo "✓ Database connection established"
 # Ensure database is ready (migrations + data initialization)
 echo ""
 echo "Ensuring database is ready..."
-python manage.py ensure_db_ready || {
-    echo "ERROR: Database initialization failed"
-    exit 1
-}
+if ! python manage.py ensure_db_ready; then
+    echo ""
+    echo "=========================================="
+    echo "ERROR: Database initialization failed!"
+    echo "=========================================="
+    echo ""
+    echo "Attempting to run migrations manually..."
+    python manage.py migrate --noinput || {
+        echo "ERROR: Migrations failed"
+        exit 1
+    }
+    echo "✓ Migrations completed manually"
+    
+    echo ""
+    echo "Attempting to initialize users..."
+    python manage.py init_users || {
+        echo "WARNING: User initialization failed, but continuing..."
+    }
+fi
 echo "✓ Database ready"
 
 echo ""

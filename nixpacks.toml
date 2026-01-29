@@ -11,9 +11,7 @@ cmds = [
 cmds = [
     "cd frontend && npm run build",
     "cd backend && python manage.py collectstatic --noinput",
-    "cd backend && python manage.py migrate --noinput",
-    "cd backend && python manage.py load_initial_data || echo 'Initial data loading skipped, continuing...'",
-    "cd backend && python manage.py init_users"
+    "cd backend && python manage.py ensure_db_ready || echo 'WARNING: Database initialization in build phase failed, will retry on startup'"
 ]
 
 [start]
