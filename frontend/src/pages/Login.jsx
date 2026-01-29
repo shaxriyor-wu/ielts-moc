@@ -154,67 +154,20 @@ const Login = () => {
           </h1>
           <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Login to your account</p>
 
-          {/* Auto Login Buttons */}
+          {/* Quick Login Buttons - fills in credentials */}
           <div className="mt-4 grid grid-cols-2 gap-2">
             <button
-              onClick={async () => {
-                setLoginData({ login: 'admin', password: 'admin123' });
-                setLoading(true);
-                try {
-                  const response = await api.post('/auth/login', {
-                    login: 'admin',
-                    password: 'admin123',
-                  });
-                  const { user, accessToken, refreshToken } = response.data;
-                  if (user && user.role && accessToken) {
-                    login(user, accessToken, refreshToken);
-                    showToast('Login successful', 'success');
-                    navigate('/admin/dashboard');
-                  }
-                } catch (error) {
-                  showToast('Auto-login failed', 'error');
-                } finally {
-                  setLoading(false);
-                }
+              onClick={() => {
+                setLoginData({ login: 'admin', password: 'Admin123!' });
               }}
-              className="px-3 py-2 text-xs bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              className="px-3 py-2 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
               disabled={loading}
             >
               🔑 Admin
             </button>
             <button
-              onClick={async () => {
+              onClick={() => {
                 setLoginData({ login: 'student', password: 'student123' });
-                setLoading(true);
-                try {
-                  const response = await api.post('/auth/login', {
-                    login: 'student',
-                    password: 'student123',
-                  });
-                  const { user, accessToken, refreshToken } = response.data;
-                  if (user && user.role && accessToken) {
-                    login(user, accessToken, refreshToken);
-                    showToast('Login successful', 'success');
-                    navigate('/student/dashboard');
-                  }
-                } catch (error) {
-                  // If student doesn't exist, try to register
-                  try {
-                    const registerResponse = await api.post('/auth/register', {
-                      fullName: 'Test Student',
-                      login: 'student',
-                      password: 'student123',
-                    });
-                    const { user, role, accessToken, refreshToken } = registerResponse.data;
-                    login({ ...user, role }, accessToken, refreshToken);
-                    showToast('Registration successful', 'success');
-                    navigate('/student/dashboard');
-                  } catch (regError) {
-                    showToast('Auto-login failed', 'error');
-                  }
-                } finally {
-                  setLoading(false);
-                }
               }}
               className="px-3 py-2 text-xs bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
               disabled={loading}
