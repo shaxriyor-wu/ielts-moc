@@ -1,0 +1,4516 @@
+[
+{
+  "model": "accounts.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$tJVp3Oj8dHi9G75Ns0ezWs$nGCSYKN1f9lRcI18q+JO6vI1F9vViS/b+loJUHIpVm4=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@ielts-moc.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-18T15:26:16.980Z",
+    "role": "admin",
+    "created_at": "2026-01-18T15:26:16.980Z",
+    "updated_at": "2026-01-19T10:21:04.714Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$bwy9d26SsX22cGdxL9f5QR$aQHSHfXeCsUpYE5SvWiBgLwcmXDvCBFf3/T7TRS+Gn0=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "student",
+    "first_name": "",
+    "last_name": "",
+    "email": "student@ielts-moc.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-18T15:26:17.070Z",
+    "role": "student",
+    "created_at": "2026-01-18T15:26:17.070Z",
+    "updated_at": "2026-01-19T10:21:04.795Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$Llke4CeJvuFK5rvnYpAV27$invsr5JXQEvwZ6PjLgxhzgLeggFbZvIAEHey0FlV/UA=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "shaxriyor1007",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-01-20T10:55:19.768Z",
+    "role": "admin",
+    "created_at": "2026-01-20T10:55:19.864Z",
+    "updated_at": "2026-01-20T10:55:19.864Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$5W7GCHPvgMsIDX9VKuPkwb$UkaKRr04dffxi6e8/pjCcAqso4gXJ6c0vVxec4aiIeE=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "shaxriyor",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-20T10:57:36.956Z",
+    "role": "student",
+    "created_at": "2026-01-20T10:57:37.186Z",
+    "updated_at": "2026-01-20T10:57:37.186Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$1Pc7OkYJ6GbQw2HLi0GrQp$n/1Q/gnifa6uIDaXQnu+nWmm6c8Ab9HOiTJOzrgr7fQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "shakh_wu",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-20T11:01:28.467Z",
+    "role": "student",
+    "created_at": "2026-01-20T11:01:28.636Z",
+    "updated_at": "2026-01-20T11:01:28.636Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$wdnoR8OBNMss07QnwvEqp4$AqIxJ9MG8uO95Q1P3b14IeYIhrDUY/6mxVRbtaZ3JTw=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "shaxriyor_wu",
+    "first_name": "Shaxriyor",
+    "last_name": "Karimberdiyev",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-20T16:47:56.378Z",
+    "role": "student",
+    "created_at": "2026-01-20T16:47:56.450Z",
+    "updated_at": "2026-01-20T16:47:56.450Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "accounts.customuser",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$720000$tBBNa0BEfn1IRONveF5fql$QPJf8K5rw16bK2vMZ2JsvhSrLAFhWPAel+G09gBte0c=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "bilolbekwu",
+    "first_name": "Bilolbek",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-01-22T04:18:29.233Z",
+    "role": "student",
+    "created_at": "2026-01-22T04:18:29.387Z",
+    "updated_at": "2026-01-22T04:18:29.387Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "exams.variant",
+  "pk": 1,
+  "fields": {
+    "name": "Cambridge IELTS 8 - Test 1",
+    "code": "597542",
+    "duration_minutes": 180,
+    "created_at": "2026-01-19T11:17:22.903Z",
+    "updated_at": "2026-01-28T06:51:28.772Z",
+    "created_by": 1,
+    "is_active": true
+  }
+},
+{
+  "model": "exams.testfile",
+  "pk": 86,
+  "fields": {
+    "variant": 1,
+    "file_type": "listening",
+    "task_number": null,
+    "file": "placeholder.pdf",
+    "audio_file": "audio_files/listening.m4a",
+    "questions_data": {
+      "audio_url": "audio_files/listening.m4a",
+      "duration_minutes": 40,
+      "sections": [
+        {
+          "section_number": 1,
+          "title": "Section 1: Questions 1-10",
+          "context": "Example: In the library George found",
+          "questions": [
+            {
+              "id": 1,
+              "type": "multiple",
+              "question": "1. In the lobby of the library George saw",
+              "options": [
+                "A. a group playing music.",
+                "B. a display of instruments.",
+                "C. a video about the festival."
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 2,
+              "type": "multiple",
+              "question": "2. George wants to sit at the back so they can",
+              "options": [
+                "A. see well.",
+                "B. hear clearly.",
+                "C. pay less."
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 3,
+              "type": "fill",
+              "question": "ADDRESS: 3 .................., Wesleton",
+              "is_hidden": false
+            },
+            {
+              "id": 4,
+              "type": "fill",
+              "question": "POSTCODE: 4 ...................",
+              "is_hidden": false
+            },
+            {
+              "id": 5,
+              "type": "fill",
+              "question": "TELEPHONE: 5 ...................",
+              "is_hidden": false
+            },
+            {
+              "id": 6,
+              "type": "fill",
+              "question": "17 June | Singer (price includes 6 ................... in the garden) | £6.00",
+              "is_hidden": false
+            },
+            {
+              "id": 7,
+              "type": "fill",
+              "question": "22 June | 7 ................... (Anna Ventura) | £7.00",
+              "is_hidden": false
+            },
+            {
+              "id": 8,
+              "type": "fill",
+              "question": "23 June | Spanish Dance & Guitar Concert | Price per ticket: 8 £ ...................",
+              "is_hidden": false
+            },
+            {
+              "id": 9,
+              "type": "fill",
+              "question": "23 June | Spanish Dance & Guitar Concert | No. of tickets: 9 ...................",
+              "is_hidden": false
+            },
+            {
+              "id": 10,
+              "type": "fill",
+              "question": "NB Children/Students/Senior Citizens have 10 ................... discount on all tickets.",
+              "is_hidden": false
+            }
+          ]
+        },
+        {
+          "section_number": 2,
+          "title": "Section 2: Questions 11-20",
+          "context": "The Dinosaur Museum",
+          "questions": [
+            {
+              "id": 11,
+              "type": "fill",
+              "question": "The museum closes at 11 ................... p.m. on Mondays.",
+              "is_hidden": false
+            },
+            {
+              "id": 12,
+              "type": "fill",
+              "question": "The museum is not open on 12 ...................",
+              "is_hidden": false
+            },
+            {
+              "id": 13,
+              "type": "fill",
+              "question": "School groups are met by tour guides in the 13 ...................",
+              "is_hidden": false
+            },
+            {
+              "id": 14,
+              "type": "fill",
+              "question": "The whole visit takes 90 minutes, including 14 ................... minutes for the guided tour.",
+              "is_hidden": false
+            },
+            {
+              "id": 15,
+              "type": "fill",
+              "question": "There are 15 ................... behind the museum where students can have lunch.",
+              "is_hidden": false
+            },
+            {
+              "id": 16,
+              "type": "multiple",
+              "question": "16-18. Choose THREE letters, A-G. Which THREE things can students have with them in the museum?",
+              "options": [
+                "A. food",
+                "B. water",
+                "C. cameras",
+                "D. books",
+                "E. bags",
+                "F. pens",
+                "G. worksheets"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 17,
+              "type": "multiple",
+              "question": "(Question 16-18 continued)",
+              "options": [
+                "A. food",
+                "B. water",
+                "C. cameras",
+                "D. books",
+                "E. bags",
+                "F. pens",
+                "G. worksheets"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 18,
+              "type": "multiple",
+              "question": "(Question 16-18 continued)",
+              "options": [
+                "A. food",
+                "B. water",
+                "C. cameras",
+                "D. books",
+                "E. bags",
+                "F. pens",
+                "G. worksheets"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 19,
+              "type": "multiple",
+              "question": "19-20. Choose TWO letters, A-E. Which TWO activities can students do after the tour at present?",
+              "options": [
+                "A. build model dinosaurs",
+                "B. watch films",
+                "C. draw pictures",
+                "D. find dinosaur eggs",
+                "E. play computer games"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 20,
+              "type": "multiple",
+              "question": "(Question 19-20 continued)",
+              "options": [
+                "A. build model dinosaurs",
+                "B. watch films",
+                "C. draw pictures",
+                "D. find dinosaur eggs",
+                "E. play computer games"
+              ],
+              "is_hidden": false
+            }
+          ]
+        },
+        {
+          "section_number": 3,
+          "title": "Section 3: Questions 21-30",
+          "context": "Field Trip Proposal",
+          "questions": [
+            {
+              "id": 21,
+              "type": "multiple",
+              "question": "21. The tutor thinks that Sandra's proposal",
+              "options": [
+                "A. should be re-ordered in some parts.",
+                "B. needs a contents page.",
+                "C. ought to include more information."
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 22,
+              "type": "multiple",
+              "question": "22. The proposal would be easier to follow if Sandra",
+              "options": [
+                "A. inserted subheadings.",
+                "B. used more paragraphs.",
+                "C. shortened her sentences."
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 23,
+              "type": "multiple",
+              "question": "23. What was the problem with the formatting on Sandra's proposal?",
+              "options": [
+                "A. Separate points were not clearly identified.",
+                "B. The headings were not always clear.",
+                "C. Page numbering was not used in an appropriate way."
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 24,
+              "type": "multiple",
+              "question": "24. Sandra became interested in visiting the Navajo National Park through",
+              "options": [
+                "A. articles she read.",
+                "B. movies she saw as a child.",
+                "C. photographs she found on the internet."
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 25,
+              "type": "multiple",
+              "question": "25-27. Which THREE topics does Sandra agree to include in the proposal? Choose THREE letters, A-G.",
+              "options": [
+                "A. climate change",
+                "B. field trip activities",
+                "C. geographical features",
+                "D. impact of tourism",
+                "E. myths and legends",
+                "F. plant and animal life",
+                "G. social history"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 26,
+              "type": "multiple",
+              "question": "(Question 25-27 continued)",
+              "options": [
+                "A. climate change",
+                "B. field trip activities",
+                "C. geographical features",
+                "D. impact of tourism",
+                "E. myths and legends",
+                "F. plant and animal life",
+                "G. social history"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 27,
+              "type": "multiple",
+              "question": "(Question 25-27 continued)",
+              "options": [
+                "A. climate change",
+                "B. field trip activities",
+                "C. geographical features",
+                "D. impact of tourism",
+                "E. myths and legends",
+                "F. plant and animal life",
+                "G. social history"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 28,
+              "type": "fill",
+              "question": "28. The tribal park covers .................... hectares.",
+              "is_hidden": false
+            },
+            {
+              "id": 29,
+              "type": "fill",
+              "question": "29. Sandra suggests that they share the .................... for transport.",
+              "is_hidden": false
+            },
+            {
+              "id": 30,
+              "type": "fill",
+              "question": "30. She says they could also explore the local .................... .",
+              "is_hidden": false
+            }
+          ]
+        },
+        {
+          "section_number": 4,
+          "title": "Section 4: Questions 31-40",
+          "context": "Geography",
+          "questions": [
+            {
+              "id": 31,
+              "type": "fill",
+              "question": "31. Studying geography helps us to understand: the effects of different processes on the .................... of the Earth",
+              "is_hidden": false
+            },
+            {
+              "id": 32,
+              "type": "fill",
+              "question": "32. the dynamic between .................... and population",
+              "is_hidden": false
+            },
+            {
+              "id": 33,
+              "type": "fill",
+              "question": "33. Two main branches of study: physical features and human lifestyles and their ....................",
+              "is_hidden": false
+            },
+            {
+              "id": 34,
+              "type": "fill",
+              "question": "34. Specific study areas: biophysical, topographic, political, social, economic, historical and .................... geography, and also cartography",
+              "is_hidden": false
+            },
+            {
+              "id": 35,
+              "type": "fill",
+              "question": "35. Key point: geography helps us to understand our surroundings and the associated ....................",
+              "is_hidden": false
+            },
+            {
+              "id": 36,
+              "type": "fill",
+              "question": "36. What do geographers do? find data – e.g. conduct censuses, collect information in the form of .................... using computer and satellite technology",
+              "is_hidden": false
+            },
+            {
+              "id": 37,
+              "type": "fill",
+              "question": "37. analyse data – identify ...................., e.g. cause and effect",
+              "is_hidden": false
+            },
+            {
+              "id": 38,
+              "type": "fill",
+              "question": "38. publish findings in form of: a) maps - easy to carry, can show physical features of large and small areas, BUT a two-dimensional map will always have some ....................",
+              "is_hidden": false
+            },
+            {
+              "id": 39,
+              "type": "fill",
+              "question": "39. b) aerial photos - can show vegetation problems, .................... density, ocean floor etc.",
+              "is_hidden": false
+            },
+            {
+              "id": 40,
+              "type": "fill",
+              "question": "40. c) Landsat pictures sent to receiving stations - used for monitoring .................... conditions etc.",
+              "is_hidden": false
+            }
+          ]
+        }
+      ],
+      "total_questions": 40
+    },
+    "duration_minutes": 40,
+    "created_at": "2026-01-22T05:17:55.477Z"
+  }
+},
+{
+  "model": "exams.testfile",
+  "pk": 87,
+  "fields": {
+    "variant": 1,
+    "file_type": "reading",
+    "task_number": null,
+    "file": "placeholder.pdf",
+    "audio_file": "",
+    "questions_data": {
+      "duration_minutes": 60,
+      "passages": [
+        {
+          "passage_number": 1,
+          "title": "Passage 1: A Chronicle of Timekeeping",
+          "text": "Our conception of time depends on the way we measure it\n\n**A** According to archaeological evidence, at least 5,000 years ago, and long before the advent of the Roman Empire, the Babylonians began to measure time, introducing calendars to co-ordinate communal activities, to plan the shipment of goods and, in particular, to regulate planting and harvesting. They based their calendars on three natural cycles: the solar day, marked by the successive periods of light and darkness as the earth rotates on its axis; the lunar month, following the phases of the moon as it orbits the earth; and the solar year, defined by the changing seasons that accompany our planet's revolution around the sun.\n\n**B** Before the invention of artificial light, the moon had greater social impact. And, for those living near the equator in particular, its waxing and waning was more conspicuous than the passing of the seasons. Hence, the calendars that were developed at the lower latitudes were influenced more by the lunar cycle than by the solar year. In more northern climes, however, where seasonal agriculture was practised, the solar year became more crucial. As the Roman Empire expanded northward, it organised its activity chart for the most part around the solar year.\n\n**C** Centuries before the Roman Empire, the Egyptians had formulated a municipal calendar having 12 months of 30 days, with five days added to approximate the solar year. Each period of ten days was marked by the appearance of specific groups of stars called decans. At the rise of the star Sirius just before sunrise, which occurred around the all-important annual flooding of the Nile, 12 decans could be seen spanning the heavens. The cosmic significance the Egyptians placed in the 12 decans led them to develop a system in which each interval of darkness (and later, each interval of daylight) was divided into a dozen equal parts. These periods became known as temporal hours because their duration varied according to the changing length of days and nights with the passing of the seasons. Summer hours were long, winter ones short; only at the spring and autumn equinoxes were the hours of daylight and darkness equal. Temporal hours, which were first adopted by the Greeks and then the Romans, who disseminated them through Europe, remained in use for more than 2,500 years.\n\n**D** In order to track temporal hours during the day, inventors created sundials, which indicate time by the length or direction of the sun's shadow. The sundial's counterpart, the water clock, was designed to measure temporal hours at night. One of the first water clocks was a basin with a small hole near the bottom through which the water dripped out. The falling water level denoted the passing hour as it dipped below hour lines inscribed on the inner surface. Although these devices performed satisfactorily around the Mediterranean, they could not always be depended on in the cloudy and often freezing weather of northern Europe.\n\n**E** The advent of the mechanical clock meant that although it could be adjusted to maintain temporal hours, it was naturally suited to keeping equal ones. With these, however, arose the question of when to begin counting, and so, in the early 14th century, a number of systems evolved. The schemes that divided the day into 24 equal parts varied according to the start of the count: Italian hours began at sunset, Babylonian hours at sunrise, astronomical hours at midday and 'great clock' hours, used for some large public clocks in Germany, at midnight. Eventually these were superseded by 'small clock', or French, hours, which split the day into two 12-hour periods commencing at midnight.\n\n**F** The earliest recorded weight-driven mechanical clock was built in 1283 in Bedfordshire in England. The revolutionary aspect of this new timekeeper was neither the descending weight that provided its motive force nor the gear wheels (which had been around for at least 1,300 years) that transferred the power; it was the part called the escapement. In the early 1400s came the invention of the coiled spring or fusee which maintained constant force to the gear wheels of the timekeeper despite the changing tension of its mainspring. By the 16th century, a pendulum clock had been devised, but the pendulum swung in a large arc and thus was not very efficient.\n\n**G** To address this, a variation on the original escapement was invented in 1670, in England. It was called the anchor escapement, which was a lever-based device shaped like a ship's anchor. The motion of a pendulum rocks this device so that it catches and then releases each tooth of the escape wheel, in turn allowing it to turn a precise amount. Unlike the original form used in early pendulum clocks, the anchor escapement permitted the pendulum to travel in a very small arc. Moreover, this invention allowed the use of a long pendulum which could beat once a second and thus led to the development of a new floor-standing case design, which became known as the grandfather clock.\n\n**H** Today, highly accurate timekeeping instruments set the beat for most electronic devices. Nearly all computers contain a quartz-crystal clock to regulate their operation. Moreover, not only do time signals beamed down from Global Positioning System satellites calibrate the functions of precision navigation equipment, they do so as well for mobile phones, instant stock-trading systems and nationwide power-distribution grids. So integral have these time-based technologies become to day-to-day existence that our dependency on them is recognised only when they fail to work.",
+          "image_url": null,
+          "questions": [
+            {
+              "id": 1,
+              "type": "multiple",
+              "question": "1. a description of an early timekeeping invention affected by cold temperatures",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 2,
+              "type": "multiple",
+              "question": "2. an explanation of the importance of geography in the development of the calendar in farming communities",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 3,
+              "type": "multiple",
+              "question": "3. a description of the origins of the pendulum clock",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 4,
+              "type": "multiple",
+              "question": "4. details of the simultaneous efforts of different societies to calculate time using uniform hours",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 5,
+              "type": "multiple",
+              "question": "5. They devised a civil calendar in which the months were equal in length.",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F"
+              ],
+              "notes": "**Questions 5–8**\n\nLook at the following events (Questions 5–8) and the list of nationalities below.\n\nMatch each event with the correct nationality, **A–F**.\n\nWrite the correct letter, **A–F**, in boxes **5–8** on your answer sheet.",
+              "instruction_block": {
+                "title": "List of Nationalities",
+                "items": [
+                  "A Babylonians",
+                  "B Egyptians",
+                  "C Greeks",
+                  "D English",
+                  "E Germans",
+                  "F French"
+                ]
+              },
+              "is_hidden": false
+            },
+            {
+              "id": 6,
+              "type": "multiple",
+              "question": "6. They divided the day into two equal halves.",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 7,
+              "type": "multiple",
+              "question": "7. They developed a new cabinet shape for a type of timekeeper.",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 8,
+              "type": "multiple",
+              "question": "8. They created a calendar to organise public events and work schedules.",
+              "options": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F"
+              ],
+              "is_hidden": false
+            },
+            {
+              "id": 9,
+              "type": "fill",
+              "question": "How the 1670 lever-based device worked: escapement (resembling 9 ....................)",
+              "image_url": "/images/reading_passage_1_diagram.png",
+              "is_hidden": false
+            },
+            {
+              "id": 10,
+              "type": "fill",
+              "question": "the 10 ....................",
+              "is_hidden": false
+            },
+            {
+              "id": 11,
+              "type": "fill",
+              "question": "the 11 ....................",
+              "is_hidden": false
+            },
+            {
+              "id": 12,
+              "type": "fill",
+              "question": "a 12 ....................",
+              "is_hidden": false
+            },
+            {
+              "id": 13,
+              "type": "fill",
+              "question": "which beats each 13 ....................",
+              "is_hidden": false
+            }
+          ]
+        },
+        {
+          "passage_number": 2,
+          "title": "Passage 2: Air Traffic Control in the USA",
+          "text": "An accident that occurred in the skies over the Grand Canyon in 1956 resulted in the establishment of the Federal Aviation Administration (FAA) to regulate and oversee the operation of aircraft in the skies over the United States, which were becoming quite congested. The resulting structure of air traffic control has greatly increased the safety of flight in the United States, and similar air traffic control procedures are also in place over much of the rest of the world.\n\nRudimentary air traffic control (ATC) existed well before the Grand Canyon disaster. As early as the 1920s, the earliest air traffic controllers manually guided aircraft in the vicinity of the airports, using lights and flags, while beacons and flashing lights were placed along cross-country routes to establish the earliest airways. However, this purely visual system was useless in bad weather, and, by the 1930s, radio communication was coming into use for ATC. The first region to have something approximating today's ATC was New York City, with other major metropolitan areas following soon after.\n\nIn the 1940s, ATC centres could and did take advantage of the newly developed radar and improved radio communication brought about by the Second World War, but the system remained rudimentary. It was only after the creation of the FAA that full-scale regulation of America's airspace took place, and this was fortuitous, for the advent of the jet engine suddenly resulted in a large number of very fast planes, reducing pilots' margin of error and practically demanding some set of rules to keep everyone well separated and operating safely in the air.\n\nMany people think that ATC consists of a row of controllers sitting in front of their radar screens at the nation's airports, telling arriving and departing traffic what to do. This is a very incomplete part of the picture. The FAA realised that the airspace over the United States would at any time have many different kinds of planes, flying for many different purposes, in a variety of weather conditions, and the same kind of structure was needed to accommodate all of them.\n\nTo meet this challenge, the following elements were put into effect. First, ATC extends over virtually the entire United States. In general, from 365m above the ground and higher, the entire country is blanketed by controlled airspace. In certain areas, mainly near airports, controlled airspace extends down to 215m above the ground, and, in the immediate vicinity of an airport, all the way down to the surface. Controlled airspace is that airspace in which FAA regulations apply. Elsewhere, in uncontrolled airspace, pilots are bound by fewer regulations. In this way, the recreational pilot who simply wishes to go flying for a while without all the restrictions imposed by the FAA has only to stay in uncontrolled airspace, below 365m, while the pilot who does want the protection afforded by ATC can easily enter the controlled airspace.\n\nThe FAA then recognised two types of operating environments. In good meteorological conditions, flying would be permitted under Visual Flight Rules (VFR), which suggests a strong reliance on visual cues to maintain an acceptable level of safety. Poor visibility necessitated a set of Instrumental Flight Rules (IFR), under which the pilot relied on altitude and navigational information provided by the plane's instrument panel to fly safely. On a clear day, a pilot in controlled airspace can choose a VFR or IFR flight plan, and the FAA regulations were devised in a way which accommodates both VFR and IFR operations in the same airspace. However, a pilot can only choose to fly IFR if they possess an instrument rating which is above and beyond the basic pilot's license that must also be held.\n\nControlled airspace is divided into several different types, designated by letters of the alphabet. Uncontrolled airspace is designated Class F, while controlled airspace below 5,490m above sea level and not in the vicinity of an airport is Class E. All airspace above 5,490m is designated Class A. The reason for the division of Class E and Class A airspace stems from the type of planes operating in them. Generally, Class E airspace is where one finds general aviation aircraft (few of which can climb above 5,490m anyway), and commercial turboprop aircraft. Above 5,490m is the realm of the heavy jets, since jet engines operate more efficiently at higher altitudes. The difference between Class E and A airspace is that in Class A, all operations are IFR, and pilots must be instrument-rated, that is, skilled and licensed in aircraft instrumentation. This is because ATC control of the entire space is essential. Three other types of airspace, Classes D, C and B, govern the vicinity of airports. These correspond roughly to small municipal, medium-sized metropolitan and major metropolitan airports respectively, and encompass an increasingly rigorous set of regulations. For example, all a VFR pilot has to do to enter Class C airspace is establish two-way radio contact with ATC. No explicit permission from ATC to enter is needed, although the pilot must continue to obey all regulations governing VFR flight. To enter Class B airspace, such as on approach to a major metropolitan airport, an explicit ATC clearance is required. The private pilot who cruises without permission into this airspace risks losing their license.",
+          "image_url": null,
+          "questions": [
+            {
+              "id": 14,
+              "type": "fill",
+              "question": "**Questions 14-19**\n\nAnswer the questions below by writing the correct number, **i-x**, in boxes **14-19** on your answer sheet.\n\n14. Paragraph A",
+              "instruction_block": {
+                "title": "List of Headings",
+                "items": [
+                  "i       Disobeying FAA regulations",
+                  "ii      Aviation disaster prompts action",
+                  "iii     Two coincidental developments",
+                  "iv      Setting altitude zones",
+                  "v       An oversimplified view",
+                  "vi      Controlling pilots' licences",
+                  "vii     Defining airspace categories",
+                  "viii    Setting rules to weather conditions",
+                  "ix      Taking off safety",
+                  "x       First steps towards ATC"
+                ]
+              },
+              "is_hidden": false
+            },
+            {
+              "id": 15,
+              "type": "fill",
+              "question": "15. Paragraph C",
+              "is_hidden": false
+            },
+            {
+              "id": 16,
+              "type": "fill",
+              "question": "16. Paragraph D",
+              "is_hidden": false
+            },
+            {
+              "id": 17,
+              "type": "fill",
+              "question": "17. Paragraph E",
+              "is_hidden": false
+            },
+            {
+              "id": 18,
+              "type": "fill",
+              "question": "18. Paragraph F",
+              "is_hidden": false
+            },
+            {
+              "id": 19,
+              "type": "fill",
+              "question": "19. Paragraph G",
+              "is_hidden": false
+            },
+            {
+              "id": 20,
+              "type": "tfng",
+              "question": "**Questions 20-26**\n\nDo the following statements agree with the information given in Reading Passage 2?\n\nIn boxes **20-26** on your answer sheet, write\n\n **TRUE**           if the statement agrees with the information\n **FALSE**          if the statement contradicts the information\n **NOT GIVEN**      if there is no information on this\n\n20. The FAA was created as a result of the introduction of the jet engine.",
+              "is_hidden": false
+            },
+            {
+              "id": 21,
+              "type": "tfng",
+              "question": "21. Air Traffic Control started after the Grand Canyon crash in 1956.",
+              "is_hidden": false
+            },
+            {
+              "id": 22,
+              "type": "tfng",
+              "question": "22. Beacons and flashing lights are still used by ATC today.",
+              "is_hidden": false
+            },
+            {
+              "id": 23,
+              "type": "tfng",
+              "question": "23. Some improvements were made in radio communication during World War II.",
+              "is_hidden": false
+            },
+            {
+              "id": 24,
+              "type": "tfng",
+              "question": "24. Class F airspace is airspace which is below 365m and not near airports.",
+              "is_hidden": false
+            },
+            {
+              "id": 25,
+              "type": "tfng",
+              "question": "25. All aircraft in Class E airspace must use IFR.",
+              "is_hidden": false
+            },
+            {
+              "id": 26,
+              "type": "tfng",
+              "question": "26. A pilot entering Class C airspace is flying over an average-sized city.",
+              "is_hidden": false
+            }
+          ]
+        },
+        {
+          "passage_number": 3,
+          "title": "Passage 3: Telepathy",
+          "text": "Can human beings communicate by thought alone? For more than a century the issue of telepathy has divided the scientific community, and even today it still sparks bitter controversy among top academics.\n\nSince the 1970s, parapsychologists at leading universities and research institutes around the world have risked the derision of sceptical colleagues by putting the various claims for telepathy to the test in dozens of rigorous scientific studies. The results and their implications are dividing even the researchers who uncovered them.\n\nSome researchers say the results constitute compelling evidence that telepathy is genuine. Other parapsychologists believe the field is on the brink of collapse, having tried to produce definitive scientific proof and failed. Sceptics and advocates alike do concur on one issue, however: that the most impressive evidence so far has come from the so-called 'ganzfeld' experiments, a German term that means 'whole field'. Reports of telepathic experiences had by people during meditation led parapsychologists to suspect that telepathy might involve 'signals' passing between people that were so faint that they were usually swamped by normal brain activity. In this case, such signals might be more easily detected by those experiencing meditation-like tranquillity in a relaxing 'whole field' of light, sound and warmth.\n\nThe ganzfeld experiment tries to recreate these conditions with participants sitting in soft reclining chairs in a sealed room, listening to relaxing sounds while their eyes are covered with special filters letting in only soft pink light. In early ganzfeld experiments, the telepathy test involved identification of a picture chosen from a random selection of four taken from a large image bank. The idea was that a person acting as a 'sender' would attempt to beam the image over to the 'receiver' relaxing in the sealed room. Once the session was over, this person was asked to identify which of the four images had been used. Random guessing would give a hit-rate of 25 per cent; if telepathy is real, however, the hit-rate would be higher. In 1982, the results from the first ganzfeld studies were analysed by one of its pioneers, the American parapsychologist Charles Honorton. They pointed to typical hit-rates of better than 30 per cent - a small effect, but one which statistical tests suggested could not be put down to chance.\n\nThe implication was that the ganzfeld method had revealed real evidence for telepathy. But there was a crucial flaw in this argument - one routinely overlooked in more conventional areas of science. Just because chance had been ruled out as an explanation did not prove telepathy must exist; there were many other ways of getting positive results. These ranged from 'sensory leakage' - where clues about the pictures accidentally reach the receiver - to outright fraud. In response, the researchers issued a review of all the ganzfeld studies done up to 1985 to show that 80 per cent had found statistically significant evidence. However, they also agreed that there were still too many problems in the experiments which could lead to positive results, and they drew up a list demanding new standards for future research.\n\nAfter this, many researchers switched to autoganzfeld tests - an automated variant of the technique which used computers to perform many of the key tasks such as the random selection of images. By minimising human involvement, the idea was to minimise the risk of flawed results. In 1987, results from hundreds of autoganzfeld tests were studied by Honorton in a 'meta-analysis', a statistical technique for finding the overall results from a set of studies. Though less compelling than before, the outcome was still impressive.\n\nYet some parapsychologists remain disturbed by the lack of consistency between individual ganzfeld studies. Defenders of telepathy point out that demanding impressive evidence from every study ignores one basic statistical fact: it takes large samples to detect small effects. If, as current results suggest, telepathy produces hit-rates only marginally above the 25 per cent expected by chance, it's unlikely to be detected by a typical ganzfeld study involving around 40 people: the group is just not big enough. Only when many studies are combined in a meta-analysis will the faint signal of telepathy really become apparent. And that is what researchers do seem to be finding.\n\nWhat they are certainly not finding, however, is any change in attitude of mainstream scientists: most still totally reject the very idea of telepathy. The problem stems at least in part from the lack of any plausible mechanism for telepathy.\n\nVarious theories have been put forward, many focusing on esoteric ideas from theoretical physics. They include 'quantum entanglement', in which events affecting one group of atoms instantly affect another group, no matter how far apart they may be. While physicists have demonstrated entanglement with specially prepared atoms, no-one knows if it also exists between atoms making up human minds. Answering such questions would transform parapsychology. This has prompted some researchers to argue that the future lies not in collecting more evidence for telepathy, but in probing possible mechanisms. Some work has begun already, with researchers trying to identify people who are particularly successful in autoganzfeld trials. Early results show that creative and artistic people do much better than average: in one study at the University of Edinburgh, musicians achieved a hit-rate of 56 per cent. Perhaps more tests like these will eventually give the researchers the evidence they are seeking and strengthen the case for the existence of telepathy.",
+          "image_url": null,
+          "questions": [
+            {
+              "id": 27,
+              "type": "fill",
+              "question": "27. Researchers with differing attitudes towards telepathy agree on",
+              "instruction_block": {
+                "title": "Questions 27-30",
+                "items": [
+                  "A     the discovery of a mechanism for telepathy.",
+                  "B     the need to create a suitable environment for telepathy.",
+                  "C     their claims of a high success rate.",
+                  "D     a solution to the problem posed by random guessing.",
+                  "E     the significance of the ganzfeld experiments.",
+                  "F     a more careful selection of subjects.",
+                  "G     a need to keep altering conditions."
+                ]
+              },
+              "is_hidden": false
+            },
+            {
+              "id": 28,
+              "type": "fill",
+              "question": "28. Reports of experiences during meditation indicated",
+              "is_hidden": false
+            },
+            {
+              "id": 29,
+              "type": "fill",
+              "question": "29. Attitudes to parapsychology would alter drastically with",
+              "is_hidden": false
+            },
+            {
+              "id": 30,
+              "type": "fill",
+              "question": "30. Recent autoganzfeld trials suggest that success rates will improve with",
+              "is_hidden": false
+            },
+            {
+              "id": 31,
+              "type": "fill",
+              "question": "**Questions 31-40**\n\nComplete the table below.\n\nChoose **NO MORE THAN THREE WORDS** from the passage for each answer.\n\nWrite your answers in boxes **31-40** on your answer sheet.",
+              "table_data": {
+                "title": "Telepathy Experiments",
+                "headers": [
+                  "Name/Date",
+                  "Description",
+                  "Result",
+                  "Flaw"
+                ],
+                "rows": [
+                  [
+                    "Ganzfeld studies 1982",
+                    "Involved a person acting as a **31** .................... who picked out one **32** .................... from a random selection of four, and a **33** .................... who then tried to identify it.",
+                    "Hit-rates were higher than with random guessing.",
+                    "Positive results could be produced by factors such as **34** .................... or **35** ...................."
+                  ],
+                  [
+                    "Autoganzfeld studies 1987",
+                    "**36** .................... were used for key tasks to limit the amount of **37** .................... in carrying out the tests.",
+                    "The results were then subjected to a **38** ....................",
+                    "The **39** .................... between different test results was put down to the fact that sample groups were not **40** .................... (as with most ganzfeld studies)."
+                  ]
+                ]
+              },
+              "is_hidden": false
+            },
+            {
+              "id": 32,
+              "type": "fill",
+              "question": "32",
+              "is_hidden": true
+            },
+            {
+              "id": 33,
+              "type": "fill",
+              "question": "33",
+              "is_hidden": true
+            },
+            {
+              "id": 34,
+              "type": "fill",
+              "question": "34",
+              "is_hidden": true
+            },
+            {
+              "id": 35,
+              "type": "fill",
+              "question": "35",
+              "is_hidden": true
+            },
+            {
+              "id": 36,
+              "type": "fill",
+              "question": "36",
+              "is_hidden": true
+            },
+            {
+              "id": 37,
+              "type": "fill",
+              "question": "37",
+              "is_hidden": true
+            },
+            {
+              "id": 38,
+              "type": "fill",
+              "question": "38",
+              "is_hidden": true
+            },
+            {
+              "id": 39,
+              "type": "fill",
+              "question": "39",
+              "is_hidden": true
+            },
+            {
+              "id": 40,
+              "type": "fill",
+              "question": "40",
+              "is_hidden": true
+            }
+          ]
+        }
+      ],
+      "total_questions": 40
+    },
+    "duration_minutes": 60,
+    "created_at": "2026-01-22T05:17:55.624Z"
+  }
+},
+{
+  "model": "exams.testfile",
+  "pk": 88,
+  "fields": {
+    "variant": 1,
+    "file_type": "writing",
+    "task_number": 1,
+    "file": "placeholder.pdf",
+    "audio_file": "",
+    "questions_data": {
+      "task_number": 1,
+      "prompt": "The pie chart below shows the main reasons why agricultural land becomes less productive. The table shows how these causes affected three regions of the world during the 1990s.\n\nSummarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+      "min_words": 150,
+      "image_url": "/images/writing_task1.png",
+      "duration_minutes": 20
+    },
+    "duration_minutes": 20,
+    "created_at": "2026-01-22T05:17:55.780Z"
+  }
+},
+{
+  "model": "exams.testfile",
+  "pk": 89,
+  "fields": {
+    "variant": 1,
+    "file_type": "writing",
+    "task_number": 2,
+    "file": "placeholder.pdf",
+    "audio_file": "",
+    "questions_data": {
+      "task_number": 2,
+      "prompt": "Some people think that parents should teach children how to be good members of society. Others, however, believe that school is the place to learn this.\n\nDiscuss both these views and give your own opinion.\n\nGive reasons for your answer and include any relevant examples from your own knowledge or experience.",
+      "min_words": 250,
+      "image_url": null,
+      "duration_minutes": 40
+    },
+    "duration_minutes": 40,
+    "created_at": "2026-01-22T05:17:55.784Z"
+  }
+},
+{
+  "model": "exams.testfile",
+  "pk": 90,
+  "fields": {
+    "variant": 1,
+    "file_type": "speaking",
+    "task_number": null,
+    "file": "placeholder.pdf",
+    "audio_file": "",
+    "questions_data": {
+      "part1": {
+        "topic": "Introduction and Interview",
+        "questions": [
+          "What is your full name?",
+          "Where are you from?",
+          "Do you work or are you a student?",
+          "What do you like about your hometown?",
+          "Is there anything you would change about your hometown?"
+        ]
+      },
+      "part2": {
+        "topic": "Individual Long Turn",
+        "prompt": "Describe an important decision you made recently",
+        "points": [
+          "What the decision was",
+          "When you made it",
+          "How you made the decision"
+        ],
+        "final": "And explain why it was important",
+        "preparation_time": 60,
+        "speaking_time": 120
+      },
+      "part3": {
+        "topic": "Two-way Discussion",
+        "topics": [
+          {
+            "title": "Decision Making",
+            "questions": [
+              "How do people generally make important decisions in your country?",
+              "Do you think young people are good at making decisions?",
+              "What factors should people consider when making career choices?",
+              "How has decision-making changed with the use of technology?",
+              "Is it better to make quick decisions or take time to think carefully?"
+            ]
+          }
+        ]
+      }
+    },
+    "duration_minutes": 15,
+    "created_at": "2026-01-22T05:17:55.788Z"
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1441,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 1,
+    "correct_answer": "Sarah Johnson",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1442,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 2,
+    "correct_answer": "555-0123",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1443,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 3,
+    "correct_answer": "DX-3000",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1444,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 4,
+    "correct_answer": "June 15",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1445,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 5,
+    "correct_answer": "freezes",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1446,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 6,
+    "correct_answer": "4532 1234 5678 9012",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1447,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 7,
+    "correct_answer": "03/25",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1448,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 8,
+    "correct_answer": "S. Johnson",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1449,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 9,
+    "correct_answer": "remote control",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1450,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 10,
+    "correct_answer": "3",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1451,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 11,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1452,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 12,
+    "correct_answer": "C",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1453,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 13,
+    "correct_answer": "0.50",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1454,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 14,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1455,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 15,
+    "correct_answer": "10pm",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1456,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 16,
+    "correct_answer": "9am",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1457,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 17,
+    "correct_answer": "Sundays",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1458,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 18,
+    "correct_answer": "student",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1459,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 19,
+    "correct_answer": "3",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1460,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 20,
+    "correct_answer": "help",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1461,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 21,
+    "correct_answer": "C",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1462,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 22,
+    "correct_answer": "50",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1463,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 23,
+    "correct_answer": "A",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1464,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 24,
+    "correct_answer": "March 20",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1465,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 25,
+    "correct_answer": "SPSS",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1466,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 26,
+    "correct_answer": "A",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1467,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 27,
+    "correct_answer": "graphs",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1468,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 28,
+    "correct_answer": "20",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1469,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 29,
+    "correct_answer": "500",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1470,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 30,
+    "correct_answer": "positive",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1471,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 31,
+    "correct_answer": "3",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1472,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 32,
+    "correct_answer": "renewable",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1473,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 33,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1474,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 34,
+    "correct_answer": "water",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1475,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 35,
+    "correct_answer": "organic",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1476,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 36,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1477,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 37,
+    "correct_answer": "50",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1478,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 38,
+    "correct_answer": "solar-powered",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1479,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 39,
+    "correct_answer": "efficiency",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1480,
+  "fields": {
+    "variant": 1,
+    "section": "listening",
+    "question_number": 40,
+    "correct_answer": "smart grid",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1481,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 1,
+    "correct_answer": "D",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1482,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 2,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1483,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 3,
+    "correct_answer": "F",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1484,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 4,
+    "correct_answer": "E",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1485,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 5,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1486,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 6,
+    "correct_answer": "F",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1487,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 7,
+    "correct_answer": "D",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1488,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 8,
+    "correct_answer": "A",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1489,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 9,
+    "correct_answer": "anchor",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1490,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 10,
+    "correct_answer": "escape wheel",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1491,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 11,
+    "correct_answer": "tooth",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1492,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 12,
+    "correct_answer": "pendulum",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1493,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 13,
+    "correct_answer": "second",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1494,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 14,
+    "correct_answer": "ii",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1495,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 15,
+    "correct_answer": "iii",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1496,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 16,
+    "correct_answer": "v",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1497,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 17,
+    "correct_answer": "iv",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1498,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 18,
+    "correct_answer": "viii",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1499,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 19,
+    "correct_answer": "vii",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1500,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 20,
+    "correct_answer": "FALSE",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1501,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 21,
+    "correct_answer": "FALSE",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1502,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 22,
+    "correct_answer": "NOT GIVEN",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1503,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 23,
+    "correct_answer": "TRUE",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1504,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 24,
+    "correct_answer": "TRUE",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1505,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 25,
+    "correct_answer": "FALSE",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1506,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 26,
+    "correct_answer": "TRUE",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1507,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 27,
+    "correct_answer": "E",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1508,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 28,
+    "correct_answer": "B",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1509,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 29,
+    "correct_answer": "A",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1510,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 30,
+    "correct_answer": "F",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1511,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 31,
+    "correct_answer": "sender",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1512,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 32,
+    "correct_answer": "picture",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1513,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 33,
+    "correct_answer": "receiver",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1514,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 34,
+    "correct_answer": "sensory leakage",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1515,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 35,
+    "correct_answer": "outright fraud",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1516,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 36,
+    "correct_answer": "computers",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1517,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 37,
+    "correct_answer": "human involvement",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1518,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 38,
+    "correct_answer": "meta-analysis",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1519,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 39,
+    "correct_answer": "lack of consistency",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "exams.answer",
+  "pk": 1520,
+  "fields": {
+    "variant": 1,
+    "section": "reading",
+    "question_number": 40,
+    "correct_answer": "big enough",
+    "alternative_answers": null,
+    "case_sensitive": false
+  }
+},
+{
+  "model": "student_portal.studenttest",
+  "pk": 1,
+  "fields": {
+    "student": 2,
+    "variant": 1,
+    "status": "graded",
+    "start_time": "2026-01-19T11:21:39.380Z",
+    "submission_time": "2026-01-28T15:21:37.713Z",
+    "time_remaining_seconds": 0
+  }
+},
+{
+  "model": "student_portal.studenttest",
+  "pk": 2,
+  "fields": {
+    "student": 5,
+    "variant": 1,
+    "status": "in_progress",
+    "start_time": "2026-01-20T11:02:11.591Z",
+    "submission_time": null,
+    "time_remaining_seconds": null
+  }
+},
+{
+  "model": "student_portal.studenttest",
+  "pk": 3,
+  "fields": {
+    "student": 6,
+    "variant": 1,
+    "status": "graded",
+    "start_time": "2026-01-20T16:48:03.873Z",
+    "submission_time": "2026-01-20T21:52:12.435Z",
+    "time_remaining_seconds": 0
+  }
+},
+{
+  "model": "student_portal.studenttest",
+  "pk": 4,
+  "fields": {
+    "student": 7,
+    "variant": 1,
+    "status": "graded",
+    "start_time": "2026-01-22T04:18:39.050Z",
+    "submission_time": "2026-01-22T05:05:32.558Z",
+    "time_remaining_seconds": 7986
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 1,
+  "fields": {
+    "student": 2,
+    "test_code": "718469",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-22T10:28:51.701Z",
+    "assigned_at": "2026-01-22T10:28:51.706Z",
+    "preparation_started_at": "2026-01-22T10:28:51.706Z",
+    "started_at": "2026-01-22T10:29:51.717Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 2,
+  "fields": {
+    "student": 5,
+    "test_code": "718469",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-20T11:30:54.749Z",
+    "assigned_at": "2026-01-20T11:30:54.754Z",
+    "preparation_started_at": "2026-01-20T11:30:54.754Z",
+    "started_at": "2026-01-20T11:31:54.806Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 3,
+  "fields": {
+    "student": 6,
+    "test_code": "718469",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-20T21:50:10.632Z",
+    "assigned_at": "2026-01-20T21:50:10.636Z",
+    "preparation_started_at": "2026-01-20T21:50:10.636Z",
+    "started_at": "2026-01-20T21:51:10.678Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 4,
+  "fields": {
+    "student": 7,
+    "test_code": "718469",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-22T04:18:39.042Z",
+    "assigned_at": "2026-01-22T04:18:39.054Z",
+    "preparation_started_at": "2026-01-22T04:18:39.054Z",
+    "started_at": "2026-01-22T04:19:39.076Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 5,
+  "fields": {
+    "student": 2,
+    "test_code": "780937",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-23T14:14:22.930Z",
+    "assigned_at": "2026-01-23T14:14:22.945Z",
+    "preparation_started_at": "2026-01-23T14:14:22.945Z",
+    "started_at": "2026-01-23T14:15:22.977Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 6,
+  "fields": {
+    "student": 2,
+    "test_code": "506255",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-23T17:34:24.794Z",
+    "assigned_at": "2026-01-23T17:34:24.800Z",
+    "preparation_started_at": "2026-01-23T17:34:24.800Z",
+    "started_at": "2026-01-23T17:35:24.829Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 7,
+  "fields": {
+    "student": 2,
+    "test_code": "975255",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-24T18:34:56.041Z",
+    "assigned_at": "2026-01-24T18:34:56.047Z",
+    "preparation_started_at": "2026-01-24T18:34:56.047Z",
+    "started_at": "2026-01-24T18:35:56.055Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 8,
+  "fields": {
+    "student": 2,
+    "test_code": "543811",
+    "status": "started",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-27T17:49:19.944Z",
+    "assigned_at": "2026-01-27T17:49:19.949Z",
+    "preparation_started_at": "2026-01-27T17:49:19.949Z",
+    "started_at": "2026-01-27T17:50:19.994Z",
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testqueue",
+  "pk": 9,
+  "fields": {
+    "student": 2,
+    "test_code": "597542",
+    "status": "preparation",
+    "assigned_variant": 1,
+    "joined_at": "2026-01-28T15:16:21.658Z",
+    "assigned_at": "2026-01-28T15:16:21.663Z",
+    "preparation_started_at": "2026-01-28T15:16:21.663Z",
+    "started_at": null,
+    "left_at": null,
+    "timeout_at": null
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 1,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 1,
+    "answer": "C",
+    "created_at": "2026-01-19T11:22:49.514Z",
+    "updated_at": "2026-01-28T15:16:24.262Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 2,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 2,
+    "answer": "B",
+    "created_at": "2026-01-19T11:22:55.769Z",
+    "updated_at": "2026-01-28T15:16:24.265Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 3,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 18,
+    "answer": "E",
+    "created_at": "2026-01-19T11:22:59.923Z",
+    "updated_at": "2026-01-28T15:16:24.274Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 4,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 6,
+    "answer": "hg",
+    "created_at": "2026-01-19T11:25:48.975Z",
+    "updated_at": "2026-01-28T15:16:24.269Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 5,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 3,
+    "answer": "48North Avenue",
+    "created_at": "2026-01-19T11:27:34.966Z",
+    "updated_at": "2026-01-28T15:16:24.267Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 6,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 4,
+    "answer": "WS62YH",
+    "created_at": "2026-01-19T11:27:36.319Z",
+    "updated_at": "2026-01-28T15:16:24.268Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 7,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 7,
+    "answer": "340",
+    "created_at": "2026-01-19T12:10:04.333Z",
+    "updated_at": "2026-01-28T15:16:24.270Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 8,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 5,
+    "answer": "",
+    "created_at": "2026-01-19T12:10:30.995Z",
+    "updated_at": "2026-01-28T15:16:24.268Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 9,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 1,
+    "answer": "A",
+    "created_at": "2026-01-19T13:06:08.060Z",
+    "updated_at": "2026-01-28T15:20:42.509Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 10,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 2,
+    "answer": "E",
+    "created_at": "2026-01-19T13:06:09.143Z",
+    "updated_at": "2026-01-28T15:20:42.512Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 11,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 3,
+    "answer": "G",
+    "created_at": "2026-01-19T13:06:15.086Z",
+    "updated_at": "2026-01-28T15:20:42.514Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 12,
+  "fields": {
+    "student_test": 1,
+    "section": "writing",
+    "question_number": 2,
+    "answer": "<p>The question of whether parents or schools should bear primary responsibility for teaching children to become good members of society is widely debated. While both perspectives have merit, I believe that parents and schools should share this crucial responsibility, though parents play the foundational role.</p><p><br></p><p>Those who advocate for parental responsibility argue that character formation begins at home. Parents are children's first teachers, shaping their values, manners, and moral compass from infancy. For instance, children learn basic social skills like sharing, respect, and honesty through daily interactions with family members. Moreover, parents who model positive behavior create lasting impressions that influence their children's conduct throughout life.</p><p><br></p><p>Conversely, proponents of school-based education emphasize that schools provide structured environments where children learn to interact with diverse peer groups. Schools teach essential civic values, teamwork, and respect for rules through curriculum and group activities. Teachers can introduce concepts like citizenship, community service, and cultural awareness systematically. Additionally, schools help children from disadvantaged backgrounds who may lack positive role models at home.</p><p><br></p><p>In my opinion, neither institution can succeed alone. Parents lay the groundwork by instilling fundamental values during early childhood, while schools build upon this foundation by expanding children's social awareness and teaching them to function within larger societal structures. For example, a child who learns honesty from parents will better understand academic integrity when reinforced by teachers.</p><p><br></p><p>The most effective approach combines parental guidance with school education. Parents should teach core values and model ethical behavior, while schools should provide opportunities for children to practice these values in social settings and learn about their broader responsibilities as citizens.</p><p><br></p><p>In conclusion, creating good members of society requires partnership between parents and schools. While parents establish the initial value system, schools develop and refine these principles, preparing children to contribute positively to their communities.</p>",
+    "created_at": "2026-01-19T14:23:59.211Z",
+    "updated_at": "2026-01-28T15:21:37.605Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 13,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 16,
+    "answer": "D",
+    "created_at": "2026-01-19T18:53:21.920Z",
+    "updated_at": "2026-01-28T15:16:24.274Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 14,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 17,
+    "answer": "B",
+    "created_at": "2026-01-19T18:53:25.059Z",
+    "updated_at": "2026-01-28T15:16:24.274Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 15,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 19,
+    "answer": "D",
+    "created_at": "2026-01-19T18:53:30.023Z",
+    "updated_at": "2026-01-28T15:16:24.275Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 16,
+  "fields": {
+    "student_test": 1,
+    "section": "writing",
+    "question_number": 1,
+    "answer": "<p>The pie chart and table provide data about the primary causes of land degradation globally and how these factors impacted three different regions during the 1990s.</p><p>Overall, over-grazing emerged as the dominant cause of agricultural land becoming less productive worldwide, accounting for 35% of degradation. Deforestation followed at 30%, while over-cultivation represented 28%. Other miscellaneous factors contributed a relatively minor 7%.</p><p>Examining regional variations, Europe experienced the highest level of total land degradation at 23%, primarily driven by deforestation, which affected 9.8% of land. Over-cultivation also played a significant role at 7.7%, whereas over-grazing was less prominent at 5.5%.</p><p>In Oceania, 13% of land suffered degradation, with over-grazing being the sole cause at 11.3%. Notably, this region reported zero deforestation-related degradation during this period.</p><p>North America demonstrated the lowest degradation rate at just 5%. Over-cultivation was the leading cause at 3.3%, followed by over-grazing at 1.5% and deforestation at 0.2%.</p><p>The data reveals substantial regional differences in both the extent and primary drivers of land degradation during the 1990s.</p>",
+    "created_at": "2026-01-19T19:21:14.235Z",
+    "updated_at": "2026-01-28T15:21:37.580Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 17,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 23,
+    "answer": "B",
+    "created_at": "2026-01-20T09:30:24.808Z",
+    "updated_at": "2026-01-28T15:16:24.276Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 18,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 8,
+    "answer": "fswm",
+    "created_at": "2026-01-20T09:45:40.718Z",
+    "updated_at": "2026-01-28T15:16:24.271Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 19,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 9,
+    "answer": "fsae",
+    "created_at": "2026-01-20T09:45:43.439Z",
+    "updated_at": "2026-01-28T15:16:24.271Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 20,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 10,
+    "answer": "20413i",
+    "created_at": "2026-01-20T09:45:45.262Z",
+    "updated_at": "2026-01-28T15:16:24.272Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 21,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 11,
+    "answer": "fvenwei",
+    "created_at": "2026-01-20T09:45:51.326Z",
+    "updated_at": "2026-01-28T15:16:24.272Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 22,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 12,
+    "answer": "shaxriyor",
+    "created_at": "2026-01-20T09:45:54.547Z",
+    "updated_at": "2026-01-28T15:16:24.273Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 23,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 13,
+    "answer": "14",
+    "created_at": "2026-01-20T09:45:59.124Z",
+    "updated_at": "2026-01-28T15:16:24.273Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 24,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 14,
+    "answer": "ewwdns ",
+    "created_at": "2026-01-20T09:46:01.847Z",
+    "updated_at": "2026-01-28T15:16:24.273Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 25,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 15,
+    "answer": "fvkweida",
+    "created_at": "2026-01-20T09:46:04.154Z",
+    "updated_at": "2026-01-28T15:16:24.274Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 26,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 20,
+    "answer": "C",
+    "created_at": "2026-01-20T09:46:08.465Z",
+    "updated_at": "2026-01-28T15:16:24.275Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 27,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 21,
+    "answer": "B",
+    "created_at": "2026-01-20T09:46:10.606Z",
+    "updated_at": "2026-01-28T15:16:24.275Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 28,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 22,
+    "answer": "B",
+    "created_at": "2026-01-20T09:46:10.607Z",
+    "updated_at": "2026-01-28T15:16:24.276Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 29,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 24,
+    "answer": "B",
+    "created_at": "2026-01-20T09:46:13.262Z",
+    "updated_at": "2026-01-28T15:16:24.276Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 30,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 25,
+    "answer": "D",
+    "created_at": "2026-01-20T09:46:13.263Z",
+    "updated_at": "2026-01-28T15:16:24.277Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 31,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 26,
+    "answer": "D",
+    "created_at": "2026-01-20T09:46:14.607Z",
+    "updated_at": "2026-01-28T15:16:24.277Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 32,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 27,
+    "answer": "C",
+    "created_at": "2026-01-20T09:46:15.922Z",
+    "updated_at": "2026-01-28T15:16:24.277Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 33,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 28,
+    "answer": "hgf",
+    "created_at": "2026-01-20T09:46:49.781Z",
+    "updated_at": "2026-01-28T15:16:24.278Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 34,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 40,
+    "answer": "hgr",
+    "created_at": "2026-01-20T10:51:31.181Z",
+    "updated_at": "2026-01-28T15:16:24.283Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 35,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 39,
+    "answer": "efgsdfs",
+    "created_at": "2026-01-20T10:51:34.247Z",
+    "updated_at": "2026-01-28T15:16:24.282Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 36,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 38,
+    "answer": "efuw ",
+    "created_at": "2026-01-20T10:51:36.688Z",
+    "updated_at": "2026-01-28T15:16:24.282Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 37,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 37,
+    "answer": "bhfks",
+    "created_at": "2026-01-20T10:51:38.586Z",
+    "updated_at": "2026-01-28T15:16:24.282Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 38,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 36,
+    "answer": "sfshk",
+    "created_at": "2026-01-20T10:51:40.754Z",
+    "updated_at": "2026-01-28T15:16:24.281Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 39,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 35,
+    "answer": "recsd",
+    "created_at": "2026-01-20T10:51:44.525Z",
+    "updated_at": "2026-01-28T15:16:24.281Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 40,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 34,
+    "answer": "rfwax",
+    "created_at": "2026-01-20T10:51:46.336Z",
+    "updated_at": "2026-01-28T15:16:24.281Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 41,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 33,
+    "answer": "shaxiyor",
+    "created_at": "2026-01-20T10:51:49.277Z",
+    "updated_at": "2026-01-28T15:16:24.280Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 42,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 32,
+    "answer": "dvesv",
+    "created_at": "2026-01-20T10:51:52.366Z",
+    "updated_at": "2026-01-28T15:16:24.280Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 43,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 31,
+    "answer": "dfjvis",
+    "created_at": "2026-01-20T10:51:53.987Z",
+    "updated_at": "2026-01-28T15:16:24.279Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 44,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 29,
+    "answer": "loook",
+    "created_at": "2026-01-20T11:41:42.241Z",
+    "updated_at": "2026-01-28T15:16:24.278Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 45,
+  "fields": {
+    "student_test": 1,
+    "section": "listening",
+    "question_number": 30,
+    "answer": "shiy",
+    "created_at": "2026-01-20T11:41:44.649Z",
+    "updated_at": "2026-01-28T15:16:24.278Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 46,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 4,
+    "answer": "A",
+    "created_at": "2026-01-20T12:15:27.319Z",
+    "updated_at": "2026-01-28T15:20:42.516Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 47,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 9,
+    "answer": "fuck",
+    "created_at": "2026-01-20T12:15:33.404Z",
+    "updated_at": "2026-01-28T15:20:42.519Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 48,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 10,
+    "answer": "",
+    "created_at": "2026-01-20T12:15:36.867Z",
+    "updated_at": "2026-01-28T15:20:42.519Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 49,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 11,
+    "answer": "hate",
+    "created_at": "2026-01-20T12:15:41.189Z",
+    "updated_at": "2026-01-28T15:20:42.520Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 50,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 12,
+    "answer": "heyt",
+    "created_at": "2026-01-20T12:15:45.084Z",
+    "updated_at": "2026-01-28T15:20:42.520Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 51,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 13,
+    "answer": "bleyt",
+    "created_at": "2026-01-20T12:15:47.914Z",
+    "updated_at": "2026-01-28T15:20:42.520Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 52,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 1,
+    "answer": "C",
+    "created_at": "2026-01-20T16:54:24.015Z",
+    "updated_at": "2026-01-20T21:52:00.454Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 53,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 2,
+    "answer": "B",
+    "created_at": "2026-01-20T16:54:25.860Z",
+    "updated_at": "2026-01-20T21:52:00.454Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 54,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 16,
+    "answer": "C",
+    "created_at": "2026-01-20T16:54:41.566Z",
+    "updated_at": "2026-01-20T21:52:00.455Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 55,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 17,
+    "answer": "F",
+    "created_at": "2026-01-20T16:54:44.221Z",
+    "updated_at": "2026-01-20T21:52:00.455Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 56,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 18,
+    "answer": "G",
+    "created_at": "2026-01-20T16:54:46.361Z",
+    "updated_at": "2026-01-20T21:52:00.456Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 57,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 19,
+    "answer": "B",
+    "created_at": "2026-01-20T16:54:49.861Z",
+    "updated_at": "2026-01-20T21:52:00.456Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 58,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 20,
+    "answer": "E",
+    "created_at": "2026-01-20T16:54:52.518Z",
+    "updated_at": "2026-01-20T21:52:00.456Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 59,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 21,
+    "answer": "A",
+    "created_at": "2026-01-20T16:55:01.226Z",
+    "updated_at": "2026-01-20T21:52:00.457Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 60,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 22,
+    "answer": "C",
+    "created_at": "2026-01-20T16:55:03.168Z",
+    "updated_at": "2026-01-20T21:52:00.457Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 61,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 23,
+    "answer": "A",
+    "created_at": "2026-01-20T16:55:04.874Z",
+    "updated_at": "2026-01-20T21:52:00.457Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 62,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 24,
+    "answer": "B",
+    "created_at": "2026-01-20T16:55:08.361Z",
+    "updated_at": "2026-01-20T21:52:00.458Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 63,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 25,
+    "answer": "B",
+    "created_at": "2026-01-20T16:55:25.284Z",
+    "updated_at": "2026-01-20T21:52:00.458Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 64,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 26,
+    "answer": "C",
+    "created_at": "2026-01-20T16:55:27.271Z",
+    "updated_at": "2026-01-20T21:52:00.458Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 65,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 27,
+    "answer": "F",
+    "created_at": "2026-01-20T16:55:29.937Z",
+    "updated_at": "2026-01-20T21:52:00.458Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 66,
+  "fields": {
+    "student_test": 3,
+    "section": "listening",
+    "question_number": 40,
+    "answer": "shit",
+    "created_at": "2026-01-20T17:15:49.634Z",
+    "updated_at": "2026-01-20T21:52:00.459Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 67,
+  "fields": {
+    "student_test": 3,
+    "section": "reading",
+    "question_number": 1,
+    "answer": "D",
+    "created_at": "2026-01-20T18:06:08.805Z",
+    "updated_at": "2026-01-20T21:52:03.303Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 68,
+  "fields": {
+    "student_test": 3,
+    "section": "reading",
+    "question_number": 2,
+    "answer": "B",
+    "created_at": "2026-01-20T18:06:10.266Z",
+    "updated_at": "2026-01-20T21:52:03.304Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 69,
+  "fields": {
+    "student_test": 3,
+    "section": "reading",
+    "question_number": 3,
+    "answer": "F",
+    "created_at": "2026-01-20T18:06:11.664Z",
+    "updated_at": "2026-01-20T21:52:03.304Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 70,
+  "fields": {
+    "student_test": 3,
+    "section": "reading",
+    "question_number": 4,
+    "answer": "E",
+    "created_at": "2026-01-20T18:06:57.963Z",
+    "updated_at": "2026-01-20T21:52:03.305Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 71,
+  "fields": {
+    "student_test": 3,
+    "section": "writing",
+    "question_number": 1,
+    "answer": "<p>The pie chart and table provide data about the primary causes of land degradation globally and how these factors impacted three different regions during the 1990s.</p><p>Overall, over-grazing emerged as the dominant cause of agricultural land becoming less productive worldwide, accounting for 35% of degradation. Deforestation followed at 30%, while over-cultivation represented 28%. Other miscellaneous factors contributed a relatively minor 7%.</p><p>Examining regional variations, Europe experienced the highest level of total land degradation at 23%, primarily driven by deforestation, which affected 9.8% of land. Over-cultivation also played a significant role at 7.7%, whereas over-grazing was less prominent at 5.5%.</p><p>In Oceania, 13% of land suffered degradation, with over-grazing being the sole cause at 11.3%. Notably, this region reported zero deforestation-related degradation during this period.</p><p>North America demonstrated the lowest degradation rate at just 5%. Over-cultivation was the leading cause at 3.3%, followed by over-grazing at 1.5% and deforestation at 0.2%.</p><p>The data reveals substantial regional differences in both the extent and primary drivers of land degradation during the 1990s.</p>",
+    "created_at": "2026-01-20T18:10:16.144Z",
+    "updated_at": "2026-01-20T21:52:12.368Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 72,
+  "fields": {
+    "student_test": 3,
+    "section": "writing",
+    "question_number": 2,
+    "answer": "<p>The question of whether parents or schools should bear primary responsibility for teaching children to become good members of society is widely debated. While both perspectives have merit, I believe that parents and schools should share this crucial responsibility, though parents play the foundational role.</p><p><br></p><p>Those who advocate for parental responsibility argue that character formation begins at home. Parents are children's first teachers, shaping their values, manners, and moral compass from infancy. For instance, children learn basic social skills like sharing, respect, and honesty through daily interactions with family members. Moreover, parents who model positive behavior create lasting impressions that influence their children's conduct throughout life.</p><p><br></p><p>Conversely, proponents of school-based education emphasize that schools provide structured environments where children learn to interact with diverse peer groups. Schools teach essential civic values, teamwork, and respect for rules through curriculum and group activities. Teachers can introduce concepts like citizenship, community service, and cultural awareness systematically. Additionally, schools help children from disadvantaged backgrounds who may lack positive role models at home.</p><p><br></p><p>In my opinion, neither institution can succeed alone. Parents lay the groundwork by instilling fundamental values during early childhood, while schools build upon this foundation by expanding children's social awareness and teaching them to function within larger societal structures. For example, a child who learns honesty from parents will better understand academic integrity when reinforced by teachers.</p><p><br></p><p>The most effective approach combines parental guidance with school education. Parents should teach core values and model ethical behavior, while schools should provide opportunities for children to practice these values in social settings and learn about their broader responsibilities as citizens.</p><p><br></p><p>In conclusion, creating good members of society requires partnership between parents and schools. While parents establish the initial value system, schools develop and refine these principles, preparing children to contribute positively to their communities.</p>",
+    "created_at": "2026-01-20T18:10:29.572Z",
+    "updated_at": "2026-01-20T21:52:12.382Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 73,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 1,
+    "answer": "A",
+    "created_at": "2026-01-22T04:21:40.284Z",
+    "updated_at": "2026-01-22T04:49:37.041Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 74,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 5,
+    "answer": "0164",
+    "created_at": "2026-01-22T04:24:48.503Z",
+    "updated_at": "2026-01-22T04:49:37.043Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 75,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 6,
+    "answer": "drinks",
+    "created_at": "2026-01-22T04:25:23.166Z",
+    "updated_at": "2026-01-22T04:49:37.044Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 76,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 7,
+    "answer": "pianist",
+    "created_at": "2026-01-22T04:25:36.010Z",
+    "updated_at": "2026-01-22T04:49:37.045Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 77,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 10,
+    "answer": "50%",
+    "created_at": "2026-01-22T04:26:13.129Z",
+    "updated_at": "2026-01-22T04:49:37.046Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 78,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 11,
+    "answer": "15",
+    "created_at": "2026-01-22T04:27:10.904Z",
+    "updated_at": "2026-01-22T04:49:37.049Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 79,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 16,
+    "answer": "E",
+    "created_at": "2026-01-22T04:30:12.439Z",
+    "updated_at": "2026-01-22T04:49:37.050Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 80,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 17,
+    "answer": "D",
+    "created_at": "2026-01-22T04:30:33.817Z",
+    "updated_at": "2026-01-22T04:49:37.051Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 81,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 18,
+    "answer": "C",
+    "created_at": "2026-01-22T04:30:50.417Z",
+    "updated_at": "2026-01-22T04:49:37.059Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 82,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 19,
+    "answer": "C",
+    "created_at": "2026-01-22T04:31:23.819Z",
+    "updated_at": "2026-01-22T04:49:37.060Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 83,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 20,
+    "answer": "E",
+    "created_at": "2026-01-22T04:31:27.752Z",
+    "updated_at": "2026-01-22T04:49:37.061Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 84,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 21,
+    "answer": "A",
+    "created_at": "2026-01-22T04:34:09.364Z",
+    "updated_at": "2026-01-22T04:49:37.063Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 85,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 22,
+    "answer": "B",
+    "created_at": "2026-01-22T04:34:49.096Z",
+    "updated_at": "2026-01-22T04:49:37.064Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 86,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 23,
+    "answer": "A",
+    "created_at": "2026-01-22T04:35:18.194Z",
+    "updated_at": "2026-01-22T04:49:37.065Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 87,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 24,
+    "answer": "C",
+    "created_at": "2026-01-22T04:35:58.881Z",
+    "updated_at": "2026-01-22T04:49:37.065Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 88,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 25,
+    "answer": "A",
+    "created_at": "2026-01-22T04:37:19.992Z",
+    "updated_at": "2026-01-22T04:49:37.066Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 89,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 26,
+    "answer": "G",
+    "created_at": "2026-01-22T04:37:43.225Z",
+    "updated_at": "2026-01-22T04:49:37.067Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 90,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 27,
+    "answer": "B",
+    "created_at": "2026-01-22T04:38:06.034Z",
+    "updated_at": "2026-01-22T04:49:37.068Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 91,
+  "fields": {
+    "student_test": 4,
+    "section": "listening",
+    "question_number": 32,
+    "answer": "realitionship",
+    "created_at": "2026-01-22T04:42:55.763Z",
+    "updated_at": "2026-01-22T04:49:37.070Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 92,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 2,
+    "answer": "B",
+    "created_at": "2026-01-22T04:54:02.538Z",
+    "updated_at": "2026-01-22T05:04:41.120Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 93,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 4,
+    "answer": "D",
+    "created_at": "2026-01-22T04:55:35.041Z",
+    "updated_at": "2026-01-22T05:04:41.121Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 94,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 3,
+    "answer": "F",
+    "created_at": "2026-01-22T04:56:03.787Z",
+    "updated_at": "2026-01-22T05:04:41.121Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 95,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 1,
+    "answer": "E",
+    "created_at": "2026-01-22T04:57:09.954Z",
+    "updated_at": "2026-01-22T05:04:41.119Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 96,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 20,
+    "answer": "TRUE",
+    "created_at": "2026-01-22T04:59:26.966Z",
+    "updated_at": "2026-01-22T05:04:41.122Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 97,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 21,
+    "answer": "TRUE",
+    "created_at": "2026-01-22T05:03:23.100Z",
+    "updated_at": "2026-01-22T05:04:41.123Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 98,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 22,
+    "answer": "NOT GIVEN",
+    "created_at": "2026-01-22T05:03:34.647Z",
+    "updated_at": "2026-01-22T05:04:41.124Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 99,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 23,
+    "answer": "TRUE",
+    "created_at": "2026-01-22T05:03:43.308Z",
+    "updated_at": "2026-01-22T05:04:41.126Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 100,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 24,
+    "answer": "FALSE",
+    "created_at": "2026-01-22T05:03:48.478Z",
+    "updated_at": "2026-01-22T05:04:41.127Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 101,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 25,
+    "answer": "TRUE",
+    "created_at": "2026-01-22T05:03:53.398Z",
+    "updated_at": "2026-01-22T05:04:41.127Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 102,
+  "fields": {
+    "student_test": 4,
+    "section": "reading",
+    "question_number": 26,
+    "answer": "TRUE",
+    "created_at": "2026-01-22T05:03:55.365Z",
+    "updated_at": "2026-01-22T05:04:41.128Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 103,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 20,
+    "answer": "FALSE",
+    "created_at": "2026-01-28T15:17:54.575Z",
+    "updated_at": "2026-01-28T15:20:42.521Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 104,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 21,
+    "answer": "FALSE",
+    "created_at": "2026-01-28T15:17:57.723Z",
+    "updated_at": "2026-01-28T15:20:42.521Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 105,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 22,
+    "answer": "TRUE",
+    "created_at": "2026-01-28T15:18:00.601Z",
+    "updated_at": "2026-01-28T15:20:42.522Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 106,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 23,
+    "answer": "NOT GIVEN",
+    "created_at": "2026-01-28T15:18:02.788Z",
+    "updated_at": "2026-01-28T15:20:42.522Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 107,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 24,
+    "answer": "TRUE",
+    "created_at": "2026-01-28T15:18:05.087Z",
+    "updated_at": "2026-01-28T15:20:42.523Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 108,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 5,
+    "answer": "C",
+    "created_at": "2026-01-28T15:18:36.468Z",
+    "updated_at": "2026-01-28T15:20:42.517Z"
+  }
+},
+{
+  "model": "student_portal.testresponse",
+  "pk": 109,
+  "fields": {
+    "student_test": 1,
+    "section": "reading",
+    "question_number": 6,
+    "answer": "A",
+    "created_at": "2026-01-28T15:18:38.634Z",
+    "updated_at": "2026-01-28T15:20:42.518Z"
+  }
+},
+{
+  "model": "student_portal.testresult",
+  "pk": 1,
+  "fields": {
+    "student_test": 1,
+    "listening_score": "1.00",
+    "reading_score": "2.50",
+    "writing_score": "8.00",
+    "writing_task1_score": "7.50",
+    "writing_task2_score": "8.20",
+    "overall_score": "3.00",
+    "listening_breakdown": {
+      "correct": 0,
+      "total": 40,
+      "raw_score": 0,
+      "band_score": 1.0,
+      "question_results": {
+        "1": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "Sarah Johnson",
+          "alternative_answers": null
+        },
+        "2": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "555-0123",
+          "alternative_answers": null
+        },
+        "3": {
+          "correct": false,
+          "student_answer": "48North Avenue",
+          "correct_answer": "DX-3000",
+          "alternative_answers": null
+        },
+        "4": {
+          "correct": false,
+          "student_answer": "WS62YH",
+          "correct_answer": "June 15",
+          "alternative_answers": null
+        },
+        "5": {
+          "correct": false,
+          "student_answer": "",
+          "correct_answer": "freezes",
+          "alternative_answers": null
+        },
+        "6": {
+          "correct": false,
+          "student_answer": "hg",
+          "correct_answer": "4532 1234 5678 9012",
+          "alternative_answers": null
+        },
+        "7": {
+          "correct": false,
+          "student_answer": "340",
+          "correct_answer": "03/25",
+          "alternative_answers": null
+        },
+        "8": {
+          "correct": false,
+          "student_answer": "fswm",
+          "correct_answer": "S. Johnson",
+          "alternative_answers": null
+        },
+        "9": {
+          "correct": false,
+          "student_answer": "fsae",
+          "correct_answer": "remote control",
+          "alternative_answers": null
+        },
+        "10": {
+          "correct": false,
+          "student_answer": "20413i",
+          "correct_answer": "3",
+          "alternative_answers": null
+        },
+        "11": {
+          "correct": false,
+          "student_answer": "fvenwei",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "12": {
+          "correct": false,
+          "student_answer": "shaxriyor",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "13": {
+          "correct": false,
+          "student_answer": "14",
+          "correct_answer": "0.50",
+          "alternative_answers": null
+        },
+        "14": {
+          "correct": false,
+          "student_answer": "ewwdns ",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "15": {
+          "correct": false,
+          "student_answer": "fvkweida",
+          "correct_answer": "10pm",
+          "alternative_answers": null
+        },
+        "16": {
+          "correct": false,
+          "student_answer": "D",
+          "correct_answer": "9am",
+          "alternative_answers": null
+        },
+        "17": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "Sundays",
+          "alternative_answers": null
+        },
+        "18": {
+          "correct": false,
+          "student_answer": "E",
+          "correct_answer": "student",
+          "alternative_answers": null
+        },
+        "19": {
+          "correct": false,
+          "student_answer": "D",
+          "correct_answer": "3",
+          "alternative_answers": null
+        },
+        "20": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "help",
+          "alternative_answers": null
+        },
+        "21": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "22": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "50",
+          "alternative_answers": null
+        },
+        "23": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "A",
+          "alternative_answers": null
+        },
+        "24": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "March 20",
+          "alternative_answers": null
+        },
+        "25": {
+          "correct": false,
+          "student_answer": "D",
+          "correct_answer": "SPSS",
+          "alternative_answers": null
+        },
+        "26": {
+          "correct": false,
+          "student_answer": "D",
+          "correct_answer": "A",
+          "alternative_answers": null
+        },
+        "27": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "graphs",
+          "alternative_answers": null
+        },
+        "28": {
+          "correct": false,
+          "student_answer": "hgf",
+          "correct_answer": "20",
+          "alternative_answers": null
+        },
+        "29": {
+          "correct": false,
+          "student_answer": "loook",
+          "correct_answer": "500",
+          "alternative_answers": null
+        },
+        "30": {
+          "correct": false,
+          "student_answer": "shiy",
+          "correct_answer": "positive",
+          "alternative_answers": null
+        },
+        "31": {
+          "correct": false,
+          "student_answer": "dfjvis",
+          "correct_answer": "3",
+          "alternative_answers": null
+        },
+        "32": {
+          "correct": false,
+          "student_answer": "dvesv",
+          "correct_answer": "renewable",
+          "alternative_answers": null
+        },
+        "33": {
+          "correct": false,
+          "student_answer": "shaxiyor",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "34": {
+          "correct": false,
+          "student_answer": "rfwax",
+          "correct_answer": "water",
+          "alternative_answers": null
+        },
+        "35": {
+          "correct": false,
+          "student_answer": "recsd",
+          "correct_answer": "organic",
+          "alternative_answers": null
+        },
+        "36": {
+          "correct": false,
+          "student_answer": "sfshk",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "37": {
+          "correct": false,
+          "student_answer": "bhfks",
+          "correct_answer": "50",
+          "alternative_answers": null
+        },
+        "38": {
+          "correct": false,
+          "student_answer": "efuw ",
+          "correct_answer": "solar-powered",
+          "alternative_answers": null
+        },
+        "39": {
+          "correct": false,
+          "student_answer": "efgsdfs",
+          "correct_answer": "efficiency",
+          "alternative_answers": null
+        },
+        "40": {
+          "correct": false,
+          "student_answer": "hgr",
+          "correct_answer": "smart grid",
+          "alternative_answers": null
+        }
+      }
+    },
+    "reading_breakdown": {
+      "correct": 3,
+      "total": 40,
+      "raw_score": 3,
+      "band_score": 2.5,
+      "question_results": {
+        "1": {
+          "correct": false,
+          "student_answer": "A",
+          "correct_answer": "D",
+          "alternative_answers": null
+        },
+        "2": {
+          "correct": false,
+          "student_answer": "E",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "3": {
+          "correct": false,
+          "student_answer": "G",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "4": {
+          "correct": false,
+          "student_answer": "A",
+          "correct_answer": "E",
+          "alternative_answers": null
+        },
+        "5": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "6": {
+          "correct": false,
+          "student_answer": "A",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "9": {
+          "correct": false,
+          "student_answer": "fuck",
+          "correct_answer": "anchor",
+          "alternative_answers": null
+        },
+        "10": {
+          "correct": false,
+          "student_answer": "",
+          "correct_answer": "escape wheel",
+          "alternative_answers": null
+        },
+        "11": {
+          "correct": false,
+          "student_answer": "hate",
+          "correct_answer": "tooth",
+          "alternative_answers": null
+        },
+        "12": {
+          "correct": false,
+          "student_answer": "heyt",
+          "correct_answer": "pendulum",
+          "alternative_answers": null
+        },
+        "13": {
+          "correct": false,
+          "student_answer": "bleyt",
+          "correct_answer": "second",
+          "alternative_answers": null
+        },
+        "20": {
+          "correct": true,
+          "student_answer": "FALSE",
+          "correct_answer": "FALSE",
+          "alternative_answers": null
+        },
+        "21": {
+          "correct": true,
+          "student_answer": "FALSE",
+          "correct_answer": "FALSE",
+          "alternative_answers": null
+        },
+        "22": {
+          "correct": false,
+          "student_answer": "TRUE",
+          "correct_answer": "NOT GIVEN",
+          "alternative_answers": null
+        },
+        "23": {
+          "correct": false,
+          "student_answer": "NOT GIVEN",
+          "correct_answer": "TRUE",
+          "alternative_answers": null
+        },
+        "24": {
+          "correct": true,
+          "student_answer": "TRUE",
+          "correct_answer": "TRUE",
+          "alternative_answers": null
+        }
+      }
+    },
+    "writing_breakdown": {
+      "task1": {
+        "task_achievement": 7.0,
+        "coherence_cohesion": 8.0,
+        "lexical_resource": 7.0,
+        "grammatical_range": 8.0
+      },
+      "task2": {
+        "task_achievement": 8.0,
+        "coherence_cohesion": 8.5,
+        "lexical_resource": 8.0,
+        "grammatical_range": 8.5
+      },
+      "task1_feedback": "Good analysis but needs deeper insight and more precise vocabulary.",
+      "task2_feedback": "Well-structured essay with clear opinion and good use of vocabulary and grammar; minor improvements needed in vocabulary precision and example elaboration.",
+      "task1_detailed_feedback": "### 1. BAND SCORE BREAKDOWN\n- **Task Achievement:** 7/9 \n- **Coherence and Cohesion:** 8/9\n- **Lexical Resource:** 7/9\n- **Grammatical Range and Accuracy:** 8/9\n- **OVERALL BAND:** 7.5/9\n\n### 2. TASK ACHIEVEMENT (Detailed Analysis)\n- Overview statement quality: The overview statement is clear and concise, providing a good introduction to the topic. However, it could be more detailed to fully address the task.\n- Key features coverage: The student covers the main causes of land degradation globally and provides regional variations, which is good. However, some data points feel a bit superficial and could be explored in more depth.\n- Data accuracy and relevance: The data presented seems accurate and relevant to the topic, but there's a lack of deeper analysis or insight into the implications of the data.\n- Appropriate length and detail: The response is within the word limit but feels a bit brief, particularly in the analysis of regional differences.\n\n### 3. COHERENCE AND COHESION\n- Paragraph structure: The paragraphs are well-structured, each focusing on a specific aspect of the data.\n- Logical flow: The logical flow between paragraphs is good, making it easy to follow the student's argument.\n- Linking devices usage: The student uses linking devices effectively to connect ideas between sentences and paragraphs.\n\n### 4. LEXICAL RESOURCE\n- Vocabulary range and accuracy: The vocabulary is adequate, with some good choices like \"dominant cause,\" \"miscellaneous factors,\" and \"substantial regional differences.\" However, there's room for more precise and varied vocabulary to describe the data and trends.\n- Errors with corrections: There are no major lexical errors, but some phrases could be more idiomatic. For example, \"agricultural land becoming less productive\" could be rephrased as \"degradation of arable land.\"\n\n### 5. GRAMMATAL RANGE AND ACCURACY\n- Sentence structure variety: The student demonstrates a good range of sentence structures, including complex sentences.\n- Grammar errors with corrections: There are no significant grammar errors, but some sentences could be more concise or varied in structure for better effect.\n\n### 6. SPECIFIC RECOMMENDATIONS\n1. **Enhance Data Analysis:** Delve deeper into the implications of the data, especially when comparing regional variations. This could involve discussing potential reasons for the differences observed.\n2. **Increase Vocabulary Precision:** Use more specific and technical vocabulary related to environmental science to describe the causes and effects of land degradation.\n\n### 7. MODEL SENTENCE IMPROVEMENTS\n**Original:** \"Over-grazing emerged as the dominant cause of agricultural land becoming less productive worldwide, accounting for 35% of degradation.\"\n**Improved:** \"Globally, over-grazing was identified as the primary factor contributing to land degradation, responsible for 35% of the total, thereby highlighting its significant impact on agricultural productivity.\"\n**Explanation:** The improved sentence provides a clearer and more concise statement of the finding, using more formal vocabulary suitable for an academic context.",
+      "task2_detailed_feedback": "### 1. BAND SCORE BREAKDOWN\n- **Task Response:** 8/9\n- **Coherence and Cohesion:** 8.5/9\n- **Lexical Resource:** 8/9\n- **Grammatical Range and Accuracy:** 8.5/9\n- **OVERALL BAND:** 8.2/9\n\n### 2. TASK RESPONSE (Detailed Analysis)\n- **Position/opinion clarity:** The writer clearly states their opinion that both parents and schools should share the responsibility of teaching children to become good members of society, with parents playing a foundational role. This clarity is evident from the introduction and maintained throughout the essay.\n- **Ideas development and support:** The essay provides well-developed ideas with relevant examples and explanations. For instance, the writer explains how parents shape children's values and manners and how schools teach essential civic values. However, some ideas could be further elaborated or supported with more specific examples.\n- **Conclusion effectiveness:** The conclusion effectively summarizes the main points and reiterates the writer's opinion. It provides a clear final thought on the importance of partnership between parents and schools.\n\n### 3. COHERENCE AND COHESION\n- **Essay Structure (Intro/Body/Conclusion):** The essay follows a logical structure, starting with an introduction that outlines the debate, followed by body paragraphs that explore the roles of parents and schools, and concluding with a summary of the main points.\n- **Logical flow and linking:** The writer uses transitional phrases and words (e.g., \"Conversely,\" \"In my opinion,\" \"Additionally\") to link ideas between sentences and paragraphs, ensuring a smooth flow of the essay.\n\n### 4. LEXICAL RESOURCE\n- **Vocabulary sophistication and accuracy:** The writer demonstrates a good range of vocabulary (e.g., \"character formation,\" \"moral compass,\" \"civic values,\" \"cultural awareness\"). However, there are moments where more precise or sophisticated vocabulary could enhance the argument.\n- **Errors with corrections:** There are minimal lexical errors. For example, the phrase \"good members of society\" could be more specifically defined or rephrased for greater clarity.\n\n### 5. GRAMMATICAL RANGE AND ACCURACY\n- **Complex structures usage:** The writer shows a good ability to use complex sentence structures, including subordinate clauses and relative clauses, which contributes to the essay's coherence and sophistication.\n- **Grammar errors with corrections:** The essay is largely free of grammatical errors. However, there are a few places where sentence structure could be improved for better clarity or where minor punctuation errors occur.\n\n### 6. PRIORITY IMPROVEMENTS\n1. **Enhance vocabulary precision:** Consider using more specific and sophisticated vocabulary to describe concepts and ideas.\n2. **Elaborate examples:** Providing more detailed and varied examples to support arguments can strengthen the essay.\n\n### 7. DETAILED SENTENCE CORRECTIONS\n**Original:** \"Parents are children's first teachers, shaping their values, manners, and moral compass from infancy.\"\n**Corrected:** \"Parents are children's first teachers, shaping their values, manners, and moral compass from infancy, thereby laying the foundation for their future development.\"\n**Reason:** The addition enhances the sentence by specifying the impact of parents' early influence."
+    },
+    "speaking_score": "1.50",
+    "speaking_breakdown": {
+      "part1": {
+        "overall_score": 5.0,
+        "breakdown": {
+          "fluency_coherence": 5.0,
+          "lexical_resource": 5.0,
+          "grammatical_range": 4.0,
+          "pronunciation": 6.0
+        },
+        "feedback": "The student shows enthusiasm and decent knowledge but needs to work on clarity, grammatical accuracy, and coherence in extended responses.",
+        "detailed_feedback": "### BAND SCORE BREAKDOWN\n- **Fluency and Coherence:** 5.0/9\n- **Lexical Resource:** 5.0/9\n- **Grammatical Range and Accuracy:** 4.0/9\n- **Pronunciation:** 6.0/9\n- **OVERALL BAND:** 5.0/9\n\n### DETAILED ANALYSIS\n\n#### Fluency and Coherence\nThe student demonstrates some fluency, although there are noticeable hesitations, especially in Q3 where the answer is partially in another language. The use of discourse markers is limited, and responses could be better structured. The ideas presented are relevant but not always logically sequenced, as seen in Q4 and Q5 where points could be clearer and more cohesive.\n\n#### Lexical Resource\n- **Strong vocabulary:** The vocabulary related to education and languages is appropriate, particularly in Q4 where the student discusses educational centers.\n- **Improvements needed:** The student should avoid unclear phrases such as \"so many kind of\" and instead use more precise wording (e.g., \"a variety of\"). There are also instances of mixing languages that may confuse the listener (Q3).\n\n#### Grammatical Range and Accuracy\n- **Correct complex structures:** The attempt to use expressions like \"If I had a chance\" in Q5 shows an understanding of conditional sentences.\n- **Errors found:** Numerous grammatical errors are present, such as \"there are so many kind of education centers\" (should be \"kinds of\") and \"we have not any kind of free libraries\" (should be \"we do not have any free libraries\"). The incorrect language switch in Q3 severely impacts clarity.\n\n#### Pronunciation Assessment\nOverall intelligibility is high, although some phrasing lacks naturalness. The mixing of languages may pose difficulties for fluency. The student's pronunciation of English words is generally clear, but the use of varied stress patterns could be improved for better expressiveness.\n\n### SPECIFIC FEEDBACK\n\n#### Strengths:\n1. The student demonstrates enthusiasm and knowledge about their hometown, particularly regarding educational opportunities.\n2. The student utilizes some longer sentences, indicating attempts to express complex ideas.\n\n#### Priority Improvements:\n1. **Clarity in Responses:** Focus on providing complete answers in English without reverting to other languages, especially in the context of the exam (e.g., fully elaborating answers in English to ensure coherence).\n2. **Grammatical Precision:** Work on grammar accuracy, particularly with agreements and correct sentence structures. Practice phrases to eliminate awkward constructions (e.g., instead of \"not any kind of free libraries,\" use \"no free libraries\").\n\n#### Model Answer Excerpt:\n\"For example, in my hometown, we have excellent educational institutions that offer a variety of courses in languages such as French, Arabic, and English. I think it’s crucial for young people to have access to libraries where they can explore literature and broaden their knowledge, as this greatly enhances their learning experience.\"\n\n```json\n{\n    \"fluency_coherence\": 5.0,\n    \"lexical_resource\": 5.0,\n    \"grammatical_range\": 4.0,\n    \"pronunciation\": 6.0,\n    \"overall_score\": 5.0,\n    \"feedback\": \"The student shows enthusiasm and decent knowledge but needs to work on clarity, grammatical accuracy, and coherence in extended responses.\"\n}",
+        "ai_used": true
+      },
+      "part2": {
+        "overall_score": 0.0,
+        "breakdown": {
+          "fluency_coherence": 0.0,
+          "lexical_resource": 0.0,
+          "grammatical_range": 0.0,
+          "pronunciation": 0.0
+        },
+        "feedback": "The response lacks meaningful content, resulting in a score of zero across all criteria.",
+        "detailed_feedback": "### BAND SCORE BREAKDOWN\n- **Fluency and Coherence:** 0.0/9\n- **Lexical Resource:** 0.0/9\n- **Grammatical Range and Accuracy:** 0.0/9\n- **Pronunciation:** 0.0/9\n- **OVERALL BAND:** 0.0/9\n\n### DETAILED ANALYSIS\n\n#### Fluency and Coherence\nDue to the response being a placeholder (\"blah blah blah\"), there is no evaluation of fluency or coherence as there is no meaningful content to assess. \n\n#### Lexical Resource\n- **Strong vocabulary:** None available due to lack of substantive content.\n- **Improvements needed:** The response shows no use of vocabulary, idiomatic expressions, or topic-specific terms necessary for achieving a score above zero.\n\n#### Grammatical Range and Accuracy\n- **Correct complex structures:** None present as there are no sentences to evaluate.\n- **Errors found:** There are no grammatical structures or sentences in the response, leading to a score of zero.\n\n#### Pronunciation Assessment\nSince the response does not contain actual phrasing or language, there is nothing to assess regarding pronunciation or stress patterns.\n\n### SPECIFIC FEEDBACK\n\n#### Strengths:\n1. None - the response lacks any meaningful content.\n2. None - there is no coherent speech or use of vocabulary.\n\n#### Priority Improvements:\n1. Provide actual, meaningful content that addresses the question, such as details of an important decision made recently.\n2. Develop skills to structure answers following a clear format, making sure to include an introduction, body, and conclusion to effectively convey ideas.\n\n#### Model Answer Excerpt:\n\"Recently, I made an important decision to pursue further education. I made this decision last month after much consideration about my career goals. I weighed the pros and cons, discussed it with mentors, and ultimately chose to enroll in a Master's program. This decision is significant because it aligns with my long-term aspirations and will enhance my career opportunities.\"\n\n```json\n{\n    \"fluency_coherence\": 0.0,\n    \"lexical_resource\": 0.0,\n    \"grammatical_range\": 0.0,\n    \"pronunciation\": 0.0,\n    \"overall_score\": 0.0,\n    \"feedback\": \"The response lacks meaningful content, resulting in a score of zero across all criteria.\"\n}\n```",
+        "ai_used": true
+      },
+      "part3": {
+        "overall_score": 0.0,
+        "breakdown": {
+          "fluency_coherence": 0.0,
+          "lexical_resource": 0.0,
+          "grammatical_range": 0.0,
+          "pronunciation": 0.0
+        },
+        "feedback": "The performance lacks any intelligible responses and fails to address the questions posed, resulting in an overall score of zero.",
+        "detailed_feedback": "### BAND SCORE BREAKDOWN\n- **Fluency and Coherence:** 0.0/9\n- **Lexical Resource:** 0.0/9\n- **Grammatical Range and Accuracy:** 0.0/9\n- **Pronunciation:** 0.0/9\n- **OVERALL BAND:** 0.0/9\n\n### DETAILED ANALYSIS\n\n#### Fluency and Coherence\nThe responses are completely lacking in coherence and fluency. There are no complete sentences or meaningful responses to the questions, reducing any potential for logical sequencing or the use of discourse markers. \n\n#### Lexical Resource\nThere is no use of vocabulary that can be evaluated since the responses are nonsensical or nonspecific (e.g., \"la la la\" and \"bla bla bla\"). There are no lexical choices that reflect an understanding of the topics or questions asked.\n\n#### Grammatical Range and Accuracy\nThe student did not form any complete grammatical structures or sentences. As a result, it's impossible to evaluate grammatical range or accuracy, as there were no articulate or coherent sentences presented.\n\n#### Pronunciation Assessment\nGiven the text provided, there's insufficient information pertaining to pronunciation since no proper words or sentences were articulated. Intelligibility cannot be assessed based on utterances like \"la la la\" or \"bla bla bla.\"\n\n### SPECIFIC FEEDBACK\n\n#### Strengths:\n1. None observed in this performance.\n2. None observed in this performance.\n\n#### Priority Improvements:\n1. It is crucial to provide meaningful and relevant responses to questions. Starting with full sentences and addressing the prompts directly would significantly improve performance.\n2. Expanding vocabulary by engaging in conversations and practicing relevant topics would enhance both the Lexical Resource score and overall fluency.\n\n#### Model Answer Excerpt:\nFor a high-scoring response, an example could be:\n\"In my country, important decisions are often made after thorough consultation with family and friends. For instance, when choosing a career path, many consider their personal interests and the job market situation, weighing the pros and cons before making a choice. It's a blend of personal values and external advice that guides them.\"\n\n```json\n{\n    \"fluency_coherence\": 0.0,\n    \"lexical_resource\": 0.0,\n    \"grammatical_range\": 0.0,\n    \"pronunciation\": 0.0,\n    \"overall_score\": 0.0,\n    \"feedback\": \"The performance lacks any intelligible responses and fails to address the questions posed, resulting in an overall score of zero.\"\n}",
+        "ai_used": true
+      }
+    },
+    "graded_at": "2026-01-19T15:23:59.668Z",
+    "graded_by": null
+  }
+},
+{
+  "model": "student_portal.testresult",
+  "pk": 2,
+  "fields": {
+    "student_test": 3,
+    "listening_score": "4.50",
+    "reading_score": "3.00",
+    "writing_score": "7.50",
+    "writing_task1_score": "7.50",
+    "writing_task2_score": "7.75",
+    "overall_score": "5.00",
+    "listening_breakdown": {
+      "correct": 14,
+      "total": 15,
+      "raw_score": 14,
+      "band_score": 4.5,
+      "question_results": {
+        "1": {
+          "correct": true,
+          "student_answer": "C",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "2": {
+          "correct": true,
+          "student_answer": "B",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "16": {
+          "correct": true,
+          "student_answer": "C",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "17": {
+          "correct": true,
+          "student_answer": "F",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "18": {
+          "correct": true,
+          "student_answer": "G",
+          "correct_answer": "G",
+          "alternative_answers": null
+        },
+        "19": {
+          "correct": true,
+          "student_answer": "B",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "20": {
+          "correct": true,
+          "student_answer": "E",
+          "correct_answer": "E",
+          "alternative_answers": null
+        },
+        "21": {
+          "correct": true,
+          "student_answer": "A",
+          "correct_answer": "A",
+          "alternative_answers": null
+        },
+        "22": {
+          "correct": true,
+          "student_answer": "C",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "23": {
+          "correct": true,
+          "student_answer": "A",
+          "correct_answer": "A",
+          "alternative_answers": null
+        },
+        "24": {
+          "correct": true,
+          "student_answer": "B",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "25": {
+          "correct": true,
+          "student_answer": "B",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "26": {
+          "correct": true,
+          "student_answer": "C",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "27": {
+          "correct": true,
+          "student_answer": "F",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "40": {
+          "correct": false,
+          "student_answer": "shit",
+          "correct_answer": "weather",
+          "alternative_answers": null
+        }
+      }
+    },
+    "reading_breakdown": {
+      "correct": 4,
+      "total": 4,
+      "raw_score": 4,
+      "band_score": 3.0,
+      "question_results": {
+        "1": {
+          "correct": true,
+          "student_answer": "D",
+          "correct_answer": "D",
+          "alternative_answers": null
+        },
+        "2": {
+          "correct": true,
+          "student_answer": "B",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "3": {
+          "correct": true,
+          "student_answer": "F",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "4": {
+          "correct": true,
+          "student_answer": "E",
+          "correct_answer": "E",
+          "alternative_answers": null
+        }
+      }
+    },
+    "writing_breakdown": {
+      "task1": {
+        "task_achievement": 7.0,
+        "coherence_cohesion": 8.0,
+        "lexical_resource": 7.0,
+        "grammatical_range": 8.0
+      },
+      "task2": {
+        "task_achievement": 8.0,
+        "coherence_cohesion": 8.0,
+        "lexical_resource": 7.0,
+        "grammatical_range": 8.0
+      },
+      "task1_feedback": "Good task achievement with clear overview and adequate detail, but could benefit from more nuanced comparisons and precise vocabulary.",
+      "task2_feedback": "Strong argument with good structure and vocabulary; minor improvements needed in lexical range and transitions.",
+      "task1_detailed_feedback": "### 1. BAND SCORE BREAKDOWN\n- **Task Achievement:** 7/9 \n- **Coherence and Cohesion:** 8/9\n- **Lexical Resource:** 7/9\n- **Grammatical Range and Accuracy:** 8/9\n- **OVERALL BAND:** 7.5/9\n\n### 2. TASK ACHIEVEMENT (Detailed Analysis)\n- Overview statement quality: The overview statement is clear and effectively summarizes the main content of the pie chart and table, highlighting the primary causes of land degradation globally.\n- Key features coverage: The student covers the key features of the data, including the dominant causes of land degradation and regional variations. However, the description could be more detailed, especially in terms of comparing and contrasting the regions more explicitly.\n- Data accuracy and relevance: The data presented is accurate and relevant to the task, but there could be more analysis and comparison of the data across different regions.\n- Appropriate length and detail: The response is slightly under the recommended word count, which might indicate a lack of detail in some areas, such as deeper analysis of the implications of the data or more nuanced comparisons between regions.\n\n### 3. COHERENCE AND COHESION\n- Paragraph structure: The paragraph structure is logical and easy to follow, with each paragraph focusing on a specific aspect of the data.\n- Logical flow: The logical flow between paragraphs is good, moving from a general overview to specific regional details.\n- Linking devices usage: The use of linking devices is adequate, but could be improved with more varied and sophisticated connectors to enhance the cohesion between sentences and paragraphs.\n\n### 4. LEXICAL RESOURCE\n- Vocabulary range and accuracy: The vocabulary range is good, with appropriate use of terms like \"over-grazing,\" \"deforestation,\" and \"over-cultivation.\" However, there is room for more precise and formal vocabulary related to environmental issues.\n- Errors with corrections: There are no major lexical errors, but some words could be replaced with more formal or precise alternatives (e.g., \"less prominent\" could be \"less significant\").\n\n### 5. GRAMMATAL RANGE AND ACCURACY\n- Sentence structure variety: The sentence structures are varied, including simple, compound, and complex sentences, which contributes to the overall clarity and interest of the text.\n- Grammar errors with corrections: There are no significant grammar errors, but some sentences could be rephrased for better clarity or to use more sophisticated grammatical structures (e.g., using passive voice or more complex relative clauses).\n\n### 6. SPECIFIC RECOMMENDATIONS\n1. **Enhance Comparative Analysis**: Provide more detailed comparisons between the regions to highlight the differences and similarities in land degradation causes.\n2. **Increase Vocabulary Precision**: Incorporate more precise and formal vocabulary related to environmental degradation to enhance the lexical resource.\n\n### 7. MODEL SENTENCE IMPROVEMENTS\n**Original:** \"Over-grazing emerged as the dominant cause of agricultural land becoming less productive worldwide, accounting for 35% of degradation.\"\n**Improved:** \"Globally, over-grazing was identified as the primary factor contributing to agricultural land degradation, responsible for 35% of the total degradation observed.\"\n**Explanation:** The improved sentence uses more formal vocabulary (\"identified as the primary factor\") and slightly rephrases the sentence for better clarity and grammatical range.",
+      "task2_detailed_feedback": "### 1. BAND SCORE BREAKDOWN\n- **Task Response:** 8/9\n- **Coherence and Cohesion:** 8/9\n- **Lexical Resource:** 7/9\n- **Grammatical Range and Accuracy:** 8/9\n- **OVERALL BAND:** 7.75/9\n\n### 2. TASK RESPONSE (Detailed Analysis)\n- **Position/opinion clarity:** The writer clearly states their opinion that both parents and schools should share the responsibility of teaching children to become good members of society, with parents playing a foundational role. This clarity is evident from the introduction and maintained throughout the essay.\n- **Ideas development and support:** The essay provides well-developed ideas with relevant examples and explanations. For instance, the writer discusses how parents shape children's values and manners, and how schools teach essential civic values and provide structured environments for social interaction. However, some ideas could be further elaborated or supported with more nuanced examples.\n- **Conclusion effectiveness:** The conclusion effectively summarizes the main points and reiterates the writer's opinion. It provides a clear final thought on the necessity of a partnership between parents and schools in creating good members of society.\n\n### 3. COHERENCE AND COHESION\n- **Essay Structure (Intro/Body/Conclusion):** The essay follows a logical structure, starting with an introduction that outlines the debate, followed by body paragraphs that explore the roles of parents and schools, and concluding with a summary of the main points and a final thought.\n- **Logical flow and linking:** The writer uses transitional phrases and words (e.g., \"Conversely,\" \"In my opinion,\" \"For example\") to link ideas between sentences and paragraphs, creating a smooth flow of information. However, there are instances where the transition between paragraphs could be more seamless.\n\n### 4. LEXICAL RESOURCE\n- **Vocabulary sophistication and accuracy:** The writer demonstrates a good range of vocabulary related to the topic, such as \"character formation,\" \"moral compass,\" \"civic values,\" and \"community service.\" However, there are moments where the vocabulary choice could be more precise or sophisticated to enhance the argument.\n- **Errors with corrections:** There are minimal lexical errors, but one area for improvement is in using more varied and nuanced vocabulary to express complex ideas.\n\n### 5. GRAMMATICAL RANGE AND ACCURACY\n- **Complex structures usage:** The writer shows a good ability to use complex sentence structures, including subordinate clauses and relative clauses, to convey ideas. For example, \"While parents are children's first teachers, shaping their values, manners, and moral compass from infancy, schools provide structured environments where children learn to interact with diverse peer groups.\"\n- **Grammar errors with corrections:** There are no significant grammatical errors that detract from the overall meaning. However, minor adjustments could be made to improve sentence clarity and variety.\n\n### 6. PRIORITY IMPROVEMENTS\n1. **Enhance vocabulary range:** Incorporate more sophisticated and precise vocabulary to discuss complex ideas and nuances in the argument.\n2. **Refine paragraph transitions:** Improve the flow between paragraphs by using more varied transitional phrases and ensuring that each paragraph clearly builds on the previous one.\n\n### 7. DETAILED SENTENCE CORRECTIONS\n**Original:** \"Parents are children's first teachers, shaping their values, manners, and moral compass from infancy.\"\n**Corrected:** \"Parents are children's first educators, influencing their values, manners, and moral compass from a very young age.\"\n**Reason:** The correction aims to provide a slightly more nuanced expression by using \"educators\" instead of \"teachers\" and specifying \"from a very young age\" for clarity."
+    },
+    "speaking_score": null,
+    "speaking_breakdown": null,
+    "graded_at": "2026-01-20T18:10:32.647Z",
+    "graded_by": null
+  }
+},
+{
+  "model": "student_portal.testresult",
+  "pk": 3,
+  "fields": {
+    "student_test": 4,
+    "listening_score": "3.00",
+    "reading_score": "3.00",
+    "writing_score": null,
+    "writing_task1_score": null,
+    "writing_task2_score": null,
+    "overall_score": "3.00",
+    "listening_breakdown": {
+      "correct": 6,
+      "total": 40,
+      "raw_score": 6,
+      "band_score": 3.0,
+      "question_results": {
+        "1": {
+          "correct": false,
+          "student_answer": "A",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "5": {
+          "correct": false,
+          "student_answer": "0164",
+          "correct_answer": "01674 553242",
+          "alternative_answers": [
+            "01674553242"
+          ]
+        },
+        "6": {
+          "correct": true,
+          "student_answer": "drinks",
+          "correct_answer": "drinks",
+          "alternative_answers": [
+            "(free) drinks",
+            "refreshments",
+            "(free) refreshments"
+          ]
+        },
+        "7": {
+          "correct": true,
+          "student_answer": "pianist",
+          "correct_answer": "pianist",
+          "alternative_answers": [
+            "(the/a) pianist",
+            "piano player",
+            "(the/a) piano player"
+          ]
+        },
+        "10": {
+          "correct": true,
+          "student_answer": "50%",
+          "correct_answer": "50%",
+          "alternative_answers": [
+            "50 percent",
+            "50",
+            "fifty percent"
+          ]
+        },
+        "11": {
+          "correct": false,
+          "student_answer": "15",
+          "correct_answer": "1:30",
+          "alternative_answers": [
+            "1.30",
+            "130",
+            "one thirty"
+          ]
+        },
+        "16": {
+          "correct": false,
+          "student_answer": "E",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "17": {
+          "correct": false,
+          "student_answer": "D",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "18": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "G",
+          "alternative_answers": null
+        },
+        "19": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "20": {
+          "correct": true,
+          "student_answer": "E",
+          "correct_answer": "E",
+          "alternative_answers": null
+        },
+        "21": {
+          "correct": true,
+          "student_answer": "A",
+          "correct_answer": "A",
+          "alternative_answers": null
+        },
+        "22": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "23": {
+          "correct": true,
+          "student_answer": "A",
+          "correct_answer": "A",
+          "alternative_answers": null
+        },
+        "24": {
+          "correct": false,
+          "student_answer": "C",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "25": {
+          "correct": false,
+          "student_answer": "A",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "26": {
+          "correct": false,
+          "student_answer": "G",
+          "correct_answer": "C",
+          "alternative_answers": null
+        },
+        "27": {
+          "correct": false,
+          "student_answer": "B",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "32": {
+          "correct": false,
+          "student_answer": "realitionship",
+          "correct_answer": "environment",
+          "alternative_answers": null
+        }
+      }
+    },
+    "reading_breakdown": {
+      "correct": 5,
+      "total": 40,
+      "raw_score": 5,
+      "band_score": 3.0,
+      "question_results": {
+        "1": {
+          "correct": false,
+          "student_answer": "E",
+          "correct_answer": "D",
+          "alternative_answers": null
+        },
+        "2": {
+          "correct": true,
+          "student_answer": "B",
+          "correct_answer": "B",
+          "alternative_answers": null
+        },
+        "3": {
+          "correct": true,
+          "student_answer": "F",
+          "correct_answer": "F",
+          "alternative_answers": null
+        },
+        "4": {
+          "correct": false,
+          "student_answer": "D",
+          "correct_answer": "E",
+          "alternative_answers": null
+        },
+        "20": {
+          "correct": false,
+          "student_answer": "TRUE",
+          "correct_answer": "FALSE",
+          "alternative_answers": null
+        },
+        "21": {
+          "correct": false,
+          "student_answer": "TRUE",
+          "correct_answer": "FALSE",
+          "alternative_answers": null
+        },
+        "22": {
+          "correct": true,
+          "student_answer": "NOT GIVEN",
+          "correct_answer": "NOT GIVEN",
+          "alternative_answers": null
+        },
+        "23": {
+          "correct": true,
+          "student_answer": "TRUE",
+          "correct_answer": "TRUE",
+          "alternative_answers": null
+        },
+        "24": {
+          "correct": false,
+          "student_answer": "FALSE",
+          "correct_answer": "TRUE",
+          "alternative_answers": null
+        },
+        "25": {
+          "correct": false,
+          "student_answer": "TRUE",
+          "correct_answer": "FALSE",
+          "alternative_answers": null
+        },
+        "26": {
+          "correct": true,
+          "student_answer": "TRUE",
+          "correct_answer": "TRUE",
+          "alternative_answers": null
+        }
+      }
+    },
+    "writing_breakdown": {
+      "task1": null,
+      "task2": null,
+      "task1_feedback": null,
+      "task2_feedback": null,
+      "task1_detailed_feedback": null,
+      "task2_detailed_feedback": null
+    },
+    "speaking_score": null,
+    "speaking_breakdown": null,
+    "graded_at": "2026-01-22T05:05:32.617Z",
+    "graded_by": null
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 1,
+  "fields": {
+    "student_test": 1,
+    "part_number": 1,
+    "question_number": 1,
+    "audio_file": "speaking_audio/2026/01/28/recording_fJB3Ob1.webm",
+    "transcribed_text": "Hi mister, my name is Shahryar Karamberdiyev.",
+    "transcription_status": "pending",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 4.739999771118164
+    },
+    "created_at": "2026-01-27T17:31:47.894Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 2,
+  "fields": {
+    "student_test": 1,
+    "part_number": 1,
+    "question_number": 2,
+    "audio_file": "speaking_audio/2026/01/27/recording_wHFc4lS.webm",
+    "transcribed_text": "I am from Republic of Uzbekistan, actually from the region of Khorezm and district of Toprakala.",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 10.319999694824219
+    },
+    "created_at": "2026-01-27T17:32:10.137Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 3,
+  "fields": {
+    "student_test": 1,
+    "part_number": 1,
+    "question_number": 3,
+    "audio_file": "speaking_audio/2026/01/27/recording_VQ9q87p.webm",
+    "transcribed_text": "درسته من کار کندم در قطعا محلمات دانستان و دورفت و محلمان دارم کار کنم و همچنینなگرس نجاییم از صدای قدم شده از دانستان",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "persian",
+      "duration": 14.880000114440918
+    },
+    "created_at": "2026-01-27T17:32:32.652Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 4,
+  "fields": {
+    "student_test": 1,
+    "part_number": 1,
+    "question_number": 4,
+    "audio_file": "speaking_audio/2026/01/27/recording_qwH2wsQ.webm",
+    "transcribed_text": "When it comes to talking about my town, I want to start talking about education centers firstly because there are so many kind of education centers that are related to the many kind of languages and mathematics. Actually I am really keen on to the learning languages that's why I love the type of education centers that are teaching French, Arabic and English.",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 34.86000061035156
+    },
+    "created_at": "2026-01-27T17:33:12.464Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 5,
+  "fields": {
+    "student_test": 1,
+    "part_number": 1,
+    "question_number": 5,
+    "audio_file": "speaking_audio/2026/01/27/recording_JAJY0pr.webm",
+    "transcribed_text": "If I had a chance to change something from my hometown, I would like to build a huge library for youngsters, after that they would read so many kind of books, because right now we have not any kind of free libraries, there is bookshops, but not libraries.",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 26.81999969482422
+    },
+    "created_at": "2026-01-27T17:33:42.857Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 6,
+  "fields": {
+    "student_test": 1,
+    "part_number": 2,
+    "question_number": null,
+    "audio_file": "speaking_audio/2026/01/27/recording_xKEtV1z.webm",
+    "transcribed_text": "blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 7.079999923706055
+    },
+    "created_at": "2026-01-27T17:33:56.235Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 7,
+  "fields": {
+    "student_test": 1,
+    "part_number": 3,
+    "question_number": 1,
+    "audio_file": "speaking_audio/2026/01/27/recording_x9MezBD.webm",
+    "transcribed_text": "La la la la la la la la la la la.",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 3.5999999046325684
+    },
+    "created_at": "2026-01-27T17:34:03.972Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 8,
+  "fields": {
+    "student_test": 1,
+    "part_number": 3,
+    "question_number": 2,
+    "audio_file": "speaking_audio/2026/01/27/recording_ETCLaL6.webm",
+    "transcribed_text": "Bla bla bla bla bla bla bla bla bla bla bla bla bla bla bla",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 4.320000171661377
+    },
+    "created_at": "2026-01-27T17:34:10.743Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 9,
+  "fields": {
+    "student_test": 1,
+    "part_number": 3,
+    "question_number": 3,
+    "audio_file": "speaking_audio/2026/01/27/recording_HlRu5K2.webm",
+    "transcribed_text": "Yeah.",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 3.059999942779541
+    },
+    "created_at": "2026-01-27T17:34:17.620Z"
+  }
+},
+{
+  "model": "student_portal.speakingresponse",
+  "pk": 10,
+  "fields": {
+    "student_test": 1,
+    "part_number": 3,
+    "question_number": 4,
+    "audio_file": "speaking_audio/2026/01/27/recording_jNhkTgB.webm",
+    "transcribed_text": "you",
+    "transcription_status": "completed",
+    "transcription_metadata": {
+      "language": "english",
+      "duration": 0.7799999713897705
+    },
+    "created_at": "2026-01-27T17:34:24.313Z"
+  }
+}
+]
