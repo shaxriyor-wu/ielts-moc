@@ -6,20 +6,19 @@ nixPkgs = ["..."]
 [phases.install]
 cmds = [
     "cd frontend && npm ci",
-    "python -m ensurepip --upgrade",
-    "python -m pip install -r backend/requirements.txt"
+    "python -m venv /opt/venv && /opt/venv/bin/pip install -r backend/requirements.txt"
 ]
 
 [phases.build]
 cmds = [
     "cd frontend && npm run build",
-    "cd backend && python manage.py collectstatic --noinput",
+    "cd backend && /opt/venv/bin/python manage.py collectstatic --noinput",
     # Copy media files to a safe backup location outside any possible volume mount path
     "mkdir -p /opt/media_backup",
     "cp -rv backend/media/* /opt/media_backup/ 2>&1 || echo 'WARNING: Failed to copy media files from backend/media'",
     "echo '=== Contents of /opt/media_backup ===' && ls -laR /opt/media_backup/ || echo 'media_backup empty'",
-    "cd backend && python manage.py ensure_db_ready || echo 'WARNING: Database initialization in build phase failed, will retry on startup'"
+    "cd backend && /opt/venv/bin/python manage.py ensure_db_ready || echo 'WARNING: Database initialization in build phase failed, will retry on startup'"
 ]
 
 [start]
-cmd = "cd backend && bash start.sh"
+cmd = "export PATH=/opt/venv/bin:$PATH && cd backend && bash start.sh"
