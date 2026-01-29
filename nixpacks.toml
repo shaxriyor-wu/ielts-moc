@@ -17,4 +17,4 @@ cmds = [
 ]
 
 [start]
-cmd = "cd backend && gunicorn ielts_moc.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 120"
+cmd = "cd backend && bash start.sh"
