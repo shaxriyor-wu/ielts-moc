@@ -6,7 +6,8 @@ nixPkgs = ["..."]
 [phases.install]
 cmds = [
     "cd frontend && npm ci",
-    "pip install -r backend/requirements.txt"
+    "python -m ensurepip --upgrade",
+    "python -m pip install -r backend/requirements.txt"
 ]
 
 [phases.build]
