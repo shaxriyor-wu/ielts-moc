@@ -15,10 +15,45 @@ _cached_path = None
 
 def health_check(request):
     """
-    Simple health check endpoint for Railway/Render deployment.
-    Returns 200 OK if the server is running.
+    Health check endpoint for Railway/Render deployment.
+    Returns 200 OK if the server and database are running.
     """
-    return JsonResponse({'status': 'ok'})
+    from django.db import connection
+    from accounts.models import CustomUser
+    
+    status_data = {
+        'status': 'ok',
+        'server': 'running'
+    }
+    
+    # Check database connection
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        status_data['database'] = 'connected'
+    except Exception as e:
+        logger.error(f'Database connection error in health check: {e}')
+        status_data['database'] = 'error'
+        status_data['database_error'] = str(e)
+        return JsonResponse(status_data, status=503)
+    
+    # Check if tables exist
+    try:
+        user_count = CustomUser.objects.count()
+        status_data['database_tables'] = 'ok'
+        status_data['user_count'] = user_count
+    except Exception as e:
+        error_str = str(e).lower()
+        if 'does not exist' in error_str or 'no such table' in error_str:
+            status_data['database_tables'] = 'not_initialized'
+            status_data['message'] = 'Database tables not found. Run migrations.'
+            return JsonResponse(status_data, status=503)
+        else:
+            status_data['database_tables'] = 'error'
+            status_data['database_error'] = str(e)
+            return JsonResponse(status_data, status=503)
+    
+    return JsonResponse(status_data)
 
 
 def root_view(request):

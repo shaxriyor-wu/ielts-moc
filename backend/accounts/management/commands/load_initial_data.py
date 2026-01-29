@@ -24,6 +24,19 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         fixture_path = options.get('fixture')
         
+        # Check database connection first
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+        except Exception as db_error:
+            self.stdout.write(
+                self.style.ERROR(f'Database connection error: {db_error}')
+            )
+            self.stdout.write(
+                self.style.WARNING('Skipping data load. Database connection failed.')
+            )
+            return
+        
         # Check if fixture exists
         full_path = os.path.join(settings.BASE_DIR, fixture_path)
         if not os.path.exists(full_path):
@@ -33,14 +46,27 @@ class Command(BaseCommand):
             return
         
         # Check if database already has data
-        from accounts.models import CustomUser
-        user_count = CustomUser.objects.count()
-        
-        if user_count > 0:
-            self.stdout.write(
-                self.style.WARNING(f'Database already has {user_count} users. Skipping fixture load.')
-            )
-            return
+        try:
+            from accounts.models import CustomUser
+            user_count = CustomUser.objects.count()
+            
+            if user_count > 0:
+                self.stdout.write(
+                    self.style.WARNING(f'Database already has {user_count} users. Skipping fixture load.')
+                )
+                return
+        except Exception as table_error:
+            error_str = str(table_error).lower()
+            if 'does not exist' in error_str or 'no such table' in error_str:
+                self.stdout.write(
+                    self.style.WARNING('Database tables not found. Run migrations first.')
+                )
+                return
+            else:
+                self.stdout.write(
+                    self.style.ERROR(f'Error checking database: {table_error}')
+                )
+                return
         
         self.stdout.write(
             self.style.SUCCESS(f'Loading data from {fixture_path}...')

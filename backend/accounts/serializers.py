@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from django.db import DatabaseError
+from django.db import DatabaseError, connection
+from django.core.exceptions import ImproperlyConfigured
 from .models import CustomUser
 import logging
 
@@ -92,6 +93,27 @@ class LoginSerializer(serializers.Serializer):
         
         if not login or not password:
             raise serializers.ValidationError('Must include "login" and "password".')
+        
+        # Check database connection first
+        try:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT 1")
+        except Exception as db_error:
+            logger.error(f'Database connection error: {str(db_error)}', exc_info=True)
+            raise serializers.ValidationError('Database connection error. Please try again later.')
+        
+        # Check if tables exist
+        try:
+            # Try to query the user table to see if it exists
+            CustomUser.objects.exists()
+        except Exception as table_error:
+            error_str = str(table_error).lower()
+            if 'does not exist' in error_str or 'no such table' in error_str:
+                logger.error(f'Database tables not found: {str(table_error)}', exc_info=True)
+                raise serializers.ValidationError('Database not initialized. Please contact administrator.')
+            else:
+                logger.error(f'Database query error: {str(table_error)}', exc_info=True)
+                raise serializers.ValidationError('Database error. Please try again later.')
         
         try:
             # Try to authenticate with username or email
