@@ -13,7 +13,7 @@ from .serializers import (
 )
 from .utils import (
     count_available_variants, generate_test_id, generate_test_variants,
-    check_minimum_variants, get_variant_content
+    check_minimum_variants, get_variant_content, ensure_cambridge_8_test1_exists
 )
 
 
@@ -91,6 +91,9 @@ def variant_list_create(request):
         )
     
     if request.method == 'GET':
+        # Ensure Cambridge 8 Test 1 sample variant always exists
+        ensure_cambridge_8_test1_exists()
+        
         variants = Variant.objects.all()
         serializer = VariantListSerializer(variants, many=True)
         return Response(serializer.data)

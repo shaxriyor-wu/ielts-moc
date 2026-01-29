@@ -208,3 +208,173 @@ def check_minimum_variants():
             missing.append(f'Speaking {part_name}')
 
     return len(missing) == 0, missing
+
+
+def ensure_cambridge_8_test1_exists():
+    """
+    Ensure the Cambridge IELTS 8 - Test 1 sample variant exists.
+    If it doesn't exist, automatically load it from the sample test JSON file.
+    
+    Returns:
+        Variant: The Cambridge 8 Test 1 variant (existing or newly created)
+    """
+    from .models import Variant, TestFile, Answer
+    from .test_structures import create_test_from_json
+    from django.contrib.auth import get_user_model
+    import logging
+    
+    logger = logging.getLogger(__name__)
+    User = get_user_model()
+    
+    variant_name = "Cambridge IELTS 8 - Test 1"
+    
+    # Check if variant already exists
+    variant = Variant.objects.filter(name=variant_name).first()
+    if variant:
+        # Verify it has all required test files
+        has_listening = TestFile.objects.filter(variant=variant, file_type='listening').exists()
+        has_reading = TestFile.objects.filter(variant=variant, file_type='reading').exists()
+        has_writing = TestFile.objects.filter(variant=variant, file_type='writing').exists()
+        has_speaking = TestFile.objects.filter(variant=variant, file_type='speaking').exists()
+        
+        if has_listening and has_reading and has_writing and has_speaking:
+            return variant
+        else:
+            # Variant exists but is incomplete, delete and recreate
+            logger.info(f"Variant {variant_name} exists but is incomplete. Recreating...")
+            variant.test_files.all().delete()
+            variant.answers.all().delete()
+    
+    # Load the sample test JSON file
+    sample_test_path = os.path.join(settings.BASE_DIR, 'exams', 'sample_tests', 'cambridge_ielts_8_test1.json')
+    
+    if not os.path.exists(sample_test_path):
+        logger.warning(f"Sample test file not found: {sample_test_path}")
+        return None
+    
+    try:
+        with open(sample_test_path, 'r', encoding='utf-8') as f:
+            test_data = json.load(f)
+        
+        # Parse test structure
+        test = create_test_from_json(test_data)
+        
+        # Get or create admin user
+        admin_user = User.objects.filter(role='admin').first()
+        if not admin_user:
+            logger.warning("No admin user found. Cannot create sample variant.")
+            return None
+        
+        # Create or update variant
+        if not variant:
+            variant, created = Variant.objects.get_or_create(
+                name=test.variant_name,
+                defaults={
+                    'duration_minutes': 180,  # 3 hours total
+                    'created_by': admin_user,
+                    'is_active': True
+                }
+            )
+        else:
+            variant.duration_minutes = 180
+            variant.created_by = admin_user
+            variant.is_active = True
+            variant.save()
+        
+        # Create Listening section
+        if test.listening:
+            listening_data = test.listening.to_dict()
+            audio_file_path = None
+            if test.listening.audio_url and not test.listening.audio_url.startswith(('http://', 'https://', '/')):
+                audio_file_path = test.listening.audio_url
+            elif test.listening.audio_url and test.listening.audio_url.startswith('audio_files/'):
+                audio_file_path = test.listening.audio_url
+            
+            TestFile.objects.filter(variant=variant, file_type='listening').delete()
+            test_file = TestFile.objects.create(
+                variant=variant,
+                file_type='listening',
+                questions_data=listening_data,
+                duration_minutes=test.listening.duration_minutes,
+                file='placeholder.pdf',
+                audio_file=audio_file_path
+            )
+            
+            # Create answer keys
+            Answer.objects.filter(variant=variant, section='listening').delete()
+            for q_num, answer in test.listening_answers.items():
+                Answer.objects.create(
+                    variant=variant,
+                    section='listening',
+                    question_number=int(q_num),
+                    correct_answer=str(answer) if not isinstance(answer, list) else str(answer[0]),
+                    alternative_answers=answer if isinstance(answer, list) and len(answer) > 1 else None
+                )
+        
+        # Create Reading section
+        if test.reading:
+            reading_data = test.reading.to_dict()
+            TestFile.objects.filter(variant=variant, file_type='reading').delete()
+            test_file = TestFile.objects.create(
+                variant=variant,
+                file_type='reading',
+                questions_data=reading_data,
+                duration_minutes=test.reading.duration_minutes,
+                file='placeholder.pdf'
+            )
+            
+            # Create answer keys
+            Answer.objects.filter(variant=variant, section='reading').delete()
+            for q_num, answer in test.reading_answers.items():
+                Answer.objects.create(
+                    variant=variant,
+                    section='reading',
+                    question_number=int(q_num),
+                    correct_answer=str(answer) if not isinstance(answer, list) else str(answer[0]),
+                    alternative_answers=answer if isinstance(answer, list) and len(answer) > 1 else None
+                )
+        
+        # Create Writing section
+        if test.writing:
+            # Task 1
+            if test.writing.task1:
+                TestFile.objects.filter(variant=variant, file_type='writing', task_number=1).delete()
+                TestFile.objects.create(
+                    variant=variant,
+                    file_type='writing',
+                    task_number=1,
+                    questions_data=test.writing.task1.to_dict(),
+                    duration_minutes=test.writing.task1.duration_minutes,
+                    file='placeholder.pdf'
+                )
+            
+            # Task 2
+            if test.writing.task2:
+                TestFile.objects.filter(variant=variant, file_type='writing', task_number=2).delete()
+                TestFile.objects.create(
+                    variant=variant,
+                    file_type='writing',
+                    task_number=2,
+                    questions_data=test.writing.task2.to_dict(),
+                    duration_minutes=test.writing.task2.duration_minutes,
+                    file='placeholder.pdf'
+                )
+        
+        # Create Speaking section
+        if test.speaking:
+            speaking_data = test.speaking.to_dict()
+            TestFile.objects.filter(variant=variant, file_type='speaking').delete()
+            TestFile.objects.create(
+                variant=variant,
+                file_type='speaking',
+                questions_data=speaking_data,
+                duration_minutes=test.speaking.total_duration_minutes,
+                file='placeholder.pdf'
+            )
+        
+        logger.info(f"Successfully ensured {variant_name} variant exists (Code: {variant.code})")
+        return variant
+        
+    except Exception as e:
+        logger.error(f"Error loading sample test: {e}", exc_info=True)
+        return None
