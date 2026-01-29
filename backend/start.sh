@@ -55,8 +55,8 @@ echo "=========================================="
 echo "Starting Gunicorn server..."
 echo "=========================================="
 
-# Start Gunicorn
-exec gunicorn ielts_moc.wsgi:application \
+# Start Gunicorn with WSGI wrapper that ensures DB is ready
+exec gunicorn ielts_moc.wsgi_init:application \
     --bind 0.0.0.0:${PORT:-8000} \
     --workers 2 \
     --timeout 120 \
