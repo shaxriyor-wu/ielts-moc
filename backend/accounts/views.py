@@ -14,13 +14,25 @@ logger = logging.getLogger(__name__)
 def unified_login(request):
     """Unified login endpoint that handles admin and student."""
     try:
+        # Log request for debugging
+        logger.info(f'Login attempt from IP: {request.META.get("REMOTE_ADDR")}, Origin: {request.META.get("HTTP_ORIGIN")}')
+        
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
             
+            # Ensure user is fully loaded from database
+            try:
+                from accounts.models import CustomUser
+                user = CustomUser.objects.get(id=user.id)
+            except Exception as e:
+                logger.warning(f'Could not reload user from DB: {str(e)}')
+            
             try:
                 refresh = RefreshToken.for_user(user)
                 user_data = UserSerializer(user).data
+                
+                logger.info(f'Successful login for user: {user.username}, role: {user.role}')
                 
                 return Response({
                     'accessToken': str(refresh.access_token),
@@ -33,9 +45,13 @@ def unified_login(request):
                     {'error': 'Failed to generate authentication token. Please try again.'},
                     status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
+        
+        logger.warning(f'Login validation failed: {serializer.errors}')
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
         logger.error(f'Login error: {str(e)}', exc_info=True)
+        import traceback
+        logger.error(f'Traceback: {traceback.format_exc()}')
         return Response(
             {'error': 'An error occurred during login. Please try again.'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR

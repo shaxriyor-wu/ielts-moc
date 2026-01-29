@@ -124,8 +124,9 @@ if settings.DEBUG:
 
 # Serve React app for all non-API routes (SPA routing)
 # This must be last to catch all routes not matched above
-# Exclude: api, admin, static, media, and assets (React build assets)
+# Exclude: api, admin, static, media, assets, error, health (React build assets and error pages)
+# Note: In Railway with separate frontend/backend services, frontend handles its own routes
 urlpatterns += [
-    re_path(r'^(?!api|admin|static|media|assets).*$', react_app_view, name='react-app'),
+    re_path(r'^(?!api|admin|static|media|assets|error|health).*$', react_app_view, name='react-app'),
 ]
 

@@ -239,6 +239,11 @@ if os.getenv('FRONTEND_URL'):
     if frontend_url and frontend_url not in CORS_ALLOWED_ORIGINS:
         CORS_ALLOWED_ORIGINS.append(frontend_url)
 
+# Add cd.tricorp.uz to CORS (production frontend domain)
+if 'cd.tricorp.uz' not in CORS_ALLOWED_ORIGINS:
+    CORS_ALLOWED_ORIGINS.append('https://cd.tricorp.uz')
+    CORS_ALLOWED_ORIGINS.append('http://cd.tricorp.uz')
+
 # Add Railway service URL to CORS
 if RAILWAY_PUBLIC_DOMAIN:
     railway_url = f"https://{RAILWAY_PUBLIC_DOMAIN}"
@@ -280,6 +285,10 @@ if os.getenv('RENDER_EXTERNAL_HOSTNAME'):
     render_origin = f"https://{os.getenv('RENDER_EXTERNAL_HOSTNAME')}"
     if render_origin not in CSRF_TRUSTED_ORIGINS:
         CSRF_TRUSTED_ORIGINS.append(render_origin)
+
+# Add cd.tricorp.uz to CSRF trusted origins
+if 'https://cd.tricorp.uz' not in CSRF_TRUSTED_ORIGINS:
+    CSRF_TRUSTED_ORIGINS.append('https://cd.tricorp.uz')
 
 # Production security settings
 if not DEBUG:
