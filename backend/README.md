@@ -76,6 +76,34 @@ python manage.py makemigrations
 python manage.py migrate
 ```
 
+### 5.1. Migrating Data from SQLite to PostgreSQL
+
+If you have existing data in SQLite and want to migrate to PostgreSQL:
+
+```bash
+# Basic usage (uses DATABASE_URL from environment)
+python manage.py migrate_to_postgresql
+
+# With custom SQLite path
+python manage.py migrate_to_postgresql --sqlite-path /path/to/db.sqlite3
+
+# With custom PostgreSQL URL
+python manage.py migrate_to_postgresql --postgres-url postgresql://user:password@host:port/dbname
+
+# Clear existing PostgreSQL data before importing
+python manage.py migrate_to_postgresql --clear-postgres
+
+# Skip migrations (if database schema already exists)
+python manage.py migrate_to_postgresql --skip-migrations
+```
+
+**Important Notes:**
+- The command automatically exports all data from SQLite (accounts, exams, student_portal, grading apps)
+- It preserves all relationships and foreign keys
+- Use `--clear-postgres` if PostgreSQL already has data (WARNING: This will delete all existing data)
+- Make sure PostgreSQL database is created and accessible before running the migration
+- The command will run migrations automatically unless `--skip-migrations` is used
+
 ### 6. Initialize Default Users
 
 ```bash
