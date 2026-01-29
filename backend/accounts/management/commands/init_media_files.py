@@ -34,8 +34,10 @@ class Command(BaseCommand):
         
         # Default source is backend/media relative to BASE_DIR
         # Also check parent directory (for Railway deployment structure)
+        # Priority: bundled backup (created during build) > local paths
         if not source_dir:
             possible_sources = [
+                '/app/media_bundled',  # Backup created during Railway build (highest priority)
                 os.path.join(settings.BASE_DIR, 'media'),
                 os.path.join(settings.BASE_DIR.parent, 'backend', 'media'),
                 '/app/backend/media',  # Railway default path

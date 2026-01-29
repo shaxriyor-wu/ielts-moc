@@ -53,15 +53,107 @@ echo "✓ Database ready"
 # Initialize media files if volume is mounted
 echo ""
 echo "Initializing media files..."
-# Try multiple source locations
-for source_dir in "$(pwd)/media" "$(pwd)/../media" "/app/backend/media"; do
-    if [ -d "$source_dir" ]; then
-        if python manage.py init_media_files --source "$source_dir" 2>/dev/null; then
-            echo "✓ Media files initialized from $source_dir"
+echo "MEDIA_VOLUME_PATH: ${MEDIA_VOLUME_PATH:-not set}"
+echo "Current directory: $(pwd)"
+
+# Determine destination (volume mount point or default)
+DEST_DIR="${MEDIA_VOLUME_PATH:-/app/media}"
+echo "Media destination (MEDIA_ROOT): $DEST_DIR"
+
+# Create destination directories
+mkdir -p "$DEST_DIR"
+mkdir -p "$DEST_DIR/audio_files"
+mkdir -p "$DEST_DIR/test_files"
+mkdir -p "$DEST_DIR/speaking_audio"
+
+# Source directory - media files bundled with the app
+# In Railway, the app is at /app/backend, so media is at /app/backend/media
+# But if volume is mounted at /app/media or /app/backend/media, the original files might be hidden
+# We backup media files to /app/media_bundled during build phase
+# Priority: bundled backup > current dir > backend path
+SOURCE_DIR=""
+POSSIBLE_SOURCES=(
+    "/app/media_bundled"              # Backup created during build (highest priority)
+    "$(pwd)/media"                    # Current directory (backend)
+    "/app/backend/media"              # Railway default backend path
+)
+
+for possible_source in "${POSSIBLE_SOURCES[@]}"; do
+    if [ -d "$possible_source" ] && [ "$(ls -A "$possible_source" 2>/dev/null)" ]; then
+        # Make sure it's not the same as destination (which would be the empty volume)
+        if [ "$possible_source" != "$DEST_DIR" ]; then
+            SOURCE_DIR="$possible_source"
+            echo "Found media source at: $SOURCE_DIR"
             break
         fi
     fi
 done
+
+# If no source found but we're in Railway, the media might be in the same dir as destination
+# In this case, check if destination already has files
+if [ -z "$SOURCE_DIR" ]; then
+    if [ -f "$DEST_DIR/audio_files/listening.m4a" ]; then
+        echo "Media files already present in destination"
+        SOURCE_DIR=""
+    else
+        echo "WARNING: No media source directory found!"
+        echo "Checking available directories..."
+        echo "  /app contents:"
+        ls -la /app 2>/dev/null || echo "  (not accessible)"
+        echo "  /app/backend contents:"
+        ls -la /app/backend 2>/dev/null || echo "  (not accessible)"
+    fi
+fi
+
+# Copy media files if source exists and is different from destination
+if [ -n "$SOURCE_DIR" ]; then
+    echo "Copying media files from $SOURCE_DIR to $DEST_DIR..."
+    
+    # Use rsync if available, otherwise cp
+    if command -v rsync &> /dev/null; then
+        rsync -av --ignore-existing "$SOURCE_DIR/" "$DEST_DIR/"
+    else
+        # Copy files preserving structure, only if they don't exist
+        cp -rn "$SOURCE_DIR"/* "$DEST_DIR/" 2>/dev/null || {
+            # If cp -n not supported, do it manually
+            for item in "$SOURCE_DIR"/*; do
+                if [ -e "$item" ]; then
+                    item_name=$(basename "$item")
+                    if [ ! -e "$DEST_DIR/$item_name" ]; then
+                        cp -r "$item" "$DEST_DIR/"
+                        echo "  Copied: $item_name"
+                    else
+                        echo "  Skipped (exists): $item_name"
+                    fi
+                fi
+            done
+        }
+    fi
+    
+    echo "✓ Media files copied to volume"
+fi
+
+# Also try the management command for more thorough initialization
+python manage.py init_media_files 2>/dev/null || true
+
+# Verify critical files
+echo ""
+echo "Verifying media files..."
+echo "Contents of $DEST_DIR:"
+ls -la "$DEST_DIR" 2>/dev/null || echo "  (directory not accessible)"
+
+if [ -f "$DEST_DIR/audio_files/listening.m4a" ]; then
+    echo "✓ listening.m4a found"
+    ls -la "$DEST_DIR/audio_files/listening.m4a"
+else
+    echo "✗ listening.m4a NOT found at $DEST_DIR/audio_files/"
+    echo "  Contents of $DEST_DIR/audio_files:"
+    ls -la "$DEST_DIR/audio_files" 2>/dev/null || echo "  (directory not accessible or empty)"
+    
+    # Last resort: try to find the file anywhere
+    echo "  Searching for listening.m4a in /app..."
+    find /app -name "listening.m4a" 2>/dev/null || echo "  (not found)"
+fi
 
 echo ""
 echo "=========================================="

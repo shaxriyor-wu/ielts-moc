@@ -11,6 +11,8 @@ cmds = [
 cmds = [
     "cd frontend && npm run build",
     "cd backend && python manage.py collectstatic --noinput",
+    # Copy media files to a backup location that won't be overwritten by volume mount
+    "mkdir -p /app/media_bundled && cp -r backend/media/* /app/media_bundled/ || echo 'No media files to backup'",
     "cd backend && python manage.py ensure_db_ready || echo 'WARNING: Database initialization in build phase failed, will retry on startup'"
 ]
 

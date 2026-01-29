@@ -4,31 +4,39 @@
 
 Productionda audio va rasmlar uchun volume ulash kerak. Media fayllar **backend'ga** ulash kerak, chunki ular Django orqali serve qilinmoqda.
 
+## ⚠️ MUHIM: Volume va Environment Variable
+
+Railway'da volume mount qilganda, **MEDIA_VOLUME_PATH** environment variable'ni **albatta** sozlash kerak. Aks holda media fayllar topilmaydi!
+
 ## Volume Ulash
 
 ### Railway Deployment
 
 1. **Volume yaratish:**
    - Railway dashboard'da project'ingizga kiring
-   - "Volumes" bo'limiga o'ting
-   - "New Volume" tugmasini bosing
+   - Backend service'ni tanlang
+   - "Settings" → "Volumes" bo'limiga o'ting
+   - "Attach Volume" tugmasini bosing
    - Volume nomini kiriting (masalan: `ielts-media`)
-   - Volume hajmini tanlang (masalan: 10GB)
+   - **Mount path:** `/app/media`
 
-2. **Backend service'ga volume ulash:**
-   - Backend service'ingizni oching
-   - "Settings" bo'limiga o'ting
-   - "Volumes" bo'limida "Attach Volume" tugmasini bosing
-   - Yaratilgan volume'ni tanlang
-   - Mount path'ni kiriting: `/app/media` (yoki `/app/backend/media`)
-
-3. **Environment variable sozlash:**
+2. **Environment variable sozlash (MUHIM!):**
    - Backend service'ning "Variables" bo'limiga o'ting
    - Quyidagi environment variable'ni qo'shing:
      ```
      MEDIA_VOLUME_PATH=/app/media
      ```
-     (yoki mount qilgan path'ingizga mos)
+   - **Bu qadamni o'tkazib yubormang!** Volume mount path bilan bir xil bo'lishi kerak.
+
+3. **Service'ni redeploy qilish:**
+   - O'zgarishlar qo'llanishi uchun service'ni redeploy qiling
+   - Deploy log'larida quyidagilarni tekshiring:
+     ```
+     MEDIA_VOLUME_PATH: /app/media
+     Found media source at: /app/media_bundled
+     ✓ Media files copied to volume
+     ✓ listening.m4a found
+     ```
 
 ### Render Deployment
 
