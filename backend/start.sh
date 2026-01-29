@@ -50,6 +50,19 @@ if ! python manage.py ensure_db_ready; then
 fi
 echo "✓ Database ready"
 
+# Initialize media files if volume is mounted
+echo ""
+echo "Initializing media files..."
+# Try multiple source locations
+for source_dir in "$(pwd)/media" "$(pwd)/../media" "/app/backend/media"; do
+    if [ -d "$source_dir" ]; then
+        if python manage.py init_media_files --source "$source_dir" 2>/dev/null; then
+            echo "✓ Media files initialized from $source_dir"
+            break
+        fi
+    fi
+done
+
 echo ""
 echo "=========================================="
 echo "Starting Gunicorn server..."
