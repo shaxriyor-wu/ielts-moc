@@ -158,7 +158,7 @@ const Login = () => {
           <div className="mt-4 grid grid-cols-2 gap-2">
             <button
               onClick={() => {
-                setLoginData({ login: 'admin', password: 'Admin123!' });
+                setLoginData({ login: 'admin', password: 'admin123' });
               }}
               className="px-3 py-2 text-xs bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
               disabled={loading}
