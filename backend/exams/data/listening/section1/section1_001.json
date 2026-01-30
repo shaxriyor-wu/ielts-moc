@@ -1,0 +1,69 @@
+{
+  "section_number": 1,
+  "title": "Section 1: Questions 1-10",
+  "context": "Example: Penny's interview took place B last week.",
+  "audio_url": "listening/audio/section1/01 - Track 1.mp3",
+  "duration_minutes": 10,
+  "questions": [
+    {
+      "id": 1,
+      "type": "multiple",
+      "question": "1. What kind of shop is it?",
+      "options": [
+        "A. a ladies' dress shop",
+        "B. a department store",
+        "C. a children's clothes shop"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "multiple",
+      "question": "2. What is the name of the section Penny will be working in?",
+      "options": [
+        "A. the Youngster",
+        "B. the Youngset",
+        "C. the Young Set"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "fill",
+      "question": "Breaks: one hour for lunch and 3 .................... coffee breaks"
+    },
+    {
+      "id": 4,
+      "type": "fill",
+      "question": "Holidays: four weeks a year in the 4 ...................."
+    },
+    {
+      "id": 5,
+      "type": "fill",
+      "question": "Staff training: held on the 5 .................... of every month"
+    },
+    {
+      "id": 6,
+      "type": "fill",
+      "question": "Special staff benefits or 'perks': staff discount of 6 .................... on everything except sale goods"
+    },
+    {
+      "id": 7,
+      "type": "fill",
+      "question": "Information on pension: see Personnel Manager, office in 7 ...................."
+    },
+    {
+      "id": 8,
+      "type": "fill",
+      "question": "Boss's name: 8 ...................."
+    },
+    {
+      "id": 9,
+      "type": "fill",
+      "question": "Duties: serve customers, 9 ...................."
+    },
+    {
+      "id": 10,
+      "type": "fill",
+      "question": "Expected to wear: a 10 ...................., a red blouse, and a name badge"
+    }
+  ]
+}

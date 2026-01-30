@@ -3,6 +3,7 @@ import { adminApi } from '../../api/adminApi';
 import Loader from '../../components/Loader';
 import { showToast } from '../../components/Toast';
 import { FileText, Headphones, Image as ImageIcon } from 'lucide-react';
+import QuestionRenderer from '../../components/QuestionRenderer';
 
 const VariantPreviewModal = ({ sectionType, sectionName, filename, onClose }) => {
   const [loading, setLoading] = useState(true);
@@ -27,55 +28,55 @@ const VariantPreviewModal = ({ sectionType, sectionName, filename, onClose }) =>
     if (!variantData) return null;
 
     return (
-      <div className="space-y-4">
-        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
-          <h3 className="font-semibold text-blue-900 dark:text-blue-300 mb-2">
-            {variantData.title || 'Listening Section'}
-          </h3>
-          <p className="text-sm text-blue-800 dark:text-blue-200">
-            {variantData.description || 'No description'}
-          </p>
-          <div className="mt-2 flex gap-4 text-sm text-blue-700 dark:text-blue-300">
-            <span>Duration: {variantData.duration_seconds || 0}s</span>
-            <span>Difficulty: {variantData.difficulty || 'N/A'}</span>
-          </div>
+      <div className="space-y-6 bg-white dark:bg-gray-900 p-6">
+        {/* Section Title */}
+        <div className="border-b pb-4">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            {variantData.title || 'Section 1: Questions 1-10'}
+          </h2>
+          {variantData.context && (
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              {variantData.context}
+            </p>
+          )}
         </div>
 
-        {variantData.audio_file && (
-          <div className="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-800 rounded">
-            <Headphones className="w-5 h-5 text-gray-600" />
-            <span className="text-sm text-gray-700 dark:text-gray-300">{variantData.audio_file}</span>
-          </div>
-        )}
-
-        <div>
-          <h4 className="font-medium text-gray-900 dark:text-white mb-3">Instructions:</h4>
-          <p className="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 p-3 rounded">
-            {variantData.instructions || 'No instructions provided'}
-          </p>
-        </div>
-
-        {variantData.questions && variantData.questions.length > 0 && (
-          <div>
-            <h4 className="font-medium text-gray-900 dark:text-white mb-3">
-              Questions ({variantData.questions.length}):
-            </h4>
-            <div className="space-y-2">
-              {variantData.questions.map((q, idx) => (
-                <div key={idx} className="p-3 bg-gray-50 dark:bg-gray-800 rounded">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
-                    Q{q.question_number || idx + 1}: {q.question_text}
-                  </p>
-                  {q.correct_answer && (
-                    <p className="text-sm text-green-600 dark:text-green-400 mt-1">
-                      Answer: {q.correct_answer}
-                    </p>
-                  )}
-                </div>
-              ))}
+        {/* Audio Reference */}
+        {(variantData.audio_url || variantData.audio_file) && (
+          <div className="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <Headphones className="w-6 h-6 text-blue-600 dark:text-blue-400" />
+            <div>
+              <p className="text-sm font-medium text-blue-900 dark:text-blue-100">Audio File</p>
+              <p className="text-xs text-blue-700 dark:text-blue-300">
+                {variantData.audio_url || variantData.audio_file}
+              </p>
             </div>
           </div>
         )}
+
+        {/* Questions - Student View Style */}
+        {variantData.questions && variantData.questions.length > 0 && (
+          <div className="space-y-6">
+            {variantData.questions.map((q, idx) => (
+              <div key={idx} className="space-y-2">
+                <QuestionRenderer
+                  question={q}
+                  answer=""
+                  onAnswerChange={() => {}}
+                  disabled={true}
+                  allAnswers={{}}
+                />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Preview Notice */}
+        <div className="mt-6 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded">
+          <p className="text-sm text-yellow-800 dark:text-yellow-200">
+            <strong>Preview Mode:</strong> This is how students will see this variant. Answers are disabled in preview.
+          </p>
+        </div>
       </div>
     );
   };

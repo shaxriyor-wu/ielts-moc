@@ -1,0 +1,66 @@
+{
+  "section": "listening",
+  "section_number": 1,
+  "answers": [
+    {
+      "question_number": 1,
+      "correct_answer": "B",
+      "alternative_answers": [],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 2,
+      "correct_answer": "C",
+      "alternative_answers": [],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 3,
+      "correct_answer": "15 minute",
+      "alternative_answers": ["15 minutes", "fifteen minute", "fifteen minutes"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 4,
+      "correct_answer": "third/3rd year",
+      "alternative_answers": ["third year", "3rd year", "the third year", "the 3rd year"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 5,
+      "correct_answer": "first/1st Tuesday",
+      "alternative_answers": ["first Tuesday", "1st Tuesday", "the first Tuesday", "the 1st Tuesday"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 6,
+      "correct_answer": "25%",
+      "alternative_answers": ["25 percent", "25%", "twenty-five percent", "twenty five percent"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 7,
+      "correct_answer": "room 12",
+      "alternative_answers": ["Room 12", "room twelve", "Room twelve"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 8,
+      "correct_answer": "(Mrs) Waddell",
+      "alternative_answers": ["Mrs Waddell", "Mrs. Waddell", "Waddell"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 9,
+      "correct_answer": "window dressing/dress windows",
+      "alternative_answers": ["window dressing", "dress windows", "dressing windows"],
+      "case_sensitive": false
+    },
+    {
+      "question_number": 10,
+      "correct_answer": "black skirt",
+      "alternative_answers": ["a black skirt"],
+      "case_sensitive": false
+    }
+  ]
+}

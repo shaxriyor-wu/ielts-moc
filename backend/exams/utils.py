@@ -28,7 +28,9 @@ def scan_json_files(directory_path):
         return 0, []
 
     json_files = glob.glob(os.path.join(directory_path, '*.json'))
-    return len(json_files), [os.path.basename(f) for f in json_files]
+    # Filter out answer files (files ending with _answers.json)
+    question_files = [os.path.basename(f) for f in json_files if not f.endswith('_answers.json')]
+    return len(question_files), question_files
 
 
 def count_available_variants():
