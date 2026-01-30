@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { User, Lock, UserPlus } from 'lucide-react';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import Input from '../components/Input';
@@ -199,6 +200,7 @@ const Login = () => {
               <div className="space-y-4">
                 <Input
                   label="Login"
+                  icon={User}
                   value={loginData.login}
                   onChange={(e) => setLoginData({ ...loginData, login: e.target.value })}
                   required
@@ -208,6 +210,7 @@ const Login = () => {
                 <Input
                   type="password"
                   label="Password"
+                  icon={Lock}
                   value={loginData.password}
                   onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
                   required
@@ -233,6 +236,7 @@ const Login = () => {
               <div className="space-y-4">
                 <Input
                   label="Full Name"
+                  icon={UserPlus}
                   value={registerData.fullName}
                   onChange={(e) => setRegisterData({ ...registerData, fullName: e.target.value })}
                   required
@@ -241,6 +245,7 @@ const Login = () => {
                 />
                 <Input
                   label="Login"
+                  icon={User}
                   value={registerData.login}
                   onChange={(e) => setRegisterData({ ...registerData, login: e.target.value })}
                   required
@@ -249,6 +254,7 @@ const Login = () => {
                 <Input
                   type="password"
                   label="Password"
+                  icon={Lock}
                   value={registerData.password}
                   onChange={(e) => setRegisterData({ ...registerData, password: e.target.value })}
                   required
@@ -257,6 +263,7 @@ const Login = () => {
                 <Input
                   type="password"
                   label="Confirm Password"
+                  icon={Lock}
                   value={registerData.confirmPassword}
                   onChange={(e) => setRegisterData({ ...registerData, confirmPassword: e.target.value })}
                   required
