@@ -43,4 +43,8 @@ export const studentApi = {
   getAttempts: () => api.get('/student/attempts'),
   getTests: () => api.get('/student/tests'),
   getAllTests: () => api.get('/student/all-tests'),
+  // VIP variants
+  getVipVariants: () => api.get('/student/vip-variants'),
+  getVipVariantPreview: (sectionType, sectionName, filename) =>
+    api.get(`/student/vip-variant-preview/${sectionType}/${sectionName}/${filename}`),
 };

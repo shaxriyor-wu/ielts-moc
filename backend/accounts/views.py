@@ -330,7 +330,7 @@ def delete_user(request, pk):
     """Delete user (admin only)."""
     if request.user.role != 'admin':
         return Response({'error': 'Admin access required'}, status=status.HTTP_403_FORBIDDEN)
-        
+
     from accounts.models import CustomUser
     try:
         user = CustomUser.objects.get(pk=pk)
@@ -338,4 +338,166 @@ def delete_user(request, pk):
         return Response({'message': 'User deleted successfully'})
     except CustomUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+# ========== VIP Management Endpoints ==========
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def search_users_for_vip(request):
+    """Search non-VIP students by username for adding VIP access (admin only)."""
+    from accounts.models import CustomUser
+    from django.db.models import Q
+
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if db_user.role != 'admin':
+        return Response({'error': 'Admin access required.'}, status=status.HTTP_403_FORBIDDEN)
+
+    query = request.GET.get('q', '').strip()
+    if len(query) < 1:
+        return Response([])
+
+    users = CustomUser.objects.filter(
+        role='student',
+        is_vip=False
+    ).filter(
+        Q(username__icontains=query) |
+        Q(first_name__icontains=query) |
+        Q(last_name__icontains=query)
+    )[:20]
+
+    data = [{
+        'id': u.id,
+        'username': u.username,
+        'name': u.get_full_name() or u.username,
+    } for u in users]
+
+    return Response(data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def add_vip_user(request):
+    """Grant VIP access to a user by username (admin only)."""
+    from accounts.models import CustomUser
+
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if db_user.role != 'admin':
+        return Response({'error': 'Admin access required.'}, status=status.HTTP_403_FORBIDDEN)
+
+    username = request.data.get('username', '').strip()
+    if not username:
+        return Response({'error': 'Username is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    try:
+        user = CustomUser.objects.get(username=username, role='student')
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    if user.is_vip:
+        return Response({'error': 'User already has VIP access.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user.is_vip = True
+    user.save(update_fields=['is_vip'])
+
+    return Response({
+        'message': f'VIP access granted to {user.username}.',
+        'user': UserSerializer(user).data
+    })
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def remove_vip_user(request, pk):
+    """Remove VIP access from a user (admin only)."""
+    from accounts.models import CustomUser
+
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if db_user.role != 'admin':
+        return Response({'error': 'Admin access required.'}, status=status.HTTP_403_FORBIDDEN)
+
+    try:
+        user = CustomUser.objects.get(pk=pk, role='student')
+    except CustomUser.DoesNotExist:
+        return Response({'error': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+    user.is_vip = False
+    user.save(update_fields=['is_vip'])
+
+    return Response({
+        'message': f'VIP access removed from {user.username}.',
+        'user': UserSerializer(user).data
+    })
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_vip_users(request):
+    """List all VIP users (admin only)."""
+    from accounts.models import CustomUser
+
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if db_user.role != 'admin':
+        return Response({'error': 'Admin access required.'}, status=status.HTTP_403_FORBIDDEN)
+
+    vip_users = CustomUser.objects.filter(role='student', is_vip=True).order_by('-updated_at')
+
+    data = [{
+        'id': u.id,
+        'username': u.username,
+        'name': u.get_full_name() or u.username,
+        'email': u.email,
+        'date_joined': u.date_joined,
+    } for u in vip_users]
+
+    return Response(data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_vip_variants(request):
+    """Get all available variants for VIP students. Returns empty if user is not VIP."""
+    from accounts.models import CustomUser
+    from exams.utils import count_available_variants
+
+    db_user = CustomUser.objects.get(id=request.user.id)
+
+    if not db_user.is_vip:
+        return Response({'variants': None})
+
+    counts = count_available_variants()
+    return Response({'variants': counts})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_vip_variant_preview(request, section_type, section_name, filename):
+    """Get preview of a specific variant file for VIP students."""
+    from accounts.models import CustomUser
+    from exams.utils import get_variant_content
+
+    db_user = CustomUser.objects.get(id=request.user.id)
+    if not db_user.is_vip:
+        return Response({'error': 'VIP access required.'}, status=status.HTTP_403_FORBIDDEN)
+
+    valid_section_types = ['listening', 'reading', 'writing', 'speaking']
+    if section_type not in valid_section_types:
+        return Response(
+            {'error': f'Invalid section_type. Must be one of: {", ".join(valid_section_types)}'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    try:
+        content = get_variant_content(section_type, section_name, filename)
+        if content is None:
+            return Response(
+                {'error': 'Variant file not found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        return Response(content)
+    except Exception as e:
+        return Response(
+            {'error': f'Failed to load variant: {str(e)}'},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 

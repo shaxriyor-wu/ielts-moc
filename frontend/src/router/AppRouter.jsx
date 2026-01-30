@@ -12,6 +12,7 @@ import AdminResults from '../pages/admin/AdminResults';
 import AdminSettings from '../pages/admin/AdminSettings';
 import UserManagement from '../pages/admin/UserManagement';
 import Variants from '../pages/admin/Variants';
+import VipManagement from '../pages/admin/VipManagement';
 
 import ExamAccess from '../pages/student/ExamAccess';
 import ExamPage from '../pages/student/ExamPage';
@@ -93,6 +94,7 @@ const AppRouter = () => {
         <Route path="dashboard" element={<AdminDashboard />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="variants" element={<Variants />} />
+        <Route path="vip" element={<VipManagement />} />
         <Route path="results" element={<AdminResults />} />
         <Route path="settings" element={<AdminSettings />} />
       </Route>

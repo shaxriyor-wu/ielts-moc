@@ -16,6 +16,10 @@ class CustomUser(AbstractUser):
         default='student',
         help_text='User role: admin or student'
     )
+    is_vip = models.BooleanField(
+        default=False,
+        help_text='Whether user has VIP access to all variants'
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

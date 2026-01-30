@@ -60,4 +60,9 @@ export const adminApi = {
   getMockTestList: () => api.get('/admin/mock-tests/list'),
   getVariantPreview: (sectionType, sectionName, filename) =>
     api.get(`/admin/mock-tests/variant-preview/${sectionType}/${sectionName}/${filename}`),
+  // VIP Management
+  searchUsersForVip: (query) => api.get(`/admin/vip/search?q=${encodeURIComponent(query)}`),
+  addVipUser: (username) => api.post('/admin/vip/add', { username }),
+  removeVipUser: (id) => api.post(`/admin/vip/remove/${id}`),
+  getVipUsers: () => api.get('/admin/vip/users'),
 };

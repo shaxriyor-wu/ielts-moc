@@ -142,11 +142,27 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4">
+    <div
+      className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden"
+    >
+      {/* Background gradient layer */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: 'linear-gradient(135deg, #b91c1c 0%, #dc2626 15%, #ef4444 25%, #f87171 32%, #fca5a5 37%, #fecaca 40%, #ffffff 45%, #ffffff 55%, #d4d4d4 60%, #737373 65%, #404040 70%, #262626 78%, #171717 85%, #0a0a0a 100%)',
+        }}
+      />
+      {/* Blur overlay */}
+      <div
+        className="absolute inset-0 backdrop-blur-2xl"
+        style={{
+          background: 'linear-gradient(135deg, rgba(185,28,28,0.2) 0%, rgba(239,68,68,0.15) 20%, rgba(255,255,255,0.05) 40%, rgba(255,255,255,0.05) 60%, rgba(23,23,23,0.15) 80%, rgba(10,10,10,0.2) 100%)',
+        }}
+      />
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-md"
+        className="relative z-10 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md p-6 sm:p-8 rounded-xl shadow-2xl w-full max-w-md border border-white/50 dark:border-gray-700"
       >
         <div className="text-center mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
