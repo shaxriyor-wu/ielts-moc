@@ -25,7 +25,7 @@ const VipManagement = () => {
       const response = await adminApi.getVipUsers();
       setVipUsers(response.data);
     } catch (error) {
-      showToast('VIP foydalanuvchilarni yuklashda xatolik', 'error');
+      showToast('Error loading VIP users', 'error');
     } finally {
       setLoading(false);
     }
@@ -51,7 +51,7 @@ const VipManagement = () => {
         const response = await adminApi.searchUsersForVip(query);
         setSearchResults(response.data);
       } catch (error) {
-        showToast('Qidirishda xatolik', 'error');
+        showToast('Search error', 'error');
       } finally {
         setSearching(false);
       }
@@ -69,11 +69,11 @@ const VipManagement = () => {
     setAddingUser(username);
     try {
       await adminApi.addVipUser(username);
-      showToast(`${username} ga VIP dostup berildi`, 'success');
+      showToast(`VIP access granted to ${username}`, 'success');
       setSearchResults((prev) => prev.filter((u) => u.username !== username));
       await loadVipUsers();
     } catch (error) {
-      showToast(error.response?.data?.error || 'VIP qo\'shishda xatolik', 'error');
+      showToast(error.response?.data?.error || 'Error adding VIP', 'error');
     } finally {
       setAddingUser(null);
     }
@@ -83,10 +83,10 @@ const VipManagement = () => {
     setRemovingUser(userId);
     try {
       await adminApi.removeVipUser(userId);
-      showToast(`${username} dan VIP olib tashlandi`, 'success');
+      showToast(`VIP access removed from ${username}`, 'success');
       setVipUsers((prev) => prev.filter((u) => u.id !== userId));
     } catch (error) {
-      showToast(error.response?.data?.error || 'VIP olib tashlashda xatolik', 'error');
+      showToast(error.response?.data?.error || 'Error removing VIP', 'error');
     } finally {
       setRemovingUser(null);
     }
@@ -104,10 +104,10 @@ const VipManagement = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-                VIP Boshqaruv
+                VIP Management
               </h1>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                VIP foydalanuvchilarni boshqaring va yangi VIP dostup bering
+                Manage VIP users and grant new VIP access
               </p>
             </div>
           </div>
@@ -125,7 +125,7 @@ const VipManagement = () => {
               }`}
             >
               <UserPlus className="w-5 h-5" />
-              VIP Qo'shish
+              Add VIP
             </button>
             <button
               onClick={() => setActiveTab('users')}
@@ -136,7 +136,7 @@ const VipManagement = () => {
               }`}
             >
               <Users className="w-5 h-5" />
-              VIP Foydalanuvchilar
+              VIP Users
               {vipUsers.length > 0 && (
                 <span className="ml-1 px-2 py-0.5 text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 rounded-full">
                   {vipUsers.length}
@@ -151,10 +151,10 @@ const VipManagement = () => {
       {activeTab === 'add' && (
         <Card>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            VIP User Qo'shish
+            Add VIP User
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-            Username bo'yicha qidirib, foydalanuvchiga VIP dostup bering. VIP foydalanuvchilar barcha variantlarga test kalitisiz kirish imkoniga ega bo'ladi.
+            Search by username and grant VIP access to users. VIP users will have access to all variants without test codes.
           </p>
 
           {/* Search Input */}
@@ -166,7 +166,7 @@ const VipManagement = () => {
               type="text"
               value={searchQuery}
               onChange={handleSearchChange}
-              placeholder="Username bo'yicha qidiring..."
+              placeholder="Search by username..."
               className="w-full pl-10 pr-10 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-colors"
             />
             {searchQuery && (
@@ -191,7 +191,7 @@ const VipManagement = () => {
 
           {!searching && searchQuery && searchResults.length === 0 && (
             <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              "{searchQuery}" bo'yicha hech qanday foydalanuvchi topilmadi
+              No users found for "{searchQuery}"
             </div>
           )}
 
@@ -225,7 +225,7 @@ const VipManagement = () => {
                     onClick={() => handleAddVip(user.username)}
                   >
                     <Crown className="w-4 h-4" />
-                    VIP Berish
+                    Grant VIP
                   </Button>
                 </div>
               ))}
@@ -237,17 +237,17 @@ const VipManagement = () => {
       {activeTab === 'users' && (
         <Card>
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
-            VIP Foydalanuvchilar
+            VIP Users
           </h2>
 
           {vipUsers.length === 0 ? (
             <div className="text-center py-12">
               <Crown className="w-16 h-16 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
               <p className="text-gray-500 dark:text-gray-400">
-                Hozircha VIP foydalanuvchilar yo'q
+                No VIP users yet
               </p>
               <p className="text-sm text-gray-400 dark:text-gray-500 mt-1">
-                "VIP Qo'shish" bo'limidan foydalanuvchi qo'shing
+                Add users from the "Add VIP" section
               </p>
             </div>
           ) : (
@@ -270,7 +270,7 @@ const VipManagement = () => {
                         {user.email && ` | ${user.email}`}
                       </p>
                       <p className="text-xs text-gray-400 dark:text-gray-500">
-                        Ro'yxatdan o'tgan: {new Date(user.date_joined).toLocaleDateString('uz-UZ')}
+                        Joined: {new Date(user.date_joined).toLocaleDateString('en-US')}
                       </p>
                     </div>
                   </div>
@@ -282,7 +282,7 @@ const VipManagement = () => {
                     onClick={() => handleRemoveVip(user.id, user.username)}
                   >
                     <UserMinus className="w-4 h-4" />
-                    VIP Olib Tashlash
+                    Remove VIP
                   </Button>
                 </div>
               ))}

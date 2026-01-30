@@ -37,7 +37,7 @@ const StudentTests = () => {
       setTests(testsRes.data || []);
       setVipVariants(vipRes.data?.variants || null);
     } catch (error) {
-      showToast('Ma\'lumotlarni yuklashda xatolik', 'error');
+      showToast('Error loading data', 'error');
     } finally {
       setLoading(false);
     }
@@ -47,7 +47,7 @@ const StudentTests = () => {
     try {
       const response = await studentApi.enterTestCode(testCode);
       if (response.data.status === 'waiting') {
-        showToast('Test boshlanishini kutib turing...', 'info');
+        showToast('Waiting for test to start...', 'info');
         checkTestStatus();
       } else {
         navigate(`/exam/${testCode}`);
@@ -67,11 +67,11 @@ const StudentTests = () => {
         const response = await studentApi.checkQueueStatus();
         if (response.data.status === 'preparation' || response.data.status === 'started') {
           clearInterval(interval);
-          showToast('Test boshlandi!', 'success');
+          showToast('Test started!', 'success');
           navigate(`/exam/${response.data.variant_code || ''}`);
         } else if (attempts >= maxAttempts) {
           clearInterval(interval);
-          showToast('Test hali boshlanmadi', 'warning');
+          showToast('Test has not started yet', 'warning');
         }
       } catch (error) {
         if (attempts >= maxAttempts) {
@@ -146,7 +146,7 @@ const StudentTests = () => {
                     {config.label} {num}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400">
-                    {count} variant{count !== 1 ? 'lar' : ''} mavjud
+                    {count} variant{count !== 1 ? 's' : ''} available
                   </p>
                 </div>
               </div>
@@ -168,10 +168,10 @@ const StudentTests = () => {
                         <button
                           onClick={() => handleWorkVariant(tabId, key, filename)}
                           className="ml-2 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-sm font-medium rounded-lg transition-colors flex items-center gap-1.5"
-                          title="Ishlash"
+                          title="Start"
                         >
                           <Play className="w-3.5 h-3.5" />
-                          Ishlash
+                          Start
                         </button>
                       </div>
                     </div>
@@ -179,7 +179,7 @@ const StudentTests = () => {
                 </div>
               ) : (
                 <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  {config.label} {num} uchun variantlar mavjud emas
+                  No variants available for {config.label} {num}
                 </div>
               )}
             </Card>
@@ -215,10 +215,10 @@ const StudentTests = () => {
               </div>
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  VIP Variantlar
+                  VIP Variants
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Barcha variantlarga kirish imkoniyati
+                  Access to all variants
                 </p>
               </div>
             </div>
@@ -280,7 +280,7 @@ const StudentTests = () => {
             <Card>
               <div className="text-center py-12">
                 <BookOpen className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-600 dark:text-gray-400">Hozircha testlar mavjud emas</p>
+                <p className="text-gray-600 dark:text-gray-400">No tests available yet</p>
               </div>
             </Card>
           ) : (
